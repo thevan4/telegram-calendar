@@ -3,7 +3,7 @@ package calendar
 import "time"
 
 // GenerateCurrentMonth ...
-func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentTime time.Time) [][]InlineKeyboardButton {
+func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentUserTime time.Time) [][]InlineKeyboardButton {
 	monthStart := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	monthEnd := monthStart.AddDate(0, 1, -1)
 
@@ -13,15 +13,15 @@ func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentTime time.T
 	// First week.
 	weekday := getWeekDay(monthStart)
 	// The first line and the number of the day on the button according to the results.
-	rowFirstWeek, dayNumber := k.generateFirstWeek(month, year, weekday, currentTime)
+	rowFirstWeek, dayNumber := k.generateFirstWeek(month, year, weekday, currentUserTime)
 	rowWeeks = append(rowWeeks, rowFirstWeek)
 
 	// The middle weeks, without the last week.
-	rowMiddleWeeks, dayNumber := k.generateMiddleWeeks(month, year, dayNumber, cap(rowWeeks), currentTime)
+	rowMiddleWeeks, dayNumber := k.generateMiddleWeeks(month, year, dayNumber, cap(rowWeeks), currentUserTime)
 	rowWeeks = append(rowWeeks, rowMiddleWeeks...)
 
 	// Last week.
-	rowLastWeek := k.generateLastWeek(month, year, dayNumber, monthEnd, currentTime)
+	rowLastWeek := k.generateLastWeek(month, year, dayNumber, monthEnd, currentUserTime)
 	rowWeeks = append(rowWeeks, rowLastWeek)
 
 	return rowWeeks
@@ -49,7 +49,7 @@ func getWeekDay(monthStart time.Time) int {
 	return weekday
 }
 
-func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentTime time.Time) ([]InlineKeyboardButton, int) {
+func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentUserTime time.Time) ([]InlineKeyboardButton, int) {
 	// Number of the day on the button.
 	dayNumber := 1
 
@@ -64,7 +64,7 @@ func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentT
 
 	// Buttons with the numbers of the first week.
 	for wd := weekday; wd <= daysInWeek; wd++ {
-		btnText := k.buttonTextWrapper(dayNumber, month, year, currentTime)
+		btnText := k.buttonTextWrapper(dayNumber, month, year, currentUserTime)
 		btn := NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, dayNumber, month, year))
 		rowFirstWeek = append(rowFirstWeek, btn)
 		dayNumber++
@@ -74,7 +74,7 @@ func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentT
 }
 
 func (k KeyboardFormer) generateMiddleWeeks(
-	month, year int, dayNumber int, capacityOfTotalRowWeeks int, currentTime time.Time,
+	month, year int, dayNumber int, capacityOfTotalRowWeeks int, currentUserTime time.Time,
 ) ([][]InlineKeyboardButton, int) {
 	// Capacity from the total minus the beginning week and the end week, which we do not fill.
 	middleWeeks := make([][]InlineKeyboardButton, 0, capacityOfTotalRowWeeks-2) //nolint:gomnd // have comment.
@@ -84,7 +84,7 @@ func (k KeyboardFormer) generateMiddleWeeks(
 
 		// Filling in the dates.
 		for cw := 1; cw <= daysInWeek; cw++ {
-			btnText := k.buttonTextWrapper(dayNumber, month, year, currentTime)
+			btnText := k.buttonTextWrapper(dayNumber, month, year, currentUserTime)
 			btn := NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, dayNumber, month, year))
 			rowCurrentWeek = append(rowCurrentWeek, btn)
 			dayNumber++
@@ -95,7 +95,7 @@ func (k KeyboardFormer) generateMiddleWeeks(
 	return middleWeeks, dayNumber
 }
 
-func (k KeyboardFormer) generateLastWeek(month, year int, dayNumber int, monthEnd time.Time, currentTime time.Time) []InlineKeyboardButton {
+func (k KeyboardFormer) generateLastWeek(month, year int, dayNumber int, monthEnd time.Time, currentUserTime time.Time) []InlineKeyboardButton {
 	rowLastWeek := make([]InlineKeyboardButton, 0, standardButtonsAtRow)
 
 	// Last day of the week in the month.
@@ -104,7 +104,7 @@ func (k KeyboardFormer) generateLastWeek(month, year int, dayNumber int, monthEn
 	endMonthDay := monthEnd.Day()
 
 	for wd := dayNumber; wd <= endMonthDay; wd++ {
-		btnText := k.buttonTextWrapper(wd, month, year, currentTime)
+		btnText := k.buttonTextWrapper(wd, month, year, currentUserTime)
 		btn := NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, wd, month, year))
 		rowLastWeek = append(rowLastWeek, btn)
 	}

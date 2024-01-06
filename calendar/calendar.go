@@ -9,27 +9,27 @@ import (
 // KeyboardGenerator ...
 type KeyboardGenerator interface {
 	Generator
-	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) (inlineKeyboardMarkup InlineKeyboardMarkup, selectedDay time.Time)
+	GenerateCalendarKeyboard(callbackPayload string, currentUserTime time.Time) (inlineKeyboardMarkup InlineKeyboardMarkup, selectedDay time.Time)
 }
 
 // Generator ...
 type Generator interface {
-	GenerateGoToPrevMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup
-	GenerateGoToNextMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup
-	GenerateGoToPrevYear(month, year int, currentTime time.Time) InlineKeyboardMarkup
-	GenerateGoToNextYear(month, year int, currentTime time.Time) InlineKeyboardMarkup
-	GenerateSelectMonths(month, year int, currentTime time.Time) InlineKeyboardMarkup
-	GenerateSelectYears(month, year int, currentTime time.Time) InlineKeyboardMarkup
-	GenerateCalendar(month, year int, currentTime time.Time) InlineKeyboardMarkup
-	GenerateDefaultCalendar(currentTime time.Time) InlineKeyboardMarkup
-	GenerateCurrentMonth(month, year int, currentTime time.Time) [][]InlineKeyboardButton
+	GenerateGoToPrevMonth(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateGoToNextMonth(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateGoToPrevYear(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateGoToNextYear(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateSelectMonths(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateSelectYears(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateCalendar(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateDefaultCalendar(currentUserTime time.Time) InlineKeyboardMarkup
+	GenerateCurrentMonth(month, year int, currentUserTime time.Time) [][]InlineKeyboardButton
 	FormDateTime(day, month, year int, location *time.Location) time.Time
 }
 
 // GenerateCalendarKeyboard ...
 func (k KeyboardFormer) GenerateCalendarKeyboard(
 	callbackPayload string,
-	currentTime time.Time, // user time.
+	currentUserTime time.Time,
 ) (
 	inlineKeyboardMarkup InlineKeyboardMarkup, selectedDay time.Time,
 ) {
@@ -37,68 +37,68 @@ func (k KeyboardFormer) GenerateCalendarKeyboard(
 
 	switch incomePayload.action {
 	case prevMonthAction:
-		return k.GenerateGoToPrevMonth(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
+		return k.GenerateGoToPrevMonth(incomePayload.calendarMonth, incomePayload.calendarYear, currentUserTime), selectedDay
 	case nextMonthAction:
-		return k.GenerateGoToNextMonth(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
+		return k.GenerateGoToNextMonth(incomePayload.calendarMonth, incomePayload.calendarYear, currentUserTime), selectedDay
 	case prevYearAction:
-		return k.GenerateGoToPrevYear(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
+		return k.GenerateGoToPrevYear(incomePayload.calendarMonth, incomePayload.calendarYear, currentUserTime), selectedDay
 	case nextYearAction:
-		return k.GenerateGoToNextYear(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
+		return k.GenerateGoToNextYear(incomePayload.calendarMonth, incomePayload.calendarYear, currentUserTime), selectedDay
 	case selectMonthAction:
-		return k.GenerateSelectMonths(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
+		return k.GenerateSelectMonths(incomePayload.calendarMonth, incomePayload.calendarYear, currentUserTime), selectedDay
 	case selectYearAction:
-		return k.GenerateSelectYears(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
+		return k.GenerateSelectYears(incomePayload.calendarMonth, incomePayload.calendarYear, currentUserTime), selectedDay
 	case showSelectedAction:
-		return k.GenerateCalendar(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
+		return k.GenerateCalendar(incomePayload.calendarMonth, incomePayload.calendarYear, currentUserTime), selectedDay
 	case silentDoNothingAction:
 		return InlineKeyboardMarkup{}, selectedDay
 	case selectDayAction:
 		return InlineKeyboardMarkup{}, k.FormDateTime(incomePayload.calendarDay, incomePayload.calendarMonth,
-			incomePayload.calendarYear, currentTime.Location())
+			incomePayload.calendarYear, currentUserTime.Location())
 	default:
-		return k.GenerateDefaultCalendar(currentTime), selectedDay
+		return k.GenerateDefaultCalendar(currentUserTime), selectedDay
 	}
 }
 
 // GenerateGoToPrevMonth ...
-func (k KeyboardFormer) GenerateGoToPrevMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToPrevMonth(month, year int, currentUserTime time.Time) InlineKeyboardMarkup {
 	if month != int(time.January) {
 		month--
 	} else {
 		month = 12
 		year--
 	}
-	return k.GenerateCalendar(month, year, currentTime)
+	return k.GenerateCalendar(month, year, currentUserTime)
 }
 
 // GenerateGoToNextMonth ...
-func (k KeyboardFormer) GenerateGoToNextMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToNextMonth(month, year int, currentUserTime time.Time) InlineKeyboardMarkup {
 	if month != int(time.December) {
 		month++
 	} else {
 		month = 1
 		year++
 	}
-	return k.GenerateCalendar(month, year, currentTime)
+	return k.GenerateCalendar(month, year, currentUserTime)
 }
 
 // GenerateGoToPrevYear ...
-func (k KeyboardFormer) GenerateGoToPrevYear(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToPrevYear(month, year int, currentUserTime time.Time) InlineKeyboardMarkup {
 	year--
-	return k.GenerateCalendar(month, year, currentTime)
+	return k.GenerateCalendar(month, year, currentUserTime)
 }
 
 // GenerateGoToNextYear ...
-func (k KeyboardFormer) GenerateGoToNextYear(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToNextYear(month, year int, currentUserTime time.Time) InlineKeyboardMarkup {
 	year++
-	return k.GenerateCalendar(month, year, currentTime)
+	return k.GenerateCalendar(month, year, currentUserTime)
 }
 
 // GenerateSelectMonths ...
-func (k KeyboardFormer) GenerateSelectMonths(month, year int, currentTime time.Time) (keyboard InlineKeyboardMarkup) {
+func (k KeyboardFormer) GenerateSelectMonths(month, year int, currentUserTime time.Time) (keyboard InlineKeyboardMarkup) {
 	keyboard.InlineKeyboard = make([][]InlineKeyboardButton, 0, twoRowsForMonth)
 
-	monthYearRow := k.generateMonthYearRow(month, year, currentTime, true, false)
+	monthYearRow := k.generateMonthYearRow(month, year, currentUserTime, true, false)
 	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, monthYearRow)
 
 	rowMonthsOne, rowMonthsTwo := k.addMonthsNamesRow(year)
@@ -108,9 +108,9 @@ func (k KeyboardFormer) GenerateSelectMonths(month, year int, currentTime time.T
 }
 
 // GenerateSelectYears ...
-func (k KeyboardFormer) GenerateSelectYears(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateSelectYears(month, year int, currentUserTime time.Time) InlineKeyboardMarkup {
 	var keyboard InlineKeyboardMarkup
-	monthYearRow := k.generateMonthYearRow(month, year, currentTime, false, true)
+	monthYearRow := k.generateMonthYearRow(month, year, currentUserTime, false, true)
 	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, monthYearRow)
 
 	rowYears := k.addYearsNamesRow(month, year)
@@ -120,36 +120,36 @@ func (k KeyboardFormer) GenerateSelectYears(month, year int, currentTime time.Ti
 }
 
 // GenerateCalendar ...
-func (k KeyboardFormer) GenerateCalendar(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateCalendar(month, year int, currentUserTime time.Time) InlineKeyboardMarkup {
 	var keyboard InlineKeyboardMarkup // unknown len, may 6-8.
-	monthYearRow := k.generateMonthYearRow(month, year, currentTime, false, false)
+	monthYearRow := k.generateMonthYearRow(month, year, currentUserTime, false, false)
 	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, monthYearRow)
 
 	rowDays := k.addDaysNamesRow(month, year)
 	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, rowDays)
 
-	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, k.GenerateCurrentMonth(month, year, currentTime)...)
+	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, k.GenerateCurrentMonth(month, year, currentUserTime)...)
 
 	return keyboard
 }
 
 // GenerateDefaultCalendar ...
-func (k KeyboardFormer) GenerateDefaultCalendar(currentTime time.Time) InlineKeyboardMarkup {
-	year := currentTime.Year()
-	month := int(currentTime.Month())
-	return k.GenerateCalendar(month, year, currentTime)
+func (k KeyboardFormer) GenerateDefaultCalendar(currentUserTime time.Time) InlineKeyboardMarkup {
+	year := currentUserTime.Year()
+	month := int(currentUserTime.Month())
+	return k.GenerateCalendar(month, year, currentUserTime)
 }
 
 func (k KeyboardFormer) generateMonthYearRow(
 	month, year int,
-	currentTime time.Time,
+	currentUserTime time.Time,
 	needShowSelectedMonth, needShowSelectedYear bool,
 ) []InlineKeyboardButton {
 	row := make([]InlineKeyboardButton, 0, sevenRowsForYears)
 
 	btnPrevMonth, btnNextMonth, btnMonth := k.getMonthsButtons(month, year, needShowSelectedMonth)
 	btnPrevYear, btnNextYear, btnYear := k.getYearsButtons(month, year, needShowSelectedYear)
-	btnBeauty := k.formBtnBeauty(month, year, currentTime)
+	btnBeauty := k.formBtnBeauty(month, year, currentUserTime)
 
 	row = append(row, btnPrevYear, btnPrevMonth, btnMonth, btnBeauty, btnYear, btnNextMonth, btnNextYear)
 	return row
@@ -188,9 +188,9 @@ func (k KeyboardFormer) getYearsButtons(month, year int, needShowSelectedYear bo
 }
 
 // For some beauty + return to default.
-func (k KeyboardFormer) formBtnBeauty(month, year int, currentTime time.Time) InlineKeyboardButton {
-	curYear := currentTime.Year()
-	curMonth := int(currentTime.Month())
+func (k KeyboardFormer) formBtnBeauty(month, year int, currentUserTime time.Time) InlineKeyboardButton {
+	curYear := currentUserTime.Year()
+	curMonth := int(currentUserTime.Month())
 	beautyCallback := getBeautyCallback(curMonth, curYear, month, year)
 
 	return NewInlineKeyboardButton(k.homeButtonForBeauty, k.payloadEncoderDecoder.Encoding(beautyCallback, zero, curMonth, curYear))
@@ -253,10 +253,10 @@ func (k KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []Inl
 }
 
 // Takes the current day in quotation marks.
-func (k KeyboardFormer) buttonTextWrapper(day, month, year int, currentTime time.Time) (btnText string) {
-	calendarDateTime := k.FormDateTime(day, month, year, currentTime.Location())
+func (k KeyboardFormer) buttonTextWrapper(day, month, year int, currentUserTime time.Time) (btnText string) {
+	calendarDateTime := k.FormDateTime(day, month, year, currentUserTime.Location())
 
-	if isDatesEqual(currentTime, calendarDateTime) {
+	if isDatesEqual(currentUserTime, calendarDateTime) {
 		btnText = fmt.Sprintf("[%v]", day)
 	} else {
 		btnText = fmt.Sprintf("%v", day)
