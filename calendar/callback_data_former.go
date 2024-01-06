@@ -7,10 +7,25 @@ import (
 )
 
 var (
-	incomePayloadRegexp = regexp.MustCompile(`calendar/([^_]+)_(\d{2}\.\d{2}\.\d{4})`)
+	incomePayloadRegexp = regexp.MustCompile(`calendar/([^_]+)_(\d{2})\.(\d{2})\.(\d{4})`)
 )
 
-func encodingCallbackData(action string, day, month, year int) string {
+// PayloadEncoderDecoder ...
+type PayloadEncoderDecoder interface {
+	Encoding(action string, day, month, year int) string
+	Decoding(input string) NewPayloadD
+}
+
+// EncoderDecoder ...
+type EncoderDecoder struct{}
+
+// NewEncoderDecoder ...
+func NewEncoderDecoder() *EncoderDecoder {
+	return new(EncoderDecoder)
+}
+
+// Encoding ...
+func (ed *EncoderDecoder) Encoding(action string, day, month, year int) string {
 	sb := new(strings.Builder)
 	sb.Grow(maxCallbackPayloadLen)
 
@@ -24,18 +39,29 @@ func encodingCallbackData(action string, day, month, year int) string {
 	return sb.String()
 }
 
-func decodingCallbackData(queryData string) Payload {
-	match := incomePayloadRegexp.FindStringSubmatch(queryData)
+// Decoding ...
+func (ed *EncoderDecoder) Decoding(input string) NewPayloadD {
+	match := incomePayloadRegexp.FindStringSubmatch(input)
 
-	if len(match) != stringPayloadDataLen {
-		// Invalid income.
-		return Payload{}
+	if len(match) != newStringPayloadDataLen {
+		// Invalid input
+		return NewPayloadD{}
 	}
 
-	return Payload{
-		Action:       match[1],
-		CalendarDate: match[2],
+	return NewPayloadD{
+		action:        match[1],
+		calendarDay:   getDateValue(match[2]),
+		calendarMonth: getDateValue(match[3]),
+		calendarYear:  getDateValue(match[4]),
 	}
+}
+
+func getDateValue(d string) int {
+	rd, errD := strconv.ParseInt(d, formatBaseTen, bitSize16)
+	if errD != nil {
+		return zero // silence any error.
+	}
+	return int(rd)
 }
 
 func formDateResponse(day, month, year int) string {
