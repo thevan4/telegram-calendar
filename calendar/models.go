@@ -1,4 +1,4 @@
-package calendar_v2
+package calendar
 
 // InlineKeyboardMarkup https://core.telegram.org/bots/features#inline-keyboards.
 type InlineKeyboardMarkup struct {

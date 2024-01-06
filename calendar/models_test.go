@@ -1,4 +1,4 @@
-package calendar_v2
+package calendar
 
 import (
 	"testing"
