@@ -278,7 +278,7 @@ func (k *KeyboardFormer) FormDateTime(day, month, year int, location *time.Locat
 
 func (k *KeyboardFormer) formCallbackData(action string, day, month, year int) string {
 	sb := new(strings.Builder)
-	sb.Grow(callbackPayloadLen)
+	sb.Grow(maxCallbackPayloadLen)
 
 	sb.WriteString(callbackCalendar)
 	sb.WriteString(payloadSeparator)
@@ -290,53 +290,6 @@ func (k *KeyboardFormer) formCallbackData(action string, day, month, year int) s
 		return callbackCalendar
 	}
 	sb.Write(callbackDataBytes)
-
-	return sb.String()
-}
-
-func formDateResponse(day, month, year int) string {
-	sb := new(strings.Builder)
-	sb.Grow(fullDateLen)
-
-	switch {
-	case day <= 0:
-		sb.WriteString(twoZeros)
-		sb.WriteString(dot)
-	case day < nine:
-		sb.WriteString(zeroS)
-		fallthrough
-	default:
-		sb.WriteString(strconv.Itoa(day))
-		sb.WriteString(dot)
-	}
-
-	switch {
-	case month <= 0:
-		sb.WriteString(twoZeros)
-		sb.WriteString(dot)
-	case month < nine:
-		sb.WriteString(zeroS)
-		fallthrough
-	default:
-		sb.WriteString(strconv.Itoa(month))
-		sb.WriteString(dot)
-	}
-
-	var skipAddYear bool
-	switch {
-	case year < 0:
-		sb.WriteString(fourZeros)
-		skipAddYear = true
-	case year <= nine:
-		sb.WriteString(threeZeros)
-	case year <= ninetyNine:
-		sb.WriteString(twoZeros)
-	case year <= nineHundredNinetyNine:
-		sb.WriteString(zeroS)
-	}
-	if !skipAddYear {
-		sb.WriteString(strconv.Itoa(year))
-	}
 
 	return sb.String()
 }
