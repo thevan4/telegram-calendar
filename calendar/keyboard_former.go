@@ -22,7 +22,7 @@ func NewKeyboardFormer(
 	kf := newDefaultKeyboardFormer()
 
 	for _, o := range options {
-		o(kf)
+		o(&kf)
 	}
 
 	sumYearsForChoose := kf.yearsBackForChoose + kf.yearsForwardForChoose // may overflow, but who cares.
@@ -33,8 +33,8 @@ func NewKeyboardFormer(
 	return kf, nil
 }
 
-func newDefaultKeyboardFormer() *KeyboardFormer {
-	return &KeyboardFormer{
+func newDefaultKeyboardFormer() KeyboardFormer {
+	return KeyboardFormer{
 		yearsBackForChoose:    zero,
 		yearsForwardForChoose: yearsForwardForChooseDefault,
 		sumYearsForChoose:     sumYearsForChooseDefault,
