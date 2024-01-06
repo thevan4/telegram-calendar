@@ -27,7 +27,7 @@ type Generator interface {
 }
 
 // GenerateCalendarKeyboard ...
-func (k *KeyboardFormer) GenerateCalendarKeyboard(
+func (k KeyboardFormer) GenerateCalendarKeyboard(
 	callbackPayload string,
 	currentTime time.Time, // user time.
 ) (
@@ -61,7 +61,7 @@ func (k *KeyboardFormer) GenerateCalendarKeyboard(
 }
 
 // GenerateGoToPrevMonth ...
-func (k *KeyboardFormer) GenerateGoToPrevMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToPrevMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup {
 	if month != int(time.January) {
 		month--
 	} else {
@@ -72,7 +72,7 @@ func (k *KeyboardFormer) GenerateGoToPrevMonth(month, year int, currentTime time
 }
 
 // GenerateGoToNextMonth ...
-func (k *KeyboardFormer) GenerateGoToNextMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToNextMonth(month, year int, currentTime time.Time) InlineKeyboardMarkup {
 	if month != int(time.December) {
 		month++
 	} else {
@@ -83,19 +83,19 @@ func (k *KeyboardFormer) GenerateGoToNextMonth(month, year int, currentTime time
 }
 
 // GenerateGoToPrevYear ...
-func (k *KeyboardFormer) GenerateGoToPrevYear(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToPrevYear(month, year int, currentTime time.Time) InlineKeyboardMarkup {
 	year--
 	return k.GenerateCalendar(month, year, currentTime)
 }
 
 // GenerateGoToNextYear ...
-func (k *KeyboardFormer) GenerateGoToNextYear(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateGoToNextYear(month, year int, currentTime time.Time) InlineKeyboardMarkup {
 	year++
 	return k.GenerateCalendar(month, year, currentTime)
 }
 
 // GenerateSelectMonths ...
-func (k *KeyboardFormer) GenerateSelectMonths(month, year int, currentTime time.Time) (keyboard InlineKeyboardMarkup) {
+func (k KeyboardFormer) GenerateSelectMonths(month, year int, currentTime time.Time) (keyboard InlineKeyboardMarkup) {
 	keyboard.InlineKeyboard = make([][]InlineKeyboardButton, 0, twoRowsForMonth)
 
 	monthYearRow := k.generateMonthYearRow(month, year, currentTime, true, false)
@@ -108,7 +108,7 @@ func (k *KeyboardFormer) GenerateSelectMonths(month, year int, currentTime time.
 }
 
 // GenerateSelectYears ...
-func (k *KeyboardFormer) GenerateSelectYears(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateSelectYears(month, year int, currentTime time.Time) InlineKeyboardMarkup {
 	var keyboard InlineKeyboardMarkup
 	monthYearRow := k.generateMonthYearRow(month, year, currentTime, false, true)
 	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, monthYearRow)
@@ -120,7 +120,7 @@ func (k *KeyboardFormer) GenerateSelectYears(month, year int, currentTime time.T
 }
 
 // GenerateCalendar ...
-func (k *KeyboardFormer) GenerateCalendar(month, year int, currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateCalendar(month, year int, currentTime time.Time) InlineKeyboardMarkup {
 	var keyboard InlineKeyboardMarkup // unknown len, may 6-8.
 	monthYearRow := k.generateMonthYearRow(month, year, currentTime, false, false)
 	keyboard.InlineKeyboard = append(keyboard.InlineKeyboard, monthYearRow)
@@ -134,13 +134,13 @@ func (k *KeyboardFormer) GenerateCalendar(month, year int, currentTime time.Time
 }
 
 // GenerateDefaultCalendar ...
-func (k *KeyboardFormer) GenerateDefaultCalendar(currentTime time.Time) InlineKeyboardMarkup {
+func (k KeyboardFormer) GenerateDefaultCalendar(currentTime time.Time) InlineKeyboardMarkup {
 	year := currentTime.Year()
 	month := int(currentTime.Month())
 	return k.GenerateCalendar(month, year, currentTime)
 }
 
-func (k *KeyboardFormer) generateMonthYearRow(
+func (k KeyboardFormer) generateMonthYearRow(
 	month, year int,
 	currentTime time.Time,
 	needShowSelectedMonth, needShowSelectedYear bool,
@@ -155,7 +155,7 @@ func (k *KeyboardFormer) generateMonthYearRow(
 	return row
 }
 
-func (k *KeyboardFormer) getMonthsButtons(month, year int, needShowSelectedMonth bool) (
+func (k KeyboardFormer) getMonthsButtons(month, year int, needShowSelectedMonth bool) (
 	btnPrevMonth, btnNextMonth, btnMonth InlineKeyboardButton,
 ) {
 	btnPrevMonth = NewInlineKeyboardButton(prevMonthActionName, k.payloadEncoderDecoder.Encoding(prevMonthAction, zero, month, year))
@@ -171,7 +171,7 @@ func (k *KeyboardFormer) getMonthsButtons(month, year int, needShowSelectedMonth
 	return btnPrevMonth, btnNextMonth, btnMonth
 }
 
-func (k *KeyboardFormer) getYearsButtons(month, year int, needShowSelectedYear bool) (
+func (k KeyboardFormer) getYearsButtons(month, year int, needShowSelectedYear bool) (
 	btnPrevYear, btnNextYear, btnYear InlineKeyboardButton,
 ) {
 	btnPrevYear = NewInlineKeyboardButton(prevYearActionName, k.payloadEncoderDecoder.Encoding(prevYearAction, zero, month, year))
@@ -188,7 +188,7 @@ func (k *KeyboardFormer) getYearsButtons(month, year int, needShowSelectedYear b
 }
 
 // For some beauty + return to default.
-func (k *KeyboardFormer) formBtnBeauty(month, year int, currentTime time.Time) InlineKeyboardButton {
+func (k KeyboardFormer) formBtnBeauty(month, year int, currentTime time.Time) InlineKeyboardButton {
 	curYear := currentTime.Year()
 	curMonth := int(currentTime.Month())
 	beautyCallback := getBeautyCallback(curMonth, curYear, month, year)
@@ -203,7 +203,7 @@ func getBeautyCallback(curMonth, curYear, month, year int) string {
 	return goToDefaultKeyboard
 }
 
-func (k *KeyboardFormer) addDaysNamesRow(curMonth, curYear int) (rowDays []InlineKeyboardButton) {
+func (k KeyboardFormer) addDaysNamesRow(curMonth, curYear int) (rowDays []InlineKeyboardButton) {
 	rowDays = make([]InlineKeyboardButton, 0, daysNamingRows)
 	for _, day := range k.daysNames {
 		btn := NewInlineKeyboardButton(day, k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, curMonth, curYear))
@@ -213,7 +213,7 @@ func (k *KeyboardFormer) addDaysNamesRow(curMonth, curYear int) (rowDays []Inlin
 	return rowDays
 }
 
-func (k *KeyboardFormer) addMonthsNamesRow(year int) (rowMonthsOne, rowMonthsTwo []InlineKeyboardButton) {
+func (k KeyboardFormer) addMonthsNamesRow(year int) (rowMonthsOne, rowMonthsTwo []InlineKeyboardButton) {
 	// Form months line one.
 	rowMonthsOne = make([]InlineKeyboardButton, 0, monthsAtSelectMonthRow)
 	for month := 1; month <= 6; month++ {
@@ -230,7 +230,7 @@ func (k *KeyboardFormer) addMonthsNamesRow(year int) (rowMonthsOne, rowMonthsTwo
 	return rowMonthsOne, rowMonthsTwo
 }
 
-func (k *KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []InlineKeyboardButton) {
+func (k KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []InlineKeyboardButton) {
 	rowYears = make([]InlineKeyboardButton, 0, k.sumYearsForChoose+1)
 
 	// Past years.
@@ -253,7 +253,7 @@ func (k *KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []In
 }
 
 // Takes the current day in quotation marks.
-func (k *KeyboardFormer) buttonTextWrapper(day, month, year int, currentTime time.Time) (btnText string) {
+func (k KeyboardFormer) buttonTextWrapper(day, month, year int, currentTime time.Time) (btnText string) {
 	calendarDateTime := k.FormDateTime(day, month, year, currentTime.Location())
 
 	if isDatesEqual(currentTime, calendarDateTime) {
@@ -270,6 +270,6 @@ func isDatesEqual(dateOne, dateTwo time.Time) bool {
 }
 
 // FormDateTime wrapper for time.Date.
-func (k *KeyboardFormer) FormDateTime(day, month, year int, location *time.Location) time.Time {
+func (k KeyboardFormer) FormDateTime(day, month, year int, location *time.Location) time.Time {
 	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
 }
