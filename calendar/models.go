@@ -18,3 +18,10 @@ func NewInlineKeyboardButton(text, callbackData string) InlineKeyboardButton {
 		CallbackData: callbackData,
 	}
 }
+
+type NewPayloadD struct {
+	action        string
+	calendarDay   int
+	calendarMonth int
+	calendarYear  int
+}

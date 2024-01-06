@@ -24,7 +24,7 @@ const (
 
 	emptyText             = " "
 	zero                  = 0
-	stringPayloadDataLen  = 3
+	stringPayloadDataLen  = 5
 	daysInWeek            = 7
 	standardButtonsAtRow  = 7
 	nine                  = 9
@@ -42,8 +42,8 @@ const (
 	daysNamingRows         = 7
 	monthsAtSelectMonthRow = 6
 
-	fullDateLen        = 10
-	callbackPayloadLen = 39 // may be 38 at some cases.
+	fullDateLen           = 10
+	maxCallbackPayloadLen = 23 // may be 21 and 22 at some cases.
 
 	yearsForwardForChooseDefault = 3
 	sumYearsForChooseDefault     = 3
@@ -53,11 +53,11 @@ const (
 	callbackCalendar = "calendar"
 	// payloadSeparator for all additional arguments, separates the payload from the callback.
 	// Comes strictly after the callback name.
-	payloadSeparator = "/"
-	dot              = "."
-	empty            = ""
-	formatBaseTen    = 10
-	bitSize16        = 16
+	payloadSeparator                  = "/"
+	payloadSpacingUnderscoreSeparator = "_"
+	dot                               = "."
+	formatBaseTen                     = 10
+	bitSize16                         = 16
 )
 
 var (

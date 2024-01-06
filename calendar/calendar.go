@@ -3,7 +3,6 @@ package calendar
 import (
 	"fmt"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -34,29 +33,28 @@ func (k *KeyboardFormer) GenerateCalendarKeyboard(
 ) (
 	inlineKeyboardMarkup InlineKeyboardMarkup, selectedDay time.Time,
 ) {
-	incomePayload := k.getPayloadFromCallbackQuery(callbackPayload)
-	action := incomePayload.GetAction()
-	day, month, year := incomePayload.GetDate(k.errorLogFunc)
+	incomePayload := k.payloadEncoderDecoder.Decoding(callbackPayload)
 
-	switch action {
+	switch incomePayload.action {
 	case prevMonthAction:
-		return k.GenerateGoToPrevMonth(month, year, currentTime), selectedDay
+		return k.GenerateGoToPrevMonth(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
 	case nextMonthAction:
-		return k.GenerateGoToNextMonth(month, year, currentTime), selectedDay
+		return k.GenerateGoToNextMonth(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
 	case prevYearAction:
-		return k.GenerateGoToPrevYear(month, year, currentTime), selectedDay
+		return k.GenerateGoToPrevYear(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
 	case nextYearAction:
-		return k.GenerateGoToNextYear(month, year, currentTime), selectedDay
+		return k.GenerateGoToNextYear(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
 	case selectMonthAction:
-		return k.GenerateSelectMonths(month, year, currentTime), selectedDay
+		return k.GenerateSelectMonths(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
 	case selectYearAction:
-		return k.GenerateSelectYears(month, year, currentTime), selectedDay
+		return k.GenerateSelectYears(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
 	case showSelectedAction:
-		return k.GenerateCalendar(month, year, currentTime), selectedDay
+		return k.GenerateCalendar(incomePayload.calendarMonth, incomePayload.calendarYear, currentTime), selectedDay
 	case silentDoNothingAction:
 		return InlineKeyboardMarkup{}, selectedDay
 	case selectDayAction:
-		return InlineKeyboardMarkup{}, k.FormDateTime(day, month, year, currentTime.Location())
+		return InlineKeyboardMarkup{}, k.FormDateTime(incomePayload.calendarDay, incomePayload.calendarMonth,
+			incomePayload.calendarYear, currentTime.Location())
 	default:
 		return k.GenerateDefaultCalendar(currentTime), selectedDay
 	}
@@ -160,14 +158,14 @@ func (k *KeyboardFormer) generateMonthYearRow(
 func (k *KeyboardFormer) getMonthsButtons(month, year int, needShowSelectedMonth bool) (
 	btnPrevMonth, btnNextMonth, btnMonth InlineKeyboardButton,
 ) {
-	btnPrevMonth = NewInlineKeyboardButton(prevMonthActionName, k.formCallbackData(prevMonthAction, zero, month, year))
-	btnNextMonth = NewInlineKeyboardButton(nextMonthActionName, k.formCallbackData(nextMonthAction, zero, month, year))
+	btnPrevMonth = NewInlineKeyboardButton(prevMonthActionName, k.payloadEncoderDecoder.Encoding(prevMonthAction, zero, month, year))
+	btnNextMonth = NewInlineKeyboardButton(nextMonthActionName, k.payloadEncoderDecoder.Encoding(nextMonthAction, zero, month, year))
 
 	// To be able to return to the current month by pressing again.
 	if needShowSelectedMonth {
-		btnMonth = NewInlineKeyboardButton(k.monthNames[month-1], k.formCallbackData(showSelectedAction, zero, month, year))
+		btnMonth = NewInlineKeyboardButton(k.monthNames[month-1], k.payloadEncoderDecoder.Encoding(showSelectedAction, zero, month, year))
 	} else {
-		btnMonth = NewInlineKeyboardButton(k.monthNames[month-1], k.formCallbackData(selectMonthAction, zero, month, year))
+		btnMonth = NewInlineKeyboardButton(k.monthNames[month-1], k.payloadEncoderDecoder.Encoding(selectMonthAction, zero, month, year))
 	}
 
 	return btnPrevMonth, btnNextMonth, btnMonth
@@ -176,14 +174,14 @@ func (k *KeyboardFormer) getMonthsButtons(month, year int, needShowSelectedMonth
 func (k *KeyboardFormer) getYearsButtons(month, year int, needShowSelectedYear bool) (
 	btnPrevYear, btnNextYear, btnYear InlineKeyboardButton,
 ) {
-	btnPrevYear = NewInlineKeyboardButton(prevYearActionName, k.formCallbackData(prevYearAction, zero, month, year))
-	btnNextYear = NewInlineKeyboardButton(nextYearActionName, k.formCallbackData(nextYearAction, zero, month, year))
+	btnPrevYear = NewInlineKeyboardButton(prevYearActionName, k.payloadEncoderDecoder.Encoding(prevYearAction, zero, month, year))
+	btnNextYear = NewInlineKeyboardButton(nextYearActionName, k.payloadEncoderDecoder.Encoding(nextYearAction, zero, month, year))
 
 	// To be able to return to the current year by pressing again.
 	if needShowSelectedYear {
-		btnYear = NewInlineKeyboardButton(strconv.Itoa(year), k.formCallbackData(showSelectedAction, zero, month, year))
+		btnYear = NewInlineKeyboardButton(strconv.Itoa(year), k.payloadEncoderDecoder.Encoding(showSelectedAction, zero, month, year))
 	} else {
-		btnYear = NewInlineKeyboardButton(strconv.Itoa(year), k.formCallbackData(selectYearAction, zero, month, year))
+		btnYear = NewInlineKeyboardButton(strconv.Itoa(year), k.payloadEncoderDecoder.Encoding(selectYearAction, zero, month, year))
 	}
 
 	return btnPrevYear, btnNextYear, btnYear
@@ -195,7 +193,7 @@ func (k *KeyboardFormer) formBtnBeauty(month, year int, currentTime time.Time) I
 	curMonth := int(currentTime.Month())
 	beautyCallback := getBeautyCallback(curMonth, curYear, month, year)
 
-	return NewInlineKeyboardButton(k.homeButtonForBeauty, k.formCallbackData(beautyCallback, zero, curMonth, curYear))
+	return NewInlineKeyboardButton(k.homeButtonForBeauty, k.payloadEncoderDecoder.Encoding(beautyCallback, zero, curMonth, curYear))
 }
 
 func getBeautyCallback(curMonth, curYear, month, year int) string {
@@ -208,7 +206,7 @@ func getBeautyCallback(curMonth, curYear, month, year int) string {
 func (k *KeyboardFormer) addDaysNamesRow(curMonth, curYear int) (rowDays []InlineKeyboardButton) {
 	rowDays = make([]InlineKeyboardButton, 0, daysNamingRows)
 	for _, day := range k.daysNames {
-		btn := NewInlineKeyboardButton(day, k.formCallbackData(silentDoNothingAction, zero, curMonth, curYear))
+		btn := NewInlineKeyboardButton(day, k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, curMonth, curYear))
 		rowDays = append(rowDays, btn)
 	}
 
@@ -219,13 +217,13 @@ func (k *KeyboardFormer) addMonthsNamesRow(year int) (rowMonthsOne, rowMonthsTwo
 	// Form months line one.
 	rowMonthsOne = make([]InlineKeyboardButton, 0, monthsAtSelectMonthRow)
 	for month := 1; month <= 6; month++ {
-		btn := NewInlineKeyboardButton(k.monthNames[month-1], k.formCallbackData(showSelectedAction, zero, month, year))
+		btn := NewInlineKeyboardButton(k.monthNames[month-1], k.payloadEncoderDecoder.Encoding(showSelectedAction, zero, month, year))
 		rowMonthsOne = append(rowMonthsOne, btn)
 	}
 	// Form months line two.
 	rowMonthsTwo = make([]InlineKeyboardButton, 0, monthsAtSelectMonthRow)
 	for month := 7; month <= 12; month++ {
-		btn := NewInlineKeyboardButton(k.monthNames[month-1], k.formCallbackData(showSelectedAction, zero, month, year))
+		btn := NewInlineKeyboardButton(k.monthNames[month-1], k.payloadEncoderDecoder.Encoding(showSelectedAction, zero, month, year))
 		rowMonthsTwo = append(rowMonthsTwo, btn)
 	}
 
@@ -237,17 +235,17 @@ func (k *KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []In
 
 	// Past years.
 	for year := currentYear - k.yearsBackForChoose; year < currentYear; year++ {
-		btn := NewInlineKeyboardButton(strconv.Itoa(year), k.formCallbackData(showSelectedAction, zero, month, year))
+		btn := NewInlineKeyboardButton(strconv.Itoa(year), k.payloadEncoderDecoder.Encoding(showSelectedAction, zero, month, year))
 		rowYears = append(rowYears, btn)
 	}
 
 	// Current year.
-	btnCur := NewInlineKeyboardButton(strconv.Itoa(currentYear), k.formCallbackData(showSelectedAction, zero, month, currentYear))
+	btnCur := NewInlineKeyboardButton(strconv.Itoa(currentYear), k.payloadEncoderDecoder.Encoding(showSelectedAction, zero, month, currentYear))
 	rowYears = append(rowYears, btnCur)
 
 	// Next years.
 	for year := currentYear + 1; year <= currentYear+k.yearsForwardForChoose; year++ {
-		btn := NewInlineKeyboardButton(strconv.Itoa(year), k.formCallbackData(showSelectedAction, zero, month, year))
+		btn := NewInlineKeyboardButton(strconv.Itoa(year), k.payloadEncoderDecoder.Encoding(showSelectedAction, zero, month, year))
 		rowYears = append(rowYears, btn)
 	}
 
@@ -274,69 +272,4 @@ func isDatesEqual(dateOne, dateTwo time.Time) bool {
 // FormDateTime wrapper for time.Date.
 func (k *KeyboardFormer) FormDateTime(day, month, year int, location *time.Location) time.Time {
 	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
-}
-
-func (k *KeyboardFormer) formCallbackData(action string, day, month, year int) string {
-	sb := new(strings.Builder)
-	sb.Grow(callbackPayloadLen)
-
-	sb.WriteString(callbackCalendar)
-	sb.WriteString(payloadSeparator)
-
-	callbackData := newPayload(action, formDateResponse(day, month, year))
-	callbackDataBytes, err := k.json.Marshal(callbackData)
-	if err != nil {
-		k.errorLogFunc("at formCallbackData marshal callbackData error: %w", err)
-		return callbackCalendar
-	}
-	sb.Write(callbackDataBytes)
-
-	return sb.String()
-}
-
-func formDateResponse(day, month, year int) string {
-	sb := new(strings.Builder)
-	sb.Grow(fullDateLen)
-
-	switch {
-	case day <= 0:
-		sb.WriteString(twoZeros)
-		sb.WriteString(dot)
-	case day < nine:
-		sb.WriteString(zeroS)
-		fallthrough
-	default:
-		sb.WriteString(strconv.Itoa(day))
-		sb.WriteString(dot)
-	}
-
-	switch {
-	case month <= 0:
-		sb.WriteString(twoZeros)
-		sb.WriteString(dot)
-	case month < nine:
-		sb.WriteString(zeroS)
-		fallthrough
-	default:
-		sb.WriteString(strconv.Itoa(month))
-		sb.WriteString(dot)
-	}
-
-	var skipAddYear bool
-	switch {
-	case year < 0:
-		sb.WriteString(fourZeros)
-		skipAddYear = true
-	case year <= nine:
-		sb.WriteString(threeZeros)
-	case year <= ninetyNine:
-		sb.WriteString(twoZeros)
-	case year <= nineHundredNinetyNine:
-		sb.WriteString(zeroS)
-	}
-	if !skipAddYear {
-		sb.WriteString(strconv.Itoa(year))
-	}
-
-	return sb.String()
 }
