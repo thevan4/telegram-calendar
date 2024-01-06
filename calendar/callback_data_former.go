@@ -43,7 +43,7 @@ func (ed EncoderDecoder) Encoding(action string, day, month, year int) string {
 func (ed EncoderDecoder) Decoding(input string) NewPayloadD {
 	match := incomePayloadRegexp.FindStringSubmatch(input)
 
-	if len(match) != newStringPayloadDataLen {
+	if len(match) != stringPayloadDataLen {
 		// Invalid input
 		return NewPayloadD{}
 	}

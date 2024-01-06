@@ -22,21 +22,20 @@ const (
 	silentDoNothingAction = "sdn"
 	goToDefaultKeyboard   = ""
 
-	emptyText               = " "
-	zero                    = 0
-	stringPayloadDataLen    = 3
-	newStringPayloadDataLen = 5
-	daysInWeek              = 7
-	standardButtonsAtRow    = 7
-	nine                    = 9
-	ninetyNine              = 99
-	nineHundredNinetyNine   = 999
-	maxSumYearsForChoose    = 6 // more than 6 does not look good.
-	zeroS                   = "0"
-	twoZeros                = "00"
-	threeZeros              = "000"
-	fourZeros               = "0000"
-	hoursInDay              = 24 * time.Hour
+	emptyText             = " "
+	zero                  = 0
+	stringPayloadDataLen  = 5
+	daysInWeek            = 7
+	standardButtonsAtRow  = 7
+	nine                  = 9
+	ninetyNine            = 99
+	nineHundredNinetyNine = 999
+	maxSumYearsForChoose  = 6 // more than 6 does not look good.
+	zeroS                 = "0"
+	twoZeros              = "00"
+	threeZeros            = "000"
+	fourZeros             = "0000"
+	hoursInDay            = 24 * time.Hour
 
 	twoRowsForMonth        = 2
 	sevenRowsForYears      = 7
@@ -57,7 +56,6 @@ const (
 	payloadSeparator                  = "/"
 	payloadSpacingUnderscoreSeparator = "_"
 	dot                               = "."
-	empty                             = ""
 	formatBaseTen                     = 10
 	bitSize16                         = 16
 )

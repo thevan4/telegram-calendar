@@ -32,33 +32,33 @@ func TestGenerateFirstWeek(t *testing.T) {
 				// 3 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 				},
 
 				// 4 month days.
 				{
 					Text:         k.buttonTextWrapper(1, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 1, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 1, 6, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(2, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 2, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 2, 6, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(3, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 3, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 3, 6, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(4, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 4, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 4, 6, 2023),
 				},
 			},
 		},
@@ -74,33 +74,33 @@ func TestGenerateFirstWeek(t *testing.T) {
 				// 6 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 
 				// 1 month days.
 				{
 					Text:         k.buttonTextWrapper(1, 1, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 1, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 1, 1, 2023),
 				},
 			},
 		},
@@ -117,31 +117,31 @@ func TestGenerateFirstWeek(t *testing.T) {
 				// 7 month days.
 				{
 					Text:         k.buttonTextWrapper(1, 6, 2021111111111, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 1, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 1, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(2, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 2, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 2, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(3, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 3, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 3, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(4, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 4, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 4, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(5, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 5, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 5, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(6, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 6, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 6, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(7, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 7, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 7, 2, 2021),
 				},
 			},
 		},
@@ -189,91 +189,91 @@ func TestGenerateMiddleWeeks(t *testing.T) {
 				{ // 5-11.
 					{
 						Text:         k.buttonTextWrapper(5, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 5, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 5, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(6, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 6, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 6, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(7, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 7, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 7, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(8, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 8, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 8, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(9, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 9, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 9, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(10, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 10, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 10, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(11, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 11, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 11, 6, 2023),
 					},
 				},
 				{ // 12-18.
 					{
 						Text:         k.buttonTextWrapper(12, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 12, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 12, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(13, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 13, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 13, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(14, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 14, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 14, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(15, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 15, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 15, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(16, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 16, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 16, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(17, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 17, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 17, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(18, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 18, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 18, 6, 2023),
 					},
 				},
 				{ // 19-25.
 					{
 						Text:         k.buttonTextWrapper(19, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 19, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 19, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(20, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 20, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 20, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(21, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 21, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 21, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(22, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 22, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 22, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(23, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 23, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 23, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(24, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 24, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 24, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(25, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 25, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 25, 6, 2023),
 					},
 				},
 			},
@@ -292,121 +292,121 @@ func TestGenerateMiddleWeeks(t *testing.T) {
 				{ // 2-8.
 					{
 						Text:         k.buttonTextWrapper(2, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 2, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 2, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(3, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 3, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 3, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(4, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 4, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 4, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(5, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 5, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 5, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(6, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 6, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 6, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(7, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 7, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 7, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(8, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 8, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 8, 1, 2023),
 					},
 				},
 				{ // 9-15.
 					{
 						Text:         k.buttonTextWrapper(9, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 9, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 9, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(10, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 10, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 10, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(11, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 11, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 11, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(12, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 12, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 12, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(13, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 13, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 13, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(14, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 14, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 14, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(15, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 15, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 15, 1, 2023),
 					},
 				},
 				{ // 16-22.
 					{
 						Text:         k.buttonTextWrapper(16, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 16, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 16, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(17, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 17, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 17, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(18, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 18, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 18, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(19, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 19, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 19, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(20, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 20, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 20, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(21, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 21, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 21, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(22, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 22, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 22, 1, 2023),
 					},
 				},
 				{ // 23-29.
 					{
 						Text:         k.buttonTextWrapper(23, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 23, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 23, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(24, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 24, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 24, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(25, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 25, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 25, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(26, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 26, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 26, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(27, 1, 2723, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 27, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 27, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(28, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 28, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 28, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(29, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 29, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 29, 1, 2023),
 					},
 				},
 			},
@@ -425,61 +425,61 @@ func TestGenerateMiddleWeeks(t *testing.T) {
 				{ // 8-14.
 					{
 						Text:         k.buttonTextWrapper(8, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 8, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 8, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(9, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 9, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 9, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(10, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 10, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 10, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(11, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 11, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 11, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(12, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 12, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 12, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(13, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 13, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 13, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(14, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 14, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 14, 2, 2021),
 					},
 				},
 				{ // 15-21.
 					{
 						Text:         k.buttonTextWrapper(15, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 15, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 15, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(16, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 16, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 16, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(17, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 17, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 17, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(18, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 18, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 18, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(19, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 19, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 19, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(20, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 20, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 20, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(21, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 21, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 21, 2, 2021),
 					},
 				},
 			},
@@ -529,32 +529,32 @@ func TestGenerateLastWeek(t *testing.T) {
 				// 5 month days.
 				{
 					Text:         k.buttonTextWrapper(26, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 26, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 26, 6, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(27, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 27, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 27, 6, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(28, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 28, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 28, 6, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(29, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 29, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 29, 6, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(30, 6, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 30, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 30, 6, 2023),
 				},
 				// 2 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 				},
 			},
 		},
@@ -571,33 +571,33 @@ func TestGenerateLastWeek(t *testing.T) {
 				// 2 month days.
 				{
 					Text:         k.buttonTextWrapper(30, 1, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 30, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 30, 1, 2023),
 				},
 				{
 					Text:         k.buttonTextWrapper(31, 1, 2023, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 31, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 31, 1, 2023),
 				},
 
 				// 5 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 				},
 			},
 		},
@@ -614,31 +614,31 @@ func TestGenerateLastWeek(t *testing.T) {
 				// 7 month days.
 				{
 					Text:         k.buttonTextWrapper(22, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 22, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 22, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(23, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 23, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 23, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(24, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 24, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 24, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(25, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 25, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 25, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(26, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 26, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 26, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(27, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 27, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 27, 2, 2021),
 				},
 				{
 					Text:         k.buttonTextWrapper(28, 2, 2021, curTime),
-					CallbackData: k.formCallbackData(selectDayAction, 28, 2, 2021),
+					CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 28, 2, 2021),
 				},
 			},
 		},
@@ -684,33 +684,33 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 3 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 					},
 
 					// 4 month days.
 					{
 						Text:         k.buttonTextWrapper(1, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 1, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 1, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(2, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 2, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 2, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(3, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 3, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 3, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(4, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 4, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 4, 6, 2023),
 					},
 				},
 
@@ -718,91 +718,91 @@ func TestGenerateCurrentMonth(t *testing.T) {
 				{ // 5-11.
 					{
 						Text:         k.buttonTextWrapper(5, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 5, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 5, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(6, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 6, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 6, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(7, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 7, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 7, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(8, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 8, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 8, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(9, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 9, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 9, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(10, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 10, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 10, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(11, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 11, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 11, 6, 2023),
 					},
 				},
 				{ // 12-18.
 					{
 						Text:         k.buttonTextWrapper(12, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 12, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 12, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(13, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 13, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 13, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(14, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 14, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 14, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(15, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 15, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 15, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(16, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 16, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 16, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(17, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 17, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 17, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(18, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 18, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 18, 6, 2023),
 					},
 				},
 				{ // 19-25.
 					{
 						Text:         k.buttonTextWrapper(19, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 19, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 19, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(20, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 20, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 20, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(21, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 21, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 21, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(22, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 22, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 22, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(23, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 23, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 23, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(24, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 24, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 24, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(25, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 25, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 25, 6, 2023),
 					},
 				},
 
@@ -811,32 +811,32 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 5 month days.
 					{
 						Text:         k.buttonTextWrapper(26, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 26, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 26, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(27, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 27, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 27, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(28, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 28, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 28, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(29, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 29, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 29, 6, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(30, 6, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 30, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 30, 6, 2023),
 					},
 					// 2 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 6, 2023),
 					},
 				},
 			},
@@ -855,33 +855,33 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 6 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 
 					// 1 month days.
 					{
 						Text:         k.buttonTextWrapper(1, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 1, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 1, 1, 2023),
 					},
 				},
 
@@ -889,121 +889,121 @@ func TestGenerateCurrentMonth(t *testing.T) {
 				{ // 2-8.
 					{
 						Text:         k.buttonTextWrapper(2, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 2, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 2, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(3, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 3, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 3, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(4, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 4, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 4, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(5, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 5, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 5, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(6, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 6, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 6, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(7, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 7, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 7, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(8, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 8, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 8, 1, 2023),
 					},
 				},
 				{ // 9-15.
 					{
 						Text:         k.buttonTextWrapper(9, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 9, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 9, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(10, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 10, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 10, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(11, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 11, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 11, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(12, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 12, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 12, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(13, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 13, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 13, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(14, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 14, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 14, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(15, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 15, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 15, 1, 2023),
 					},
 				},
 				{ // 16-22.
 					{
 						Text:         k.buttonTextWrapper(16, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 16, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 16, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(17, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 17, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 17, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(18, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 18, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 18, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(19, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 19, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 19, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(20, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 20, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 20, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(21, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 21, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 21, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(22, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 22, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 22, 1, 2023),
 					},
 				},
 				{ // 23-29.
 					{
 						Text:         k.buttonTextWrapper(23, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 23, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 23, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(24, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 24, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 24, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(25, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 25, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 25, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(26, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 26, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 26, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(27, 1, 2723, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 27, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 27, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(28, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 28, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 28, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(29, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 29, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 29, 1, 2023),
 					},
 				},
 
@@ -1012,33 +1012,33 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 2 month days.
 					{
 						Text:         k.buttonTextWrapper(30, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 30, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 30, 1, 2023),
 					},
 					{
 						Text:         k.buttonTextWrapper(31, 1, 2023, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 31, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 31, 1, 2023),
 					},
 
 					// 5 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.formCallbackData(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, 1, 2023),
 					},
 				},
 			},
@@ -1058,31 +1058,31 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 7 month days.
 					{
 						Text:         k.buttonTextWrapper(1, 6, 2021111111111, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 1, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 1, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(2, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 2, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 2, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(3, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 3, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 3, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(4, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 4, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 4, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(5, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 5, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 5, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(6, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 6, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 6, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(7, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 7, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 7, 2, 2021),
 					},
 				},
 
@@ -1090,61 +1090,61 @@ func TestGenerateCurrentMonth(t *testing.T) {
 				{ // 8-14.
 					{
 						Text:         k.buttonTextWrapper(8, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 8, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 8, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(9, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 9, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 9, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(10, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 10, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 10, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(11, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 11, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 11, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(12, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 12, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 12, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(13, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 13, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 13, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(14, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 14, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 14, 2, 2021),
 					},
 				},
 				{ // 15-21.
 					{
 						Text:         k.buttonTextWrapper(15, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 15, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 15, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(16, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 16, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 16, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(17, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 17, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 17, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(18, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 18, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 18, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(19, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 19, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 19, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(20, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 20, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 20, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(21, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 21, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 21, 2, 2021),
 					},
 				},
 
@@ -1153,31 +1153,31 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 7 month days.
 					{
 						Text:         k.buttonTextWrapper(22, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 22, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 22, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(23, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 23, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 23, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(24, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 24, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 24, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(25, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 25, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 25, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(26, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 26, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 26, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(27, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 27, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 27, 2, 2021),
 					},
 					{
 						Text:         k.buttonTextWrapper(28, 2, 2021, curTime),
-						CallbackData: k.formCallbackData(selectDayAction, 28, 2, 2021),
+						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 28, 2, 2021),
 					},
 				},
 			},

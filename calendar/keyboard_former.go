@@ -2,8 +2,6 @@ package calendar
 
 import (
 	"fmt"
-	"io"
-	"log"
 )
 
 // KeyboardFormer contains some of the settings for generating the calendar.
@@ -14,9 +12,7 @@ type KeyboardFormer struct {
 	daysNames             [7]string
 	monthNames            [12]string
 	homeButtonForBeauty   string
-	json                  JSONMarshalUnmarshal
 	payloadEncoderDecoder PayloadEncoderDecoder
-	errorLogFunc          func(format string, args ...interface{})
 }
 
 // NewKeyboardFormer maker for KeyboardFormer.
@@ -45,8 +41,6 @@ func newDefaultKeyboardFormer() *KeyboardFormer {
 		daysNames:             daysNamesDefault,
 		monthNames:            monthNamesDefault,
 		homeButtonForBeauty:   emojiForBeautyDefault,
-		errorLogFunc:          log.New(io.Discard, "", 0).Printf,
-		json:                  newDefaultJSONWorker(),
 		payloadEncoderDecoder: NewEncoderDecoder(),
 	}
 }
@@ -83,20 +77,6 @@ func SetMonthNames(monthNames [12]string) func(kf *KeyboardFormer) {
 func SetHomeButtonForBeauty(homeButtonForBeauty string) func(kf *KeyboardFormer) {
 	return func(kf *KeyboardFormer) {
 		kf.homeButtonForBeauty = homeButtonForBeauty
-	}
-}
-
-// SetErrorLogFunc sets up a logger for error logging.
-func SetErrorLogFunc(errorLogFunc func(format string, args ...interface{})) func(kf *KeyboardFormer) {
-	return func(kf *KeyboardFormer) {
-		kf.errorLogFunc = errorLogFunc
-	}
-}
-
-// SetJSONWorker set a custom json for marshal/unmarshal.
-func SetJSONWorker(jsonWorker JSONMarshalUnmarshal) func(kf *KeyboardFormer) {
-	return func(kf *KeyboardFormer) {
-		kf.json = jsonWorker
 	}
 }
 

@@ -57,7 +57,7 @@ func (k *KeyboardFormer) generateFirstWeek(month, year int, weekday int, current
 	rowFirstWeek := make([]InlineKeyboardButton, 0, standardButtonsAtRow)
 	totalWeekDaysAtStart := 0
 	for wd := 1; wd < weekday; wd++ {
-		btn := NewInlineKeyboardButton(emptyText, k.formCallbackData(silentDoNothingAction, zero, month, year))
+		btn := NewInlineKeyboardButton(emptyText, k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, month, year))
 		rowFirstWeek = append(rowFirstWeek, btn)
 		totalWeekDaysAtStart++
 	}
@@ -65,7 +65,7 @@ func (k *KeyboardFormer) generateFirstWeek(month, year int, weekday int, current
 	// Buttons with the numbers of the first week.
 	for wd := weekday; wd <= daysInWeek; wd++ {
 		btnText := k.buttonTextWrapper(dayNumber, month, year, currentTime)
-		btn := NewInlineKeyboardButton(btnText, k.formCallbackData(selectDayAction, dayNumber, month, year))
+		btn := NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, dayNumber, month, year))
 		rowFirstWeek = append(rowFirstWeek, btn)
 		dayNumber++
 	}
@@ -85,7 +85,7 @@ func (k *KeyboardFormer) generateMiddleWeeks(
 		// Filling in the dates.
 		for cw := 1; cw <= daysInWeek; cw++ {
 			btnText := k.buttonTextWrapper(dayNumber, month, year, currentTime)
-			btn := NewInlineKeyboardButton(btnText, k.formCallbackData(selectDayAction, dayNumber, month, year))
+			btn := NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, dayNumber, month, year))
 			rowCurrentWeek = append(rowCurrentWeek, btn)
 			dayNumber++
 		}
@@ -105,13 +105,13 @@ func (k *KeyboardFormer) generateLastWeek(month, year int, dayNumber int, monthE
 
 	for wd := dayNumber; wd <= endMonthDay; wd++ {
 		btnText := k.buttonTextWrapper(wd, month, year, currentTime)
-		btn := NewInlineKeyboardButton(btnText, k.formCallbackData(selectDayAction, wd, month, year))
+		btn := NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, wd, month, year))
 		rowLastWeek = append(rowLastWeek, btn)
 	}
 
 	// Fill the last week with blank buttons.
 	for wd := monthEndWeekday + 1; wd <= daysInWeek; wd++ {
-		btn := NewInlineKeyboardButton(emptyText, k.formCallbackData(silentDoNothingAction, zero, month, year))
+		btn := NewInlineKeyboardButton(emptyText, k.payloadEncoderDecoder.Encoding(silentDoNothingAction, zero, month, year))
 		rowLastWeek = append(rowLastWeek, btn)
 	}
 

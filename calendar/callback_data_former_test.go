@@ -141,3 +141,13 @@ func TestDecodingCallbackData(t *testing.T) {
 		)
 	}
 }
+
+func TestGetDateValue(t *testing.T) {
+	t.Parallel()
+	var expect int
+	income := "invalid_date"
+	got := getDateValue(income)
+	if expect != got {
+		t.Errorf("expected get date value: %v not equal what we got:: %v", expect, got)
+	}
+}
