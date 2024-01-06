@@ -20,12 +20,12 @@ type PayloadEncoderDecoder interface {
 type EncoderDecoder struct{}
 
 // NewEncoderDecoder ...
-func NewEncoderDecoder() *EncoderDecoder {
-	return new(EncoderDecoder)
+func NewEncoderDecoder() EncoderDecoder {
+	return EncoderDecoder{}
 }
 
 // Encoding ...
-func (ed *EncoderDecoder) Encoding(action string, day, month, year int) string {
+func (ed EncoderDecoder) Encoding(action string, day, month, year int) string {
 	sb := new(strings.Builder)
 	sb.Grow(maxCallbackPayloadLen)
 
@@ -40,7 +40,7 @@ func (ed *EncoderDecoder) Encoding(action string, day, month, year int) string {
 }
 
 // Decoding ...
-func (ed *EncoderDecoder) Decoding(input string) NewPayloadD {
+func (ed EncoderDecoder) Decoding(input string) NewPayloadD {
 	match := incomePayloadRegexp.FindStringSubmatch(input)
 
 	if len(match) != newStringPayloadDataLen {

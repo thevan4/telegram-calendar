@@ -15,6 +15,7 @@ type KeyboardFormer struct {
 	monthNames            [12]string
 	homeButtonForBeauty   string
 	json                  JSONMarshalUnmarshal
+	payloadEncoderDecoder PayloadEncoderDecoder
 	errorLogFunc          func(format string, args ...interface{})
 }
 
@@ -46,6 +47,7 @@ func newDefaultKeyboardFormer() *KeyboardFormer {
 		homeButtonForBeauty:   emojiForBeautyDefault,
 		errorLogFunc:          log.New(io.Discard, "", 0).Printf,
 		json:                  newDefaultJSONWorker(),
+		payloadEncoderDecoder: NewEncoderDecoder(),
 	}
 }
 
@@ -95,5 +97,12 @@ func SetErrorLogFunc(errorLogFunc func(format string, args ...interface{})) func
 func SetJSONWorker(jsonWorker JSONMarshalUnmarshal) func(kf *KeyboardFormer) {
 	return func(kf *KeyboardFormer) {
 		kf.json = jsonWorker
+	}
+}
+
+// SetPayloadEncoderDecoder for custom encode/decode.
+func SetPayloadEncoderDecoder(payloadEncoderDecoder PayloadEncoderDecoder) func(kf *KeyboardFormer) {
+	return func(kf *KeyboardFormer) {
+		kf.payloadEncoderDecoder = payloadEncoderDecoder
 	}
 }

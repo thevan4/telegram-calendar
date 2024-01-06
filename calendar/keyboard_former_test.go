@@ -22,6 +22,7 @@ func TestNewCustomKeyboardFormer(t *testing.T) {
 		SetHomeButtonForBeauty("💩"),
 		SetJSONWorker(jw),
 		SetErrorLogFunc(log.New(io.Discard, "", 0).Printf),
+		SetPayloadEncoderDecoder(customPayloadEncoderDecoder{}),
 	)
 	if err != nil {
 		t.Errorf("got error at NewKeyboardFormer: %v", err)
@@ -39,6 +40,16 @@ func (cjw customJSONWorker) Marshal(v any) ([]byte, error) {
 
 func (cjw customJSONWorker) Unmarshal(data []byte, v any) error {
 	return cjw.unm(data, v)
+}
+
+type customPayloadEncoderDecoder struct{}
+
+func (cped customPayloadEncoderDecoder) Encoding(_ string, _, _, _ int) string {
+	return ""
+}
+
+func (cped customPayloadEncoderDecoder) Decoding(_ string) NewPayloadD {
+	return NewPayloadD{}
 }
 
 func TestNewBadCustomKeyboardFormer(t *testing.T) {
