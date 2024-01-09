@@ -2,6 +2,7 @@ package calendar
 
 import (
 	"testing"
+	"time"
 )
 
 func TestNewButtonsFormer(t *testing.T) {
@@ -15,6 +16,10 @@ func TestNewButtonsFormer(t *testing.T) {
 		SetPostfixForNonSelectedDay(poo),
 		SetPrefixForPickDay(poo),
 		SetPostfixForPickDay(poo),
+		SetUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)),
+		SetUnselectableDaysAfterDate(time.Date(2002, 1, 1, 11, 0, 0, 0, time.UTC)),
+		SetUnselectableDays(map[time.Time]struct{}{time.Date(2001,
+			1, 1, 0, 0, 0, 100, time.UTC): {}}),
 	)
 
 	if bf.buttons.prefixForCurrentDay.value != poo && bf.buttons.prefixForCurrentDay.growLen != 4 {
@@ -45,5 +50,23 @@ func TestNewButtonsFormer(t *testing.T) {
 	if bf.buttons.postfixForPickDay.value != poo && bf.buttons.postfixForPickDay.growLen != 4 {
 		t.Errorf("some go wrong when set postfixForPickDay, have %v, wan't %v with len %v",
 			bf.buttons.postfixForPickDay, poo, 4)
+	}
+
+	wantDaysBeforeDate := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
+	if !bf.unselectableDaysBeforeDate.Equal(wantDaysBeforeDate) {
+		t.Errorf("unselectableDaysBeforeDate not equal expected: %v, have %v",
+			wantDaysBeforeDate, bf.unselectableDaysBeforeDate)
+	}
+
+	wantDaysAfterDate := time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)
+	if !bf.unselectableDaysAfterDate.Equal(wantDaysAfterDate) {
+		t.Errorf("unselectableDaysAfterDate not equal expected: %v, have %v",
+			wantDaysAfterDate, bf.unselectableDaysAfterDate)
+	}
+
+	wantUnselectableDay := time.Date(2001, 1, 1, 0, 0, 0, 0, time.UTC)
+	if _, inMap := bf.unselectableDays[wantUnselectableDay]; !inMap {
+		t.Errorf("wantUnselectableDay not found value %v at map %v",
+			wantUnselectableDay, bf.unselectableDays)
 	}
 }

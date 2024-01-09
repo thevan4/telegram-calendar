@@ -1,8 +1,15 @@
 package calendar
 
+import (
+	"time"
+)
+
 // ButtonsFormer ...
 type ButtonsFormer struct {
-	buttons buttonsData
+	buttons                    buttonsData
+	unselectableDaysBeforeDate time.Time
+	unselectableDaysAfterDate  time.Time
+	unselectableDays           map[time.Time]struct{}
 }
 
 type extraButtonInfo struct {
@@ -46,6 +53,9 @@ func newDefaultButtonsFormer() ButtonsFormer {
 				growLen: 3, //nolint:gomnd // len of value
 			},
 		},
+		unselectableDaysBeforeDate: time.Date(1990, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDaysAfterDate:  time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDays:           make(map[time.Time]struct{}),
 	}
 }
 
@@ -107,4 +117,35 @@ func SetPostfixForPickDay(v string) func(bf *ButtonsFormer) {
 			growLen: len(v),
 		}
 	}
+}
+
+// SetUnselectableDaysBeforeDate ...
+func SetUnselectableDaysBeforeDate(t time.Time) func(bf *ButtonsFormer) {
+	return func(bf *ButtonsFormer) {
+		bf.unselectableDaysBeforeDate = truncateDate(t)
+	}
+}
+
+// SetUnselectableDaysAfterDate ...
+func SetUnselectableDaysAfterDate(t time.Time) func(bf *ButtonsFormer) {
+	return func(bf *ButtonsFormer) {
+		bf.unselectableDaysAfterDate = truncateDate(t)
+	}
+}
+
+// SetUnselectableDays ...
+func SetUnselectableDays(unselectableDays map[time.Time]struct{}) func(bf *ButtonsFormer) {
+	newUnselectableDays := make(map[time.Time]struct{}, len(unselectableDays))
+	for k := range unselectableDays {
+		newUnselectableDays[truncateDate(k)] = struct{}{}
+	}
+
+	return func(bf *ButtonsFormer) {
+		bf.unselectableDays = newUnselectableDays
+	}
+}
+
+// truncateDate brings the date to the beginning of the day, for easier comparison.
+func truncateDate(t time.Time) time.Time {
+	return t.Truncate(hoursInDay)
 }
