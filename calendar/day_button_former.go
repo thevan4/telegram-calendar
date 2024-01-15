@@ -52,8 +52,8 @@ func newDefaultButtonsFormer() DayButtonFormer {
 				growLen: 0,
 			},
 			postfixForCurrentDay: extraButtonInfo{
-				value:   "!",
-				growLen: 1,
+				value:   "",
+				growLen: 0,
 			},
 			postfixForNonSelectedDay: extraButtonInfo{
 				value:   "❌",
