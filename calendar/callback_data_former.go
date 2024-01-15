@@ -13,7 +13,7 @@ var (
 // PayloadEncoderDecoder ...
 type PayloadEncoderDecoder interface {
 	Encoding(action string, day, month, year int) string
-	Decoding(input string) NewPayloadD
+	Decoding(input string) PayloadData
 }
 
 // EncoderDecoder ...
@@ -40,15 +40,15 @@ func (ed EncoderDecoder) Encoding(action string, day, month, year int) string {
 }
 
 // Decoding ...
-func (ed EncoderDecoder) Decoding(input string) NewPayloadD {
+func (ed EncoderDecoder) Decoding(input string) PayloadData {
 	match := incomePayloadRegexp.FindStringSubmatch(input)
 
 	if len(match) != stringPayloadDataLen {
 		// Invalid input
-		return NewPayloadD{}
+		return PayloadData{}
 	}
 
-	return NewPayloadD{
+	return PayloadData{
 		action:        match[1],
 		calendarDay:   getDateValue(match[2]),
 		calendarMonth: getDateValue(match[3]),

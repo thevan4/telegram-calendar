@@ -55,14 +55,14 @@ func TestDecodingCallbackData(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want NewPayloadD
+		want PayloadData
 	}{
 		{
 			name: "no payload",
 			args: args{
 				queryData: "calendar/",
 			},
-			want: NewPayloadD{
+			want: PayloadData{
 				action:        "",
 				calendarDay:   0,
 				calendarMonth: 0,
@@ -74,7 +74,7 @@ func TestDecodingCallbackData(t *testing.T) {
 			args: args{
 				queryData: "calendar/prm_00.11.2023",
 			},
-			want: NewPayloadD{
+			want: PayloadData{
 				action:        "prm",
 				calendarDay:   0,
 				calendarMonth: 11,
@@ -86,7 +86,7 @@ func TestDecodingCallbackData(t *testing.T) {
 			args: args{
 				queryData: "calendar/»_00.11.2035",
 			},
-			want: NewPayloadD{
+			want: PayloadData{
 				action:        "»",
 				calendarDay:   0,
 				calendarMonth: 11,
@@ -98,7 +98,7 @@ func TestDecodingCallbackData(t *testing.T) {
 			args: args{
 				queryData: "calendar/shs_00.08.2023",
 			},
-			want: NewPayloadD{
+			want: PayloadData{
 				action:        "shs",
 				calendarDay:   0,
 				calendarMonth: 8,
@@ -110,7 +110,7 @@ func TestDecodingCallbackData(t *testing.T) {
 			args: args{
 				queryData: "calendar/shs_00.08.2042",
 			},
-			want: NewPayloadD{
+			want: PayloadData{
 				action:        "shs",
 				calendarDay:   0,
 				calendarMonth: 8,
