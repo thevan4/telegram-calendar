@@ -48,11 +48,11 @@ func newDefaultButtonsFormer() DayButtonFormer {
 	return DayButtonFormer{
 		buttons: buttonsData{
 			prefixForCurrentDay: extraButtonInfo{
-				value:   "[",
-				growLen: 1,
+				value:   "",
+				growLen: 0,
 			},
 			postfixForCurrentDay: extraButtonInfo{
-				value:   "]",
+				value:   "!",
 				growLen: 1,
 			},
 			postfixForNonSelectedDay: extraButtonInfo{
