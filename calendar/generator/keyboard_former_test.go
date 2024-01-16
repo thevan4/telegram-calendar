@@ -1,7 +1,10 @@
-package calendar
+package generator
 
 import (
 	"testing"
+
+	"github.com/thevan4/telegram-calendar/calendar/day_button_former"
+	"github.com/thevan4/telegram-calendar/calendar/models"
 )
 
 func TestNewCustomKeyboardFormer(t *testing.T) {
@@ -14,7 +17,7 @@ func TestNewCustomKeyboardFormer(t *testing.T) {
 		SetMonthNames([12]string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}),
 		SetHomeButtonForBeauty("💩"),
 		SetPayloadEncoderDecoder(customPayloadEncoderDecoder{}),
-		SetButtonsTextWrapper(NewButtonsFormer(SetPostfixForNonSelectedDay(""))),
+		SetButtonsTextWrapper(day_button_former.NewButtonsFormer(day_button_former.SetPostfixForNonSelectedDay(""))),
 	)
 	if err != nil {
 		t.Errorf("got error at NewKeyboardFormer: %v", err)
@@ -27,8 +30,8 @@ func (cped customPayloadEncoderDecoder) Encoding(_ string, _, _, _ int) string {
 	return ""
 }
 
-func (cped customPayloadEncoderDecoder) Decoding(_ string) PayloadData {
-	return PayloadData{}
+func (cped customPayloadEncoderDecoder) Decoding(_ string) models.PayloadData {
+	return models.PayloadData{}
 }
 
 func TestNewBadCustomKeyboardFormer(t *testing.T) {
@@ -66,25 +69,25 @@ func TestKeyboardFormerDecoding(t *testing.T) {
 		t.Errorf("got error at NewKeyboardFormer: %v", err)
 	}
 
-	expect := PayloadData{
-		action:        silentDoNothingAction,
-		calendarDay:   1,
-		calendarMonth: 1,
-		calendarYear:  2023,
+	expect := models.PayloadData{
+		Action:        silentDoNothingAction,
+		CalendarDay:   1,
+		CalendarMonth: 1,
+		CalendarYear:  2023,
 	}
 	result := kf.Decoding("calendar/sdn_01.01.2023")
 
 	// reflect.DeepEqual() - much slower.
-	if expect.action != result.action {
-		t.Errorf("expect action %v != result action %v", expect.action, result.action)
+	if expect.Action != result.Action {
+		t.Errorf("expect action %v != result action %v", expect.Action, result.Action)
 	}
-	if expect.calendarDay != result.calendarDay {
-		t.Errorf("expect calendarDay %v != result calendarDay %v", expect.calendarDay, result.calendarDay)
+	if expect.CalendarDay != result.CalendarDay {
+		t.Errorf("expect calendarDay %v != result calendarDay %v", expect.CalendarDay, result.CalendarDay)
 	}
-	if expect.calendarMonth != result.calendarMonth {
-		t.Errorf("expect calendarMonth %v != result calendarMonth %v", expect.calendarMonth, result.calendarMonth)
+	if expect.CalendarMonth != result.CalendarMonth {
+		t.Errorf("expect calendarMonth %v != result calendarMonth %v", expect.CalendarMonth, result.CalendarMonth)
 	}
-	if expect.calendarYear != result.calendarYear {
-		t.Errorf("expect calendarYear %v != result calendarYear %v", expect.calendarYear, result.calendarYear)
+	if expect.CalendarYear != result.CalendarYear {
+		t.Errorf("expect calendarYear %v != result calendarYear %v", expect.CalendarYear, result.CalendarYear)
 	}
 }

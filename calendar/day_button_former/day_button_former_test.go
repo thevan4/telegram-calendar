@@ -1,4 +1,4 @@
-package calendar
+package day_button_former
 
 import (
 	"testing"

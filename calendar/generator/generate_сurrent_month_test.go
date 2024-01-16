@@ -1,20 +1,16 @@
-package calendar
+package generator
 
 import (
 	"testing"
 	"time"
+
+	"github.com/thevan4/telegram-calendar/calendar/day_button_former"
+	"github.com/thevan4/telegram-calendar/calendar/models"
 )
 
 func TestGenerateFirstWeek(t *testing.T) {
 	t.Parallel()
-	//k, err := NewKeyboardFormer(
-	//	SetButtonsTextWrapper(SetPostfixForNonSelectedDay("")),
-	//)
 	k := newDefaultKeyboardFormer()
-	//if err != nil {
-	//	t.Errorf("can't make NewKeyboardFormer: %v", err)
-	//	return
-	//}
 	curTime := time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)
 
 	type args struct {
@@ -25,7 +21,7 @@ func TestGenerateFirstWeek(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want []InlineKeyboardButton
+		want []models.InlineKeyboardButton
 	}{
 		// 1.
 		{
@@ -35,19 +31,19 @@ func TestGenerateFirstWeek(t *testing.T) {
 				year:    2023,
 				weekday: 4,
 			},
-			want: []InlineKeyboardButton{
+			want: []models.InlineKeyboardButton{
 				// 3 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 				},
 
 				// 4 month days.
@@ -77,31 +73,31 @@ func TestGenerateFirstWeek(t *testing.T) {
 				year:    2023,
 				weekday: 7,
 			},
-			want: []InlineKeyboardButton{
+			want: []models.InlineKeyboardButton{
 				// 6 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 
 				// 1 month days.
@@ -119,7 +115,7 @@ func TestGenerateFirstWeek(t *testing.T) {
 				year:    2021,
 				weekday: 1,
 			},
-			want: []InlineKeyboardButton{
+			want: []models.InlineKeyboardButton{
 				// 0 empty days.
 				// 7 month days.
 				{
@@ -181,7 +177,7 @@ func TestGenerateMiddleWeeks(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want [][]InlineKeyboardButton
+		want [][]models.InlineKeyboardButton
 	}{
 		// 1.
 		{
@@ -192,7 +188,7 @@ func TestGenerateMiddleWeeks(t *testing.T) {
 				dayNumber:               5,
 				capacityOfTotalRowWeeks: 5,
 			},
-			want: [][]InlineKeyboardButton{
+			want: [][]models.InlineKeyboardButton{
 				{ // 5-11.
 					{
 						Text:         k.DayButtonTextWrapper(5, 6, 2023, curTime),
@@ -295,7 +291,7 @@ func TestGenerateMiddleWeeks(t *testing.T) {
 				dayNumber:               2,
 				capacityOfTotalRowWeeks: 6,
 			},
-			want: [][]InlineKeyboardButton{
+			want: [][]models.InlineKeyboardButton{
 				{ // 2-8.
 					{
 						Text:         k.DayButtonTextWrapper(2, 1, 2023, curTime),
@@ -428,7 +424,7 @@ func TestGenerateMiddleWeeks(t *testing.T) {
 				dayNumber:               8,
 				capacityOfTotalRowWeeks: 4,
 			},
-			want: [][]InlineKeyboardButton{
+			want: [][]models.InlineKeyboardButton{
 				{ // 8-14.
 					{
 						Text:         k.DayButtonTextWrapper(8, 2, 2021, curTime),
@@ -521,7 +517,7 @@ func TestGenerateLastWeek(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want []InlineKeyboardButton
+		want []models.InlineKeyboardButton
 	}{
 		// 1.
 		{
@@ -530,9 +526,9 @@ func TestGenerateLastWeek(t *testing.T) {
 				month:     6,
 				year:      2023,
 				dayNumber: 26,
-				monthEnd:  formDateTime(1, 6, 2023, curTime.Location()).AddDate(0, 1, 0).Add(-time.Nanosecond).Truncate(hoursInDay),
+				monthEnd:  day_button_former.FormDateTime(1, 6, 2023, curTime.Location()).AddDate(0, 1, 0).Add(-time.Nanosecond).Truncate(hoursInDay),
 			},
-			want: []InlineKeyboardButton{
+			want: []models.InlineKeyboardButton{
 				// 5 month days.
 				{
 					Text:         k.DayButtonTextWrapper(26, 6, 2023, curTime),
@@ -557,11 +553,11 @@ func TestGenerateLastWeek(t *testing.T) {
 				// 2 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 				},
 			},
 		},
@@ -572,9 +568,9 @@ func TestGenerateLastWeek(t *testing.T) {
 				month:     1,
 				year:      2023,
 				dayNumber: 30,
-				monthEnd:  formDateTime(1, 1, 2023, curTime.Location()).AddDate(0, 1, 0).Add(-time.Nanosecond).Truncate(hoursInDay),
+				monthEnd:  day_button_former.FormDateTime(1, 1, 2023, curTime.Location()).AddDate(0, 1, 0).Add(-time.Nanosecond).Truncate(hoursInDay),
 			},
-			want: []InlineKeyboardButton{
+			want: []models.InlineKeyboardButton{
 				// 2 month days.
 				{
 					Text:         k.DayButtonTextWrapper(30, 1, 2023, curTime),
@@ -588,23 +584,23 @@ func TestGenerateLastWeek(t *testing.T) {
 				// 5 empty days.
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 				{
 					Text:         emptyText,
-					CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+					CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 				},
 			},
 		},
@@ -615,9 +611,9 @@ func TestGenerateLastWeek(t *testing.T) {
 				month:     2,
 				year:      2021,
 				dayNumber: 22,
-				monthEnd:  formDateTime(1, 2, 2021, curTime.Location()).AddDate(0, 1, 0).Add(-time.Nanosecond).Truncate(hoursInDay),
+				monthEnd:  day_button_former.FormDateTime(1, 2, 2021, curTime.Location()).AddDate(0, 1, 0).Add(-time.Nanosecond).Truncate(hoursInDay),
 			},
-			want: []InlineKeyboardButton{
+			want: []models.InlineKeyboardButton{
 				// 7 month days.
 				{
 					Text:         k.DayButtonTextWrapper(22, 2, 2021, curTime),
@@ -666,7 +662,7 @@ func TestGenerateLastWeek(t *testing.T) {
 
 func TestGenerateCurrentMonth(t *testing.T) {
 	t.Parallel()
-	k, err := NewKeyboardFormer(SetButtonsTextWrapper(NewButtonsFormer(SetPostfixForNonSelectedDay(""))))
+	k, err := NewKeyboardFormer(SetButtonsTextWrapper(day_button_former.NewButtonsFormer(day_button_former.SetPostfixForNonSelectedDay(""))))
 	if err != nil {
 		t.Errorf("can't make NewKeyboardFormer: %v", err)
 		return
@@ -681,7 +677,7 @@ func TestGenerateCurrentMonth(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want [][]InlineKeyboardButton
+		want [][]models.InlineKeyboardButton
 	}{
 		// 1.
 		{
@@ -690,21 +686,21 @@ func TestGenerateCurrentMonth(t *testing.T) {
 				month: 6,
 				year:  2023,
 			},
-			want: [][]InlineKeyboardButton{
+			want: [][]models.InlineKeyboardButton{
 				// First week.
 				{
 					// 3 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 					},
 
 					// 4 month days.
@@ -844,11 +840,11 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 2 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 					},
 				},
 			},
@@ -861,33 +857,33 @@ func TestGenerateCurrentMonth(t *testing.T) {
 				month: 1,
 				year:  2023,
 			},
-			want: [][]InlineKeyboardButton{
+			want: [][]models.InlineKeyboardButton{
 				// First week.
 				{
 					// 6 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 
 					// 1 month days.
@@ -1034,23 +1030,23 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 5 empty days.
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 					{
 						Text:         emptyText,
-						CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+						CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 					},
 				},
 			},
@@ -1063,7 +1059,7 @@ func TestGenerateCurrentMonth(t *testing.T) {
 				month: 2,
 				year:  2021,
 			},
-			want: [][]InlineKeyboardButton{
+			want: [][]models.InlineKeyboardButton{
 				// First week.
 				{
 					// 0 empty days.
@@ -1210,7 +1206,7 @@ func TestGenerateCurrentMonth(t *testing.T) {
 }
 
 // reflect.DeepEqual() much slower.
-func isSlicesEqual(a, b []InlineKeyboardButton) bool {
+func isSlicesEqual(a, b []models.InlineKeyboardButton) bool {
 	if len(a) != len(b) {
 		return false
 	}
@@ -1222,7 +1218,7 @@ func isSlicesEqual(a, b []InlineKeyboardButton) bool {
 	return true
 }
 
-func isSlicesOfSlicesEqual(a, b [][]InlineKeyboardButton) bool {
+func isSlicesOfSlicesEqual(a, b [][]models.InlineKeyboardButton) bool {
 	if len(a) != len(b) {
 		return false
 	}

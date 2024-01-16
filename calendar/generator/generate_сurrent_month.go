@@ -1,14 +1,18 @@
-package calendar
+package generator
 
-import "time"
+import (
+	"time"
+
+	"github.com/thevan4/telegram-calendar/calendar/models"
+)
 
 // GenerateCurrentMonth ...
-func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentUserTime time.Time) [][]InlineKeyboardButton {
+func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentUserTime time.Time) [][]models.InlineKeyboardButton {
 	monthStart := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	monthEnd := monthStart.AddDate(0, 1, -1)
 
 	weeksInMonth := getFullWeeksInMonth(monthStart, monthEnd)
-	rowWeeks := make([][]InlineKeyboardButton, 0, weeksInMonth)
+	rowWeeks := make([][]models.InlineKeyboardButton, 0, weeksInMonth)
 
 	// First week.
 	weekday := getWeekDay(monthStart)
@@ -49,15 +53,15 @@ func getWeekDay(monthStart time.Time) int {
 	return weekday
 }
 
-func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentUserTime time.Time) ([]InlineKeyboardButton, int) {
+func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentUserTime time.Time) ([]models.InlineKeyboardButton, int) {
 	// Number of the day on the button.
 	dayNumber := 1
 
 	// Blank buttons (may not exist).
-	rowFirstWeek := make([]InlineKeyboardButton, 0, standardButtonsAtRow)
+	rowFirstWeek := make([]models.InlineKeyboardButton, 0, standardButtonsAtRow)
 	totalWeekDaysAtStart := 0
 	for wd := 1; wd < weekday; wd++ {
-		btn := NewInlineKeyboardButton(emptyText, k.Encoding(silentDoNothingAction, zero, month, year))
+		btn := models.NewInlineKeyboardButton(emptyText, k.Encoding(silentDoNothingAction, 0, month, year))
 		rowFirstWeek = append(rowFirstWeek, btn)
 		totalWeekDaysAtStart++
 	}
@@ -65,7 +69,7 @@ func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentU
 	// Buttons with the numbers of the first week.
 	for wd := weekday; wd <= daysInWeek; wd++ {
 		btnText := k.DayButtonTextWrapper(dayNumber, month, year, currentUserTime)
-		btn := NewInlineKeyboardButton(btnText, k.Encoding(selectDayAction, dayNumber, month, year))
+		btn := models.NewInlineKeyboardButton(btnText, k.Encoding(selectDayAction, dayNumber, month, year))
 		rowFirstWeek = append(rowFirstWeek, btn)
 		dayNumber++
 	}
@@ -75,17 +79,17 @@ func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentU
 
 func (k KeyboardFormer) generateMiddleWeeks(
 	month, year int, dayNumber int, capacityOfTotalRowWeeks int, currentUserTime time.Time,
-) ([][]InlineKeyboardButton, int) {
+) ([][]models.InlineKeyboardButton, int) {
 	// Capacity from the total minus the beginning week and the end week, which we do not fill.
-	middleWeeks := make([][]InlineKeyboardButton, 0, capacityOfTotalRowWeeks-2) //nolint:gomnd // have comment.
+	middleWeeks := make([][]models.InlineKeyboardButton, 0, capacityOfTotalRowWeeks-2) //nolint:gomnd // have comment.
 	// Going by weeks two and up to and including the penultimate week.
 	for rowWeek := 2; rowWeek < capacityOfTotalRowWeeks; rowWeek++ {
-		rowCurrentWeek := make([]InlineKeyboardButton, 0, standardButtonsAtRow)
+		rowCurrentWeek := make([]models.InlineKeyboardButton, 0, standardButtonsAtRow)
 
 		// Filling in the dates.
 		for cw := 1; cw <= daysInWeek; cw++ {
 			btnText := k.DayButtonTextWrapper(dayNumber, month, year, currentUserTime)
-			btn := NewInlineKeyboardButton(btnText, k.Encoding(selectDayAction, dayNumber, month, year))
+			btn := models.NewInlineKeyboardButton(btnText, k.Encoding(selectDayAction, dayNumber, month, year))
 			rowCurrentWeek = append(rowCurrentWeek, btn)
 			dayNumber++
 		}
@@ -95,8 +99,9 @@ func (k KeyboardFormer) generateMiddleWeeks(
 	return middleWeeks, dayNumber
 }
 
-func (k KeyboardFormer) generateLastWeek(month, year int, dayNumber int, monthEnd time.Time, currentUserTime time.Time) []InlineKeyboardButton {
-	rowLastWeek := make([]InlineKeyboardButton, 0, standardButtonsAtRow)
+func (k KeyboardFormer) generateLastWeek(month, year int, dayNumber int,
+	monthEnd time.Time, currentUserTime time.Time) []models.InlineKeyboardButton {
+	rowLastWeek := make([]models.InlineKeyboardButton, 0, standardButtonsAtRow)
 
 	// Last day of the week in the month.
 	monthEndWeekday := getWeekDay(monthEnd)
@@ -105,13 +110,13 @@ func (k KeyboardFormer) generateLastWeek(month, year int, dayNumber int, monthEn
 
 	for wd := dayNumber; wd <= endMonthDay; wd++ {
 		btnText := k.DayButtonTextWrapper(wd, month, year, currentUserTime)
-		btn := NewInlineKeyboardButton(btnText, k.Encoding(selectDayAction, wd, month, year))
+		btn := models.NewInlineKeyboardButton(btnText, k.Encoding(selectDayAction, wd, month, year))
 		rowLastWeek = append(rowLastWeek, btn)
 	}
 
 	// Fill the last week with blank buttons.
 	for wd := monthEndWeekday + 1; wd <= daysInWeek; wd++ {
-		btn := NewInlineKeyboardButton(emptyText, k.Encoding(silentDoNothingAction, zero, month, year))
+		btn := models.NewInlineKeyboardButton(emptyText, k.Encoding(silentDoNothingAction, 0, month, year))
 		rowLastWeek = append(rowLastWeek, btn)
 	}
 

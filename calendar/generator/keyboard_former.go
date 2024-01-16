@@ -1,30 +1,13 @@
-package calendar
+package generator
 
 import (
 	"fmt"
 	"time"
+
+	"github.com/thevan4/telegram-calendar/calendar/day_button_former"
+	"github.com/thevan4/telegram-calendar/calendar/models"
+	"github.com/thevan4/telegram-calendar/calendar/payload_former"
 )
-
-// KeyboardGenerator ...
-type KeyboardGenerator interface {
-	GenerateCalendarKeyboard(callbackPayload string, currentUserTime time.Time) (inlineKeyboardMarkup InlineKeyboardMarkup, selectedDay time.Time)
-	Generator
-	PayloadEncoderDecoder
-	DaysButtonsText
-}
-
-// Generator ...
-type Generator interface {
-	GenerateGoToPrevMonth(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateGoToNextMonth(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateGoToPrevYear(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateGoToNextYear(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateSelectMonths(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateSelectYears(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateCalendar(month, year int, currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateDefaultCalendar(currentUserTime time.Time) InlineKeyboardMarkup
-	GenerateCurrentMonth(month, year int, currentUserTime time.Time) [][]InlineKeyboardButton
-}
 
 // KeyboardFormer contains some of the settings for generating the calendar.
 type KeyboardFormer struct {
@@ -34,8 +17,8 @@ type KeyboardFormer struct {
 	daysNames             [7]string
 	monthNames            [12]string
 	homeButtonForBeauty   string
-	payloadEncoderDecoder PayloadEncoderDecoder
-	buttonsTextWrapper    DaysButtonsText
+	payloadEncoderDecoder payload_former.PayloadEncoderDecoder
+	buttonsTextWrapper    day_button_former.DaysButtonsText
 }
 
 // NewKeyboardFormer maker for KeyboardFormer.
@@ -58,14 +41,14 @@ func NewKeyboardFormer(
 
 func newDefaultKeyboardFormer() KeyboardFormer {
 	return KeyboardFormer{
-		yearsBackForChoose:    zero,
+		yearsBackForChoose:    0,
 		yearsForwardForChoose: yearsForwardForChooseDefault,
 		sumYearsForChoose:     sumYearsForChooseDefault,
 		daysNames:             daysNamesDefault,
 		monthNames:            monthNamesDefault,
 		homeButtonForBeauty:   emojiForBeautyDefault,
-		payloadEncoderDecoder: NewEncoderDecoder(),
-		buttonsTextWrapper:    newDefaultButtonsFormer(),
+		payloadEncoderDecoder: payload_former.NewEncoderDecoder(),
+		buttonsTextWrapper:    day_button_former.NewButtonsFormer(),
 	}
 }
 
@@ -105,14 +88,14 @@ func SetHomeButtonForBeauty(homeButtonForBeauty string) func(kf *KeyboardFormer)
 }
 
 // SetPayloadEncoderDecoder for custom encode/decode.
-func SetPayloadEncoderDecoder(payloadEncoderDecoder PayloadEncoderDecoder) func(kf *KeyboardFormer) {
+func SetPayloadEncoderDecoder(payloadEncoderDecoder payload_former.PayloadEncoderDecoder) func(kf *KeyboardFormer) {
 	return func(kf *KeyboardFormer) {
 		kf.payloadEncoderDecoder = payloadEncoderDecoder
 	}
 }
 
 // SetButtonsTextWrapper for custom settings for ButtonsTextWrapper.
-func SetButtonsTextWrapper(buttonsFormer DaysButtonsText) func(kf *KeyboardFormer) {
+func SetButtonsTextWrapper(buttonsFormer day_button_former.DaysButtonsText) func(kf *KeyboardFormer) {
 	return func(kf *KeyboardFormer) {
 		kf.buttonsTextWrapper = buttonsFormer
 	}
@@ -124,7 +107,7 @@ func (k KeyboardFormer) Encoding(action string, day, month, year int) string {
 }
 
 // Decoding ...
-func (k KeyboardFormer) Decoding(input string) PayloadData {
+func (k KeyboardFormer) Decoding(input string) models.PayloadData {
 	return k.payloadEncoderDecoder.Decoding(input)
 }
 
