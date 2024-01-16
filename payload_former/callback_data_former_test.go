@@ -3,7 +3,7 @@ package payload_former
 import (
 	"testing"
 
-	"github.com/thevan4/telegram-calendar/calendar/models"
+	"github.com/thevan4/telegram-calendar/models"
 )
 
 func TestFormCallbackDataTemp(t *testing.T) {

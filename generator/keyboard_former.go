@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/thevan4/telegram-calendar/calendar/day_button_former"
-	"github.com/thevan4/telegram-calendar/calendar/models"
-	"github.com/thevan4/telegram-calendar/calendar/payload_former"
+	"github.com/thevan4/telegram-calendar/day_button_former"
+	"github.com/thevan4/telegram-calendar/models"
+	"github.com/thevan4/telegram-calendar/payload_former"
 )
 
 // KeyboardFormer contains some of the settings for generating the calendar.

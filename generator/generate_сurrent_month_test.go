@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/thevan4/telegram-calendar/calendar/day_button_former"
-	"github.com/thevan4/telegram-calendar/calendar/models"
+	"github.com/thevan4/telegram-calendar/day_button_former"
+	"github.com/thevan4/telegram-calendar/models"
 )
 
 func TestGenerateFirstWeek(t *testing.T) {

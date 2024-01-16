@@ -3,7 +3,7 @@ package generator
 import (
 	"time"
 
-	"github.com/thevan4/telegram-calendar/calendar/models"
+	"github.com/thevan4/telegram-calendar/models"
 )
 
 // GenerateCurrentMonth ...
