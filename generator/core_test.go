@@ -1,8 +1,10 @@
-package calendar
+package generator
 
 import (
 	"testing"
 	"time"
+
+	"github.com/thevan4/telegram-calendar/models"
 )
 
 func TestGenerateCalendarKeyboard(t *testing.T) {
@@ -16,7 +18,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 	}
 
 	type wants struct {
-		inlineKeyboardMarkup InlineKeyboardMarkup
+		inlineKeyboardMarkup models.InlineKeyboardMarkup
 		selectedDay          time.Time
 	}
 
@@ -43,56 +45,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct72023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 6, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 6, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 6, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, zero, 6, 2023),
+								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct72023.Month()), ct72023.Year(), 6, 2023), zero, int(ct72023.Month()), ct72023.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct72023.Month()), ct72023.Year(), 6, 2023), 0, int(ct72023.Month()), ct72023.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(selectYearAction, zero, 6, 2023),
+								Text: "2023", CallbackData: k.Encoding(selectYearAction, 0, 6, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 6, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 6, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 6, 2023),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 
@@ -101,15 +103,15 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 3 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 
 							// 4 month days.
@@ -249,11 +251,11 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 2 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 					},
@@ -269,56 +271,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct12023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 12, 2022),
+								CallbackData: k.Encoding(prevYearAction, 0, 12, 2022),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 12, 2022),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 12, 2022),
 							},
 							{
-								Text: k.monthNames[11], CallbackData: k.Encoding(selectMonthAction, zero, 12, 2022),
+								Text: k.monthNames[11], CallbackData: k.Encoding(selectMonthAction, 0, 12, 2022),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 12, 2022), zero, int(ct12023.Month()), ct12023.Year()), //nolint:nolintlint,lll,2ll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 12, 2022), 0, int(ct12023.Month()), ct12023.Year()), //nolint:nolintlint,lll,2ll
 							},
 							{
-								Text: "2022", CallbackData: k.Encoding(selectYearAction, zero, 12, 2022),
+								Text: "2022", CallbackData: k.Encoding(selectYearAction, 0, 12, 2022),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 12, 2022),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 12, 2022),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 12, 2022),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 12, 2022),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 						},
 
@@ -327,15 +329,15 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 3 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 
 							// 4 month days.
@@ -479,7 +481,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 1 empty day.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 12, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 12, 2022),
 							},
 						},
 					},
@@ -498,56 +500,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct52023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 6, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 6, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 6, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, zero, 6, 2023),
+								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct52023.Month()), ct52023.Year(), 6, 2023), zero, int(ct52023.Month()), ct52023.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct52023.Month()), ct52023.Year(), 6, 2023), 0, int(ct52023.Month()), ct52023.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(selectYearAction, zero, 6, 2023),
+								Text: "2023", CallbackData: k.Encoding(selectYearAction, 0, 6, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 6, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 6, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 6, 2023),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 
@@ -556,15 +558,15 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 3 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 
 							// 4 month days.
@@ -704,11 +706,11 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 2 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 					},
@@ -725,56 +727,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct122022,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 1, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 1, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 1, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, zero, 1, 2023),
+								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct122022.Month()), ct122022.Year(), 1, 2023), zero, int(ct122022.Month()), ct122022.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct122022.Month()), ct122022.Year(), 1, 2023), 0, int(ct122022.Month()), ct122022.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(selectYearAction, zero, 1, 2023),
+								Text: "2023", CallbackData: k.Encoding(selectYearAction, 0, 1, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 1, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 1, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 1, 2023),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 						},
 
@@ -783,27 +785,27 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 6 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 
 							// 1 month days.
@@ -950,23 +952,23 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 5 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 						},
 					},
@@ -983,56 +985,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct12023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 1, 2022),
+								CallbackData: k.Encoding(prevYearAction, 0, 1, 2022),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 1, 2022),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 1, 2022),
 							},
 							{
-								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, zero, 1, 2022),
+								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, 0, 1, 2022),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 1, 2022), zero, int(ct12023.Month()), ct12023.Year()), //nolint:nolintlint,lll,2ll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 1, 2022), 0, int(ct12023.Month()), ct12023.Year()), //nolint:nolintlint,lll,2ll
 							},
 							{
-								Text: "2022", CallbackData: k.Encoding(selectYearAction, zero, 1, 2022),
+								Text: "2022", CallbackData: k.Encoding(selectYearAction, 0, 1, 2022),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 1, 2022),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 1, 2022),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 1, 2022),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 1, 2022),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 						},
 
@@ -1041,23 +1043,23 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 5 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 
 							// 2 month days.
@@ -1203,27 +1205,27 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 6 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2022),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2022),
 							},
 						},
 					},
@@ -1240,56 +1242,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct12022,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 1, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 1, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 1, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, zero, 1, 2023),
+								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12022.Month()), ct12022.Year(), 1, 2023), zero, int(ct12022.Month()), ct12022.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12022.Month()), ct12022.Year(), 1, 2023), 0, int(ct12022.Month()), ct12022.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(selectYearAction, zero, 1, 2023),
+								Text: "2023", CallbackData: k.Encoding(selectYearAction, 0, 1, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 1, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 1, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 1, 2023),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 						},
 
@@ -1298,27 +1300,27 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 6 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 
 							// 1 month days.
@@ -1465,23 +1467,23 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 5 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 1, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 1, 2023),
 							},
 						},
 					},
@@ -1498,72 +1500,72 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct12023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 1, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 1, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 1, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: k.monthNames[0], CallbackData: k.Encoding(showSelectedAction, zero, 1, 2023),
+								Text: k.monthNames[0], CallbackData: k.Encoding(showSelectedAction, 0, 1, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 1, 2023), zero, int(ct12023.Month()), ct12023.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 1, 2023), 0, int(ct12023.Month()), ct12023.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(selectYearAction, zero, 1, 2023),
+								Text: "2023", CallbackData: k.Encoding(selectYearAction, 0, 1, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 1, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 1, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 1, 2023),
 							},
 						},
 
 						{ // Row 1.
 							{
-								Text: k.monthNames[0], CallbackData: k.Encoding(showSelectedAction, zero, 1, 2023),
+								Text: k.monthNames[0], CallbackData: k.Encoding(showSelectedAction, 0, 1, 2023),
 							},
 							{
-								Text: k.monthNames[1], CallbackData: k.Encoding(showSelectedAction, zero, 2, 2023),
+								Text: k.monthNames[1], CallbackData: k.Encoding(showSelectedAction, 0, 2, 2023),
 							},
 							{
-								Text: k.monthNames[2], CallbackData: k.Encoding(showSelectedAction, zero, 3, 2023),
+								Text: k.monthNames[2], CallbackData: k.Encoding(showSelectedAction, 0, 3, 2023),
 							},
 							{
-								Text: k.monthNames[3], CallbackData: k.Encoding(showSelectedAction, zero, 4, 2023),
+								Text: k.monthNames[3], CallbackData: k.Encoding(showSelectedAction, 0, 4, 2023),
 							},
 							{
-								Text: k.monthNames[4], CallbackData: k.Encoding(showSelectedAction, zero, 5, 2023),
+								Text: k.monthNames[4], CallbackData: k.Encoding(showSelectedAction, 0, 5, 2023),
 							},
 							{
-								Text: k.monthNames[5], CallbackData: k.Encoding(showSelectedAction, zero, 6, 2023),
+								Text: k.monthNames[5], CallbackData: k.Encoding(showSelectedAction, 0, 6, 2023),
 							},
 						},
 						{ // // Row 2.
 							{
-								Text: k.monthNames[6], CallbackData: k.Encoding(showSelectedAction, zero, 7, 2023),
+								Text: k.monthNames[6], CallbackData: k.Encoding(showSelectedAction, 0, 7, 2023),
 							},
 							{
-								Text: k.monthNames[7], CallbackData: k.Encoding(showSelectedAction, zero, 8, 2023),
+								Text: k.monthNames[7], CallbackData: k.Encoding(showSelectedAction, 0, 8, 2023),
 							},
 							{
-								Text: k.monthNames[8], CallbackData: k.Encoding(showSelectedAction, zero, 9, 2023),
+								Text: k.monthNames[8], CallbackData: k.Encoding(showSelectedAction, 0, 9, 2023),
 							},
 							{
-								Text: k.monthNames[9], CallbackData: k.Encoding(showSelectedAction, zero, 10, 2023),
+								Text: k.monthNames[9], CallbackData: k.Encoding(showSelectedAction, 0, 10, 2023),
 							},
 							{
-								Text: k.monthNames[10], CallbackData: k.Encoding(showSelectedAction, zero, 11, 2023),
+								Text: k.monthNames[10], CallbackData: k.Encoding(showSelectedAction, 0, 11, 2023),
 							},
 							{
-								Text: k.monthNames[11], CallbackData: k.Encoding(showSelectedAction, zero, 12, 2023),
+								Text: k.monthNames[11], CallbackData: k.Encoding(showSelectedAction, 0, 12, 2023),
 							},
 						},
 					},
@@ -1580,56 +1582,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct12023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 1, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 1, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 1, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, zero, 1, 2023),
+								Text: k.monthNames[0], CallbackData: k.Encoding(selectMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 1, 2023), zero, int(ct12023.Month()), ct12023.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct12023.Month()), ct12023.Year(), 1, 2023), 0, int(ct12023.Month()), ct12023.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(showSelectedAction, zero, 1, 2023),
+								Text: "2023", CallbackData: k.Encoding(showSelectedAction, 0, 1, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 1, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 1, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 1, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 1, 2023),
 							},
 						},
 
 						{ // Row 1.
 							// Past years.
 							{
-								Text: "2021", CallbackData: k.Encoding(showSelectedAction, zero, 1, 2021),
+								Text: "2021", CallbackData: k.Encoding(showSelectedAction, 0, 1, 2021),
 							},
 							{
-								Text: "2022", CallbackData: k.Encoding(showSelectedAction, zero, 1, 2022),
+								Text: "2022", CallbackData: k.Encoding(showSelectedAction, 0, 1, 2022),
 							},
 
 							// Current year.
 							{
-								Text: "2023", CallbackData: k.Encoding(showSelectedAction, zero, 1, 2023),
+								Text: "2023", CallbackData: k.Encoding(showSelectedAction, 0, 1, 2023),
 							},
 							// Next years.
 							{
-								Text: "2024", CallbackData: k.Encoding(showSelectedAction, zero, 1, 2024),
+								Text: "2024", CallbackData: k.Encoding(showSelectedAction, 0, 1, 2024),
 							},
 							{
-								Text: "2025", CallbackData: k.Encoding(showSelectedAction, zero, 1, 2025),
+								Text: "2025", CallbackData: k.Encoding(showSelectedAction, 0, 1, 2025),
 							},
 							{
-								Text: "2026", CallbackData: k.Encoding(showSelectedAction, zero, 1, 2026),
+								Text: "2026", CallbackData: k.Encoding(showSelectedAction, 0, 1, 2026),
 							},
 						},
 					},
@@ -1646,56 +1648,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct52023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 6, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 6, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 6, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, zero, 6, 2023),
+								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct52023.Month()), ct52023.Year(), 6, 2023), zero, int(ct52023.Month()), ct52023.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct52023.Month()), ct52023.Year(), 6, 2023), 0, int(ct52023.Month()), ct52023.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(selectYearAction, zero, 6, 2023),
+								Text: "2023", CallbackData: k.Encoding(selectYearAction, 0, 6, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 6, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 6, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 6, 2023),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 
@@ -1704,15 +1706,15 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 3 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 
 							// 4 month days.
@@ -1852,11 +1854,11 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 2 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 					},
@@ -1877,7 +1879,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			},
 		},
 
-		// Default calendar.
+		// Default
 		{
 			name: "show pseudo-current month 06 2023",
 			args: args{
@@ -1885,56 +1887,56 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct62023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{
-					InlineKeyboard: [][]InlineKeyboardButton{
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
+					InlineKeyboard: [][]models.InlineKeyboardButton{
 						// Month-year row.
 						{
 							{
 								Text:         prevYearActionName,
-								CallbackData: k.Encoding(prevYearAction, zero, 6, 2023),
+								CallbackData: k.Encoding(prevYearAction, 0, 6, 2023),
 							},
 							{
-								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, zero, 6, 2023),
+								Text: prevMonthActionName, CallbackData: k.Encoding(prevMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, zero, 6, 2023),
+								Text: k.monthNames[5], CallbackData: k.Encoding(selectMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct62023.Month()), ct62023.Year(), 6, 2023), zero, int(ct62023.Month()), ct62023.Year()), //nolint:lll
+								Text: k.homeButtonForBeauty, CallbackData: k.Encoding(getBeautyCallback(int(ct62023.Month()), ct62023.Year(), 6, 2023), 0, int(ct62023.Month()), ct62023.Year()), //nolint:lll
 							},
 							{
-								Text: "2023", CallbackData: k.Encoding(selectYearAction, zero, 6, 2023),
+								Text: "2023", CallbackData: k.Encoding(selectYearAction, 0, 6, 2023),
 							},
 							{
-								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, zero, 6, 2023),
+								Text: nextMonthActionName, CallbackData: k.Encoding(nextMonthAction, 0, 6, 2023),
 							},
 							{
-								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, zero, 6, 2023),
+								Text: nextYearActionName, CallbackData: k.Encoding(nextYearAction, 0, 6, 2023),
 							},
 						},
 
 						// Days names row.
 						{
 							{
-								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Mo", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Tu", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "We", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Th", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Fr", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Sa", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
-								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								Text: "Su", CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 
@@ -1943,15 +1945,15 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 3 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 
 							// 4 month days.
@@ -2091,11 +2093,11 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 							// 2 empty days.
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 							{
 								Text:         emptyText,
-								CallbackData: k.Encoding(silentDoNothingAction, zero, 6, 2023),
+								CallbackData: k.Encoding(silentDoNothingAction, 0, 6, 2023),
 							},
 						},
 					},
@@ -2112,7 +2114,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				currentUserTime: ct12023,
 			},
 			want: wants{
-				inlineKeyboardMarkup: InlineKeyboardMarkup{},
+				inlineKeyboardMarkup: models.InlineKeyboardMarkup{},
 				selectedDay:          ct12023,
 			},
 		},
@@ -2129,63 +2131,6 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			}
 			if selectedDay != tt.want.selectedDay {
 				t.Errorf("expected selected day: %+v not equal result selected day: %+v", tt.want.selectedDay, selectedDay)
-			}
-		},
-		)
-	}
-}
-
-func TestFormDateResponse(t *testing.T) {
-	t.Parallel()
-
-	type args struct {
-		day,
-		month,
-		year int
-	}
-
-	tests := []struct {
-		name string
-		args args
-		want string
-	}{
-		{
-			name: "corner case for zero month and zero year (somehow it may happens)",
-			args: args{
-				1, 0, 0,
-			},
-			want: "01.00.0000",
-		},
-		{
-			name: "still work if year < 0",
-			args: args{
-				1, 1, -1,
-			},
-			want: "01.01.0000",
-		},
-		{
-			name: "corner case if year < 99",
-			args: args{
-				1, 1, 99,
-			},
-			want: "01.01.0099",
-		},
-		{
-			name: "corner case if year < 999",
-			args: args{
-				1, 1, 999,
-			},
-			want: "01.01.0999",
-		},
-	}
-
-	for _, tmpTT := range tests {
-		tt := tmpTT
-		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			result := formDateResponse(tt.args.day, tt.args.month, tt.args.year)
-			if result != tt.want {
-				t.Errorf("expected result at day formDateResponse: %+v not equal result selected day: %+v", tt.want, result)
 			}
 		},
 		)

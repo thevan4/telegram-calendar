@@ -1,4 +1,4 @@
-package calendar
+package models
 
 // InlineKeyboardMarkup https://core.telegram.org/bots/features#inline-keyboards.
 type InlineKeyboardMarkup struct {
@@ -19,10 +19,10 @@ func NewInlineKeyboardButton(text, callbackData string) InlineKeyboardButton {
 	}
 }
 
-// PayloadData ...
+// PayloadData contains data for forming/unforming a line with data.
 type PayloadData struct {
-	action        string
-	calendarDay   int
-	calendarMonth int
-	calendarYear  int
+	Action        string
+	CalendarDay   int
+	CalendarMonth int
+	CalendarYear  int
 }

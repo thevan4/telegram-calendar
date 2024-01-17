@@ -1,9 +1,11 @@
-package calendar
+package payload_former
 
 import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/thevan4/telegram-calendar/models"
 )
 
 var (
@@ -13,7 +15,7 @@ var (
 // PayloadEncoderDecoder ...
 type PayloadEncoderDecoder interface {
 	Encoding(action string, day, month, year int) string
-	Decoding(input string) PayloadData
+	Decoding(input string) models.PayloadData
 }
 
 // EncoderDecoder ...
@@ -40,26 +42,26 @@ func (ed EncoderDecoder) Encoding(action string, day, month, year int) string {
 }
 
 // Decoding ...
-func (ed EncoderDecoder) Decoding(input string) PayloadData {
+func (ed EncoderDecoder) Decoding(input string) models.PayloadData {
 	match := incomePayloadRegexp.FindStringSubmatch(input)
 
 	if len(match) != stringPayloadDataLen {
 		// Invalid input
-		return PayloadData{}
+		return models.PayloadData{}
 	}
 
-	return PayloadData{
-		action:        match[1],
-		calendarDay:   getDateValue(match[2]),
-		calendarMonth: getDateValue(match[3]),
-		calendarYear:  getDateValue(match[4]),
+	return models.PayloadData{
+		Action:        match[1],
+		CalendarDay:   getDateValue(match[2]),
+		CalendarMonth: getDateValue(match[3]),
+		CalendarYear:  getDateValue(match[4]),
 	}
 }
 
 func getDateValue(d string) int {
 	rd, errD := strconv.ParseInt(d, formatBaseTen, bitSize16)
 	if errD != nil {
-		return zero // silence any error.
+		return 0 // silence any error.
 	}
 	return int(rd)
 }
@@ -72,7 +74,7 @@ func formDateResponse(day, month, year int) string {
 	case day <= 0:
 		sb.WriteString(twoZeros)
 		sb.WriteString(dot)
-	case day < nine:
+	case day < 9: //nolint:gomnd //move to the next digit.
 		sb.WriteString(zeroS)
 		fallthrough
 	default:
@@ -84,7 +86,7 @@ func formDateResponse(day, month, year int) string {
 	case month <= 0:
 		sb.WriteString(twoZeros)
 		sb.WriteString(dot)
-	case month < nine:
+	case month < 9: //nolint:gomnd //move to the next digit.
 		sb.WriteString(zeroS)
 		fallthrough
 	default:
@@ -97,11 +99,11 @@ func formDateResponse(day, month, year int) string {
 	case year < 0:
 		sb.WriteString(fourZeros)
 		skipAddYear = true
-	case year <= nine:
+	case year <= 9: //nolint:gomnd //move to the next digit.
 		sb.WriteString(threeZeros)
-	case year <= ninetyNine:
+	case year <= 99: //nolint:gomnd //move to the next digit.
 		sb.WriteString(twoZeros)
-	case year <= nineHundredNinetyNine:
+	case year <= 999: //nolint:gomnd //move to the next digit.
 		sb.WriteString(zeroS)
 	}
 	if !skipAddYear {

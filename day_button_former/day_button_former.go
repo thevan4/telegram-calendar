@@ -1,10 +1,12 @@
-package calendar
+package day_button_former
 
 import (
 	"strconv"
 	"strings"
 	"time"
 )
+
+const hoursInDay = 24 * time.Hour
 
 // DaysButtonsText work with visual text only.
 type DaysButtonsText interface {
@@ -159,13 +161,13 @@ func truncateDate(t time.Time) time.Time {
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
 func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string {
-	calendarDateTime := formDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location())
+	calendarDateTime := FormDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location())
 	incomeDayS := strconv.Itoa(incomeDay)
 	resultButtonValue := new(strings.Builder)
 
 	resultButtonValue.Grow(len(incomeDayS))
 
-	isUnselectableDay := bf.isDayUnselectable(formDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location()))
+	isUnselectableDay := bf.isDayUnselectable(FormDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location()))
 	if isUnselectableDay {
 		resultButtonValue.Grow(bf.buttons.prefixForNonSelectedDay.growLen)
 		resultButtonValue.Grow(bf.buttons.postfixForNonSelectedDay.growLen)
@@ -214,8 +216,8 @@ func isDatesEqual(dateOne, dateTwo time.Time) bool {
 	return dateOne.Truncate(hoursInDay).Equal(dateTwo.Truncate(hoursInDay))
 }
 
-// formDateTime wrapper for time.Date.
-func formDateTime(day, month, year int, location *time.Location) time.Time {
+// FormDateTime wrapper for time.Date.
+func FormDateTime(day, month, year int, location *time.Location) time.Time {
 	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
 }
 
