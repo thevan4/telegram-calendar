@@ -2,10 +2,8 @@ package generator
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/thevan4/telegram-calendar/day_button_former"
-	"github.com/thevan4/telegram-calendar/models"
 	"github.com/thevan4/telegram-calendar/payload_former"
 )
 
@@ -24,7 +22,7 @@ type KeyboardFormer struct {
 // NewKeyboardFormer maker for KeyboardFormer.
 func NewKeyboardFormer(
 	options ...func(*KeyboardFormer),
-) (KeyboardGenerator, error) {
+) (KeyboardFormer, error) {
 	kf := newDefaultKeyboardFormer()
 
 	for _, o := range options {
@@ -33,7 +31,7 @@ func NewKeyboardFormer(
 
 	sumYearsForChoose := kf.yearsBackForChoose + kf.yearsForwardForChoose // may overflow, but who cares.
 	if sumYearsForChoose > maxSumYearsForChoose {
-		return nil, fmt.Errorf("max sum for yearsBackForChoose and yearsForwardForChoose is 6, have: %v", sumYearsForChoose)
+		return KeyboardFormer{}, fmt.Errorf("max sum for yearsBackForChoose and yearsForwardForChoose is 6, have: %v", sumYearsForChoose)
 	}
 
 	return kf, nil
@@ -99,19 +97,4 @@ func SetButtonsTextWrapper(buttonsFormer day_button_former.DaysButtonsText) func
 	return func(kf *KeyboardFormer) {
 		kf.buttonsTextWrapper = buttonsFormer
 	}
-}
-
-// Encoding ...
-func (k KeyboardFormer) Encoding(action string, day, month, year int) string {
-	return k.payloadEncoderDecoder.Encoding(action, day, month, year)
-}
-
-// Decoding ...
-func (k KeyboardFormer) Decoding(input string) models.PayloadData {
-	return k.payloadEncoderDecoder.Decoding(input)
-}
-
-// DayButtonTextWrapper ...
-func (k KeyboardFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string {
-	return k.buttonsTextWrapper.DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear, currentUserTime)
 }

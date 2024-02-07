@@ -55,7 +55,7 @@ func TestKeyboardFormerEncoding(t *testing.T) {
 	}
 
 	expect := "calendar/sdn_01.01.2023"
-	result := kf.Encoding(silentDoNothingAction, 1, 1, 2023)
+	result := kf.payloadEncoderDecoder.Encoding(silentDoNothingAction, 1, 1, 2023)
 	if result != expect {
 		t.Errorf("at encoding got %v, expect %v", result, expect)
 	}
@@ -75,7 +75,7 @@ func TestKeyboardFormerDecoding(t *testing.T) {
 		CalendarMonth: 1,
 		CalendarYear:  2023,
 	}
-	result := kf.Decoding("calendar/sdn_01.01.2023")
+	result := kf.payloadEncoderDecoder.Decoding("calendar/sdn_01.01.2023")
 
 	// reflect.DeepEqual() - much slower.
 	if expect.Action != result.Action {
