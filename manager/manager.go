@@ -47,10 +47,9 @@ func (m *Manager) GenerateCalendarKeyboard(
 func (m *Manager) ApplyNewOptions(options ...func(*generator.KeyboardFormer)) error {
 	m.Lock()
 	defer m.Unlock()
-	kf := m.keyboardFormer
 
 	for _, o := range options {
-		o(&kf)
+		o(&m.keyboardFormer)
 	}
 
 	return nil
