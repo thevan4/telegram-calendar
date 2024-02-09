@@ -154,6 +154,13 @@ func SetUnselectableDays(unselectableDays map[time.Time]struct{}) func(bf *DayBu
 	}
 }
 
+// ApplyNewOptions ...
+func (bf DayButtonFormer) ApplyNewOptions(options ...func(*DayButtonFormer)) {
+	for _, o := range options {
+		o(&bf)
+	}
+}
+
 // truncateDate brings the date to the beginning of the day, for easier comparison.
 func truncateDate(t time.Time) time.Time {
 	return t.Truncate(hoursInDay)

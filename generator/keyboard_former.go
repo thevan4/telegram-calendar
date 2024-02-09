@@ -30,7 +30,7 @@ func NewKeyboardFormer(
 	}
 
 	sumYearsForChoose := kf.yearsBackForChoose + kf.yearsForwardForChoose // may overflow, but who cares.
-	if sumYearsForChoose > maxSumYearsForChoose {
+	if sumYearsForChoose > maxSumYearsForChoose {                         // TODO remove that check
 		return KeyboardFormer{}, fmt.Errorf("max sum for yearsBackForChoose and yearsForwardForChoose is 6, have: %v", sumYearsForChoose)
 	}
 
@@ -96,5 +96,12 @@ func SetPayloadEncoderDecoder(payloadEncoderDecoder payload_former.PayloadEncode
 func SetButtonsTextWrapper(buttonsFormer day_button_former.DaysButtonsText) func(kf *KeyboardFormer) {
 	return func(kf *KeyboardFormer) {
 		kf.buttonsTextWrapper = buttonsFormer
+	}
+}
+
+// ApplyNewOptions ...
+func (k KeyboardFormer) ApplyNewOptions(options ...func(*KeyboardFormer)) {
+	for _, o := range options {
+		o(&k)
 	}
 }
