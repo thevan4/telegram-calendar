@@ -1,7 +1,6 @@
 package manager
 
 import (
-	"fmt"
 	"sync"
 	"time"
 
@@ -12,25 +11,20 @@ import (
 // KeyboardManager ...
 type KeyboardManager interface {
 	GenerateCalendarKeyboard(callbackPayload string, currentUserTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
-	ApplyNewOptions(options ...func(*generator.KeyboardFormer)) error
+	ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator) generator.KeyboardGenerator
 }
 
 // Manager ...
 type Manager struct {
 	sync.RWMutex
-	keyboardFormer generator.KeyboardFormer
+	keyboardFormer generator.KeyboardGenerator
 }
 
-// NewManager maker for KeyboardManager.
-func NewManager(options ...func(*generator.KeyboardFormer)) (*Manager, error) {
-	kf, err := generator.NewKeyboardFormer(options...)
-	if err != nil {
-		return nil, fmt.Errorf("create new manager error: %w", err)
-	}
-
+// NewManager создает новый экземпляр Manager с настраиваемым KeyboardGenerator.
+func NewManager(kg generator.KeyboardGenerator) *Manager {
 	return &Manager{
-		keyboardFormer: kf,
-	}, nil
+		keyboardFormer: kg,
+	}
 }
 
 // GenerateCalendarKeyboard ...
@@ -39,18 +33,15 @@ func (m *Manager) GenerateCalendarKeyboard(
 	currentUserTime time.Time,
 ) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time) {
 	m.RLock()
-	defer m.RUnlock()
-	return m.keyboardFormer.GenerateCalendarKeyboard(callbackPayload, currentUserTime)
+	// copy obj for normal concurrent work.
+	kf := m.keyboardFormer
+	m.RUnlock()
+	return kf.GenerateCalendarKeyboard(callbackPayload, currentUserTime)
 }
 
 // ApplyNewOptions ...
-func (m *Manager) ApplyNewOptions(options ...func(*generator.KeyboardFormer)) error {
+func (m *Manager) ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator) {
 	m.Lock()
 	defer m.Unlock()
-
-	for _, o := range options {
-		o(&m.keyboardFormer)
-	}
-
-	return nil
+	m.keyboardFormer = m.keyboardFormer.ApplyNewOptions(options...)
 }

@@ -9,18 +9,24 @@ func TestNewButtonsFormer(t *testing.T) {
 	t.Parallel()
 	const poo = "💩"
 
-	bf := NewButtonsFormer(
-		SetPrefixForCurrentDay(poo),
-		SetPostfixForCurrentDay(poo),
-		SetPrefixForNonSelectedDay(poo),
-		SetPostfixForNonSelectedDay(poo),
-		SetPrefixForPickDay(poo),
-		SetPostfixForPickDay(poo),
-		SetUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)),
-		SetUnselectableDaysAfterDate(time.Date(2002, 1, 1, 11, 0, 0, 0, time.UTC)),
-		SetUnselectableDays(map[time.Time]struct{}{time.Date(2001,
-			1, 1, 0, 0, 0, 100, time.UTC): {}}),
+	newBF := NewButtonsFormer(
+		ChangePrefixForCurrentDay(poo),
+		ChangePostfixForCurrentDay(poo),
+		ChangePrefixForNonSelectedDay(poo),
+		ChangePostfixForNonSelectedDay(poo),
+		ChangePrefixForPickDay(poo),
+		ChangePostfixForPickDay(poo),
+		ChangeUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)),
+		ChangeUnselectableDaysAfterDate(time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)),
+		ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
+			1, 1, 0, 0, 0, 0, time.UTC): {}}),
 	)
+
+	bf, ok := newBF.(DayButtonFormer)
+	if !ok {
+		t.Error("somehow unknown NewButtonsFormer object")
+		return
+	}
 
 	if bf.buttons.prefixForCurrentDay.value != poo && bf.buttons.prefixForCurrentDay.growLen != 4 {
 		t.Errorf("some go wrong when set prefixForCurrentDay, have %v, wan't %v with len %v",
@@ -75,10 +81,10 @@ func TestIsDayUnselectable(t *testing.T) {
 	t.Parallel()
 
 	bf := NewButtonsFormer(
-		SetUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)),
-		SetUnselectableDaysAfterDate(time.Date(2002, 1, 1, 11, 0, 0, 0, time.UTC)),
-		SetUnselectableDays(map[time.Time]struct{}{time.Date(2001,
-			1, 1, 0, 0, 0, 100, time.UTC): {}}),
+		ChangeUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)),
+		ChangeUnselectableDaysAfterDate(time.Date(2002, 1, 1, 11, 0, 0, 0, time.UTC)),
+		ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
+			1, 1, 0, 0, 0, 0, time.UTC): {}}),
 	)
 
 	tests := []struct {
@@ -112,7 +118,13 @@ func TestIsDayUnselectable(t *testing.T) {
 		tt := tmpTT
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			isUnselectable := bf.isDayUnselectable(tt.incomeDate)
+			bfImpl, ok := bf.(DayButtonFormer)
+			if !ok {
+				t.Error("somehow unknown NewButtonsFormer object")
+				return
+			}
+
+			isUnselectable := bfImpl.isDayUnselectable(tt.incomeDate)
 			if tt.isUnselectable != isUnselectable {
 				t.Errorf("at %v unexpected result, got %v, want %v", tt.name, isUnselectable, tt.isUnselectable)
 			}
@@ -133,15 +145,15 @@ func TestButtonTextWrapper(t *testing.T) {
 	)
 
 	bf := NewButtonsFormer(
-		SetPrefixForCurrentDay(prefixForCurrentDay),
-		SetPostfixForCurrentDay(postfixForCurrentDay),
-		SetPrefixForNonSelectedDay(prefixForNonSelectedDay),
-		SetPostfixForNonSelectedDay(postfixForNonSelectedDay),
-		SetPrefixForPickDay(pickDayPrefix),
-		SetPostfixForPickDay(pickDayPostfix),
-		SetUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)),
-		SetUnselectableDaysAfterDate(time.Date(2002, 1, 1, 11, 0, 0, 0, time.UTC)),
-		SetUnselectableDays(map[time.Time]struct{}{time.Date(2001,
+		ChangePrefixForCurrentDay(prefixForCurrentDay),
+		ChangePostfixForCurrentDay(postfixForCurrentDay),
+		ChangePrefixForNonSelectedDay(prefixForNonSelectedDay),
+		ChangePostfixForNonSelectedDay(postfixForNonSelectedDay),
+		ChangePrefixForPickDay(pickDayPrefix),
+		ChangePostfixForPickDay(pickDayPostfix),
+		ChangeUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)),
+		ChangeUnselectableDaysAfterDate(time.Date(2002, 1, 1, 11, 0, 0, 0, time.UTC)),
+		ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
 			1, 1, 0, 0, 0, 0, time.UTC): {}}),
 	)
 

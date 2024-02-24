@@ -662,9 +662,16 @@ func TestGenerateLastWeek(t *testing.T) {
 
 func TestGenerateCurrentMonth(t *testing.T) {
 	t.Parallel()
-	k, err := NewKeyboardFormer(SetButtonsTextWrapper(day_button_former.NewButtonsFormer(day_button_former.SetPostfixForNonSelectedDay(""))))
-	if err != nil {
-		t.Errorf("can't make NewKeyboardFormer: %v", err)
+
+	kf := NewKeyboardFormer(
+		NewButtonsTextWrapper(
+			day_button_former.ChangePrefixForNonSelectedDay(""),
+		),
+	)
+
+	k, okKeyboardFormer := kf.(KeyboardFormer)
+	if !okKeyboardFormer {
+		t.Error("somehow unknown NewKeyboardFormer object")
 		return
 	}
 
@@ -1065,7 +1072,7 @@ func TestGenerateCurrentMonth(t *testing.T) {
 					// 0 empty days.
 					// 7 month days.
 					{
-						Text:         k.buttonsTextWrapper.DayButtonTextWrapper(1, 6, 2021111111111, curTime),
+						Text:         k.buttonsTextWrapper.DayButtonTextWrapper(1, 6, 2021, curTime),
 						CallbackData: k.payloadEncoderDecoder.Encoding(selectDayAction, 1, 2, 2021),
 					},
 					{

@@ -11,6 +11,7 @@ const hoursInDay = 24 * time.Hour
 // DaysButtonsText work with visual text only.
 type DaysButtonsText interface {
 	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string
+	ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText
 }
 
 // DayButtonFormer ...
@@ -36,14 +37,10 @@ type extraButtonInfo struct {
 }
 
 // NewButtonsFormer ...
-func NewButtonsFormer(options ...func(*DayButtonFormer)) DayButtonFormer {
-	bf := newDefaultButtonsFormer()
-
-	for _, o := range options {
-		o(&bf)
-	}
-
-	return bf
+func NewButtonsFormer(
+	options ...func(DaysButtonsText) DaysButtonsText,
+) DaysButtonsText {
+	return newDefaultButtonsFormer().ApplyNewOptions(options...)
 }
 
 func newDefaultButtonsFormer() DayButtonFormer {
@@ -66,104 +63,6 @@ func newDefaultButtonsFormer() DayButtonFormer {
 		unselectableDaysAfterDate:  time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC),
 		unselectableDays:           make(map[time.Time]struct{}),
 	}
-}
-
-// SetPrefixForCurrentDay ...
-func SetPrefixForCurrentDay(v string) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.buttons.prefixForCurrentDay = extraButtonInfo{
-			value:   v,
-			growLen: len(v),
-		}
-	}
-}
-
-// SetPostfixForCurrentDay ...
-func SetPostfixForCurrentDay(v string) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.buttons.postfixForCurrentDay = extraButtonInfo{
-			value:   v,
-			growLen: len(v),
-		}
-	}
-}
-
-// SetPrefixForNonSelectedDay ...
-func SetPrefixForNonSelectedDay(v string) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.buttons.prefixForNonSelectedDay = extraButtonInfo{
-			value:   v,
-			growLen: len(v),
-		}
-	}
-}
-
-// SetPostfixForNonSelectedDay ...
-func SetPostfixForNonSelectedDay(v string) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.buttons.postfixForNonSelectedDay = extraButtonInfo{
-			value:   v,
-			growLen: len(v),
-		}
-	}
-}
-
-// SetPrefixForPickDay ...
-func SetPrefixForPickDay(v string) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.buttons.prefixForPickDay = extraButtonInfo{
-			value:   v,
-			growLen: len(v),
-		}
-	}
-}
-
-// SetPostfixForPickDay ...
-func SetPostfixForPickDay(v string) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.buttons.postfixForPickDay = extraButtonInfo{
-			value:   v,
-			growLen: len(v),
-		}
-	}
-}
-
-// SetUnselectableDaysBeforeDate ...
-func SetUnselectableDaysBeforeDate(t time.Time) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.unselectableDaysBeforeDate = truncateDate(t)
-	}
-}
-
-// SetUnselectableDaysAfterDate ...
-func SetUnselectableDaysAfterDate(t time.Time) func(bf *DayButtonFormer) {
-	return func(bf *DayButtonFormer) {
-		bf.unselectableDaysAfterDate = truncateDate(t)
-	}
-}
-
-// SetUnselectableDays ...
-func SetUnselectableDays(unselectableDays map[time.Time]struct{}) func(bf *DayButtonFormer) {
-	newUnselectableDays := make(map[time.Time]struct{}, len(unselectableDays))
-	for k := range unselectableDays {
-		newUnselectableDays[truncateDate(k)] = struct{}{}
-	}
-
-	return func(bf *DayButtonFormer) {
-		bf.unselectableDays = newUnselectableDays
-	}
-}
-
-// ApplyNewOptions ...
-func (bf DayButtonFormer) ApplyNewOptions(options ...func(*DayButtonFormer)) {
-	for _, o := range options {
-		o(&bf)
-	}
-}
-
-// truncateDate brings the date to the beginning of the day, for easier comparison.
-func truncateDate(t time.Time) time.Time {
-	return t.Truncate(hoursInDay)
 }
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
@@ -229,12 +128,12 @@ func FormDateTime(day, month, year int, location *time.Location) time.Time {
 }
 
 func (bf DayButtonFormer) isDayUnselectable(calendarDateTime time.Time) bool {
-	if calendarDateTime.Truncate(hoursInDay).Before(bf.unselectableDaysBeforeDate.Truncate(hoursInDay)) ||
-		calendarDateTime.Truncate(hoursInDay).After(bf.unselectableDaysAfterDate.Truncate(hoursInDay)) {
+	if calendarDateTime.Before(bf.unselectableDaysBeforeDate) ||
+		calendarDateTime.After(bf.unselectableDaysAfterDate) {
 		return true
 	}
 
-	if _, isUnselectable := bf.unselectableDays[calendarDateTime.Truncate(hoursInDay)]; isUnselectable {
+	if _, isUnselectable := bf.unselectableDays[calendarDateTime]; isUnselectable {
 		return true
 	}
 
