@@ -12,6 +12,7 @@ const hoursInDay = 24 * time.Hour
 type DaysButtonsText interface {
 	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string
 	ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText
+	GetUnselectableDays() map[time.Time]struct{}
 }
 
 // DayButtonFormer ...
@@ -138,4 +139,9 @@ func (bf DayButtonFormer) isDayUnselectable(calendarDateTime time.Time) bool {
 	}
 
 	return false
+}
+
+// GetUnselectableDays ...
+func (bf DayButtonFormer) GetUnselectableDays() map[time.Time]struct{} {
+	return bf.unselectableDays
 }

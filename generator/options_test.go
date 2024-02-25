@@ -27,6 +27,11 @@ func (fi fakeImplKF) ApplyNewOptions(options ...func(KeyboardGenerator) Keyboard
 	return kg
 }
 
+// GetUnselectableDays ...
+func (fi fakeImplKF) GetUnselectableDays() map[time.Time]struct{} {
+	return nil
+}
+
 func newFakeImplKF(some string) KeyboardGenerator {
 	return fakeImplKF{someField: some}
 }

@@ -12,6 +12,7 @@ import (
 type KeyboardGenerator interface {
 	GenerateCalendarKeyboard(callbackPayload string, currentUserTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
 	ApplyNewOptions(options ...func(KeyboardGenerator) KeyboardGenerator) KeyboardGenerator
+	GetUnselectableDays() map[time.Time]struct{}
 }
 
 // Generator ...
@@ -251,4 +252,9 @@ func (k KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []mod
 	}
 
 	return rowYears
+}
+
+// GetUnselectableDays ...
+func (k KeyboardFormer) GetUnselectableDays() map[time.Time]struct{} {
+	return k.buttonsTextWrapper.GetUnselectableDays()
 }

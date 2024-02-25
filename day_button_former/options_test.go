@@ -28,6 +28,11 @@ func (fi fakeImplDBT) ApplyNewOptions(options ...func(DaysButtonsText) DaysButto
 	return dbf
 }
 
+// GetUnselectableDays ...
+func (fi fakeImplDBT) GetUnselectableDays() map[time.Time]struct{} {
+	return nil
+}
+
 func TestApplyNewOptions(t *testing.T) {
 	t.Parallel()
 

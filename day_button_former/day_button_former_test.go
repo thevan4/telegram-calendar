@@ -1,6 +1,7 @@
 package day_button_former
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -241,5 +242,21 @@ func TestButtonTextWrapper(t *testing.T) {
 			}
 		},
 		)
+	}
+}
+
+func TestGetUnselectableDays(t *testing.T) {
+	t.Parallel()
+	bf := NewButtonsFormer(
+		ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
+			1, 1, 0, 0, 0, 0, time.UTC): {}}),
+	)
+	expect := map[time.Time]struct{}{time.Date(2001,
+		1, 1, 0, 0, 0, 0, time.UTC): {}}
+
+	result := bf.GetUnselectableDays()
+
+	if fmt.Sprint(result) != fmt.Sprint(expect) {
+		t.Errorf("at GetUnselectableDays result: %v no equal expected: %v", fmt.Sprint(result), fmt.Sprint(expect))
 	}
 }

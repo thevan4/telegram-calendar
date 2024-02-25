@@ -1,9 +1,11 @@
 package generator
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/thevan4/telegram-calendar/day_button_former"
 	"github.com/thevan4/telegram-calendar/models"
 )
 
@@ -2134,5 +2136,24 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			}
 		},
 		)
+	}
+}
+
+func TestGetUnselectableDays(t *testing.T) {
+	t.Parallel()
+
+	kf := NewKeyboardFormer(
+		NewButtonsTextWrapper(
+			day_button_former.ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
+				1, 1, 0, 0, 0, 0, time.UTC): {}}),
+		),
+	)
+	expect := map[time.Time]struct{}{time.Date(2001,
+		1, 1, 0, 0, 0, 0, time.UTC): {}}
+
+	result := kf.GetUnselectableDays()
+
+	if fmt.Sprint(result) != fmt.Sprint(expect) {
+		t.Errorf("at GetUnselectableDays result: %v no equal expected: %v", fmt.Sprint(result), fmt.Sprint(expect))
 	}
 }

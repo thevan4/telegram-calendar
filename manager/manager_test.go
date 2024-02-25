@@ -110,7 +110,49 @@ func TestApplyNewOptions(t *testing.T) {
 	}
 }
 
-// TODO
-// func TestApplyNewOptionsWithConcurrentWork(t *testing.T) {
-//	// need generator for 36500 generations
-// }
+func TestGetUnselectableDays(t *testing.T) {
+	t.Parallel()
+
+	m := NewManager(generator.NewKeyboardFormer(
+		generator.NewButtonsTextWrapper(
+			day_button_former.ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
+				1, 1, 0, 0, 0, 0, time.UTC): {}}),
+		),
+	))
+
+	expect := map[time.Time]struct{}{time.Date(2001,
+		1, 1, 0, 0, 0, 0, time.UTC): {}}
+
+	result := m.getUnselectableDays()
+
+	if fmt.Sprint(result) != fmt.Sprint(expect) {
+		t.Errorf("at GetUnselectableDays result: %v no equal expected: %v", fmt.Sprint(result), fmt.Sprint(expect))
+	}
+
+}
+
+func TestCopyMap(t *testing.T) {
+	t.Parallel()
+
+	src := map[time.Time]struct{}{time.Date(2001, 1, 1, 0, 0, 0, 0, time.UTC): {},
+		time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC): {},
+		time.Date(2003, 1, 1, 0, 0, 0, 0, time.UTC): {},
+	}
+	dst := copyMap(src)
+
+	for k := range src {
+		if _, inMap := dst[k]; !inMap {
+			t.Errorf("key %v not fount at dst map: %v", k, dst)
+		}
+	}
+
+	delete(src, time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC))
+	if _, inMap := dst[time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)]; !inMap {
+		t.Errorf("key %v also removed from dst map: %v", time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC), dst)
+	}
+
+	delete(src, time.Date(2003, 1, 1, 0, 0, 0, 0, time.UTC))
+	if _, inMap := dst[time.Date(2003, 1, 1, 0, 0, 0, 0, time.UTC)]; !inMap {
+		t.Errorf("key %v also removed from dst map: %v", time.Date(2003, 1, 1, 0, 0, 0, 0, time.UTC), dst)
+	}
+}
