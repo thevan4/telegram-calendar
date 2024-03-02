@@ -12,7 +12,7 @@ import (
 // KeyboardManager ...
 type KeyboardManager interface {
 	GenerateCalendarKeyboard(callbackPayload string, currentUserTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
-	ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator) generator.KeyboardGenerator
+	ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator)
 }
 
 // Manager ...
