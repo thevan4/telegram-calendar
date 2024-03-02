@@ -1212,6 +1212,73 @@ func TestGenerateCurrentMonth(t *testing.T) {
 	}
 }
 
+func TestGetWeeksInMonth(t *testing.T) {
+	t.Parallel()
+	type args struct {
+		monthStart time.Time
+		monthEnd   time.Time
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "2017.12",
+			args: args{
+				monthStart: time.Date(2017, 12, 1, 0, 0, 0, 0, time.UTC),
+				monthEnd:   time.Date(2017, 12, 31, 0, 0, 0, 0, time.UTC),
+			},
+			want: 5,
+		},
+		{
+			name: "2018.12",
+			args: args{
+				monthStart: time.Date(2018, 12, 1, 0, 0, 0, 0, time.UTC),
+				monthEnd:   time.Date(2018, 12, 31, 0, 0, 0, 0, time.UTC),
+			},
+			want: 6,
+		},
+		{
+			name: "2024.09",
+			args: args{
+				monthStart: time.Date(2024, 9, 1, 0, 0, 0, 0, time.UTC),
+				monthEnd:   time.Date(2024, 9, 30, 0, 0, 0, 0, time.UTC),
+			},
+			want: 6,
+		},
+		{
+			name: "2024.11",
+			args: args{
+				monthStart: time.Date(2024, 11, 1, 0, 0, 0, 0, time.UTC),
+				monthEnd:   time.Date(2024, 11, 30, 0, 0, 0, 0, time.UTC),
+			},
+			want: 5,
+		},
+		{
+			name: "2024.12",
+			args: args{
+				monthStart: time.Date(2024, 12, 1, 0, 0, 0, 0, time.UTC),
+				monthEnd:   time.Date(2024, 12, 31, 0, 0, 0, 0, time.UTC),
+			},
+			want: 6,
+		},
+	}
+
+	for _, tmpTT := range tests {
+		tt := tmpTT
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := getWeeksInMonth(tt.args.monthStart, tt.args.monthEnd)
+			if result != tt.want {
+				t.Errorf("want %v not expected result %v", tt.want, result)
+			}
+		},
+		)
+	}
+}
+
 // reflect.DeepEqual() much slower.
 func isSlicesEqual(a, b []models.InlineKeyboardButton) bool {
 	if len(a) != len(b) {

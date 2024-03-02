@@ -11,7 +11,7 @@ func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentUserTime ti
 	monthStart := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	monthEnd := monthStart.AddDate(0, 1, -1)
 
-	weeksInMonth := getFullWeeksInMonth(monthStart, monthEnd)
+	weeksInMonth := getWeeksInMonth(monthStart, monthEnd)
 	rowWeeks := make([][]models.InlineKeyboardButton, 0, weeksInMonth)
 
 	// First week.
@@ -31,17 +31,18 @@ func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentUserTime ti
 	return rowWeeks
 }
 
-// How many rows of weeks there will be in the current month.
-func getFullWeeksInMonth(monthStart, monthEnd time.Time) int {
-	_, firstWeekNumber := monthStart.ISOWeek()
-	_, lastWeekNumber := monthEnd.ISOWeek()
+func getWeeksInMonth(monthStart, monthEnd time.Time) int {
+	startYear, startWeek := monthStart.ISOWeek()
+	endYear, endWeek := monthEnd.ISOWeek()
 
-	// Corner case, Jan 01 to Jan 03 of year n might belong to week 52 or 53.
-	if firstWeekNumber > lastWeekNumber {
-		firstWeekNumber = 0
+	if startYear < endYear {
+		// Get the number of the last week in the start year,
+		// december 25-28 are the last dates that are guaranteed to fall within the last week of the year
+		_, lastWeekOfYear := time.Date(startYear, 12, 28, 0, 0, 0, 0, time.UTC).ISOWeek()
+		return (lastWeekOfYear - startWeek + 1) + endWeek
 	}
 
-	return lastWeekNumber - firstWeekNumber + 1
+	return endWeek - startWeek + 1
 }
 
 // The day of the week in the month. Corrects to Sunday on the 7th day.
