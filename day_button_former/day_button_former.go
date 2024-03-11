@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-const hoursInDay = 24 * time.Hour
-
 // DaysButtonsText work with visual text only.
 type DaysButtonsText interface {
 	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string
@@ -120,7 +118,15 @@ func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYea
 }
 
 func isDatesEqual(dateOne, dateTwo time.Time) bool {
-	return dateOne.Truncate(hoursInDay).Equal(dateTwo.Truncate(hoursInDay))
+	// set both dates to UTC before comparing
+	dateOneUTC := dateOne.UTC()
+	dateTwoUTC := dateTwo.UTC()
+
+	// zeroing out the time in the dates
+	dateOneStartOfDay := time.Date(dateOneUTC.Year(), dateOneUTC.Month(), dateOneUTC.Day(), 0, 0, 0, 0, time.UTC)
+	dateTwoStartOfDay := time.Date(dateTwoUTC.Year(), dateTwoUTC.Month(), dateTwoUTC.Day(), 0, 0, 0, 0, time.UTC)
+
+	return dateOneStartOfDay.Equal(dateTwoStartOfDay)
 }
 
 // FormDateTime wrapper for time.Date.

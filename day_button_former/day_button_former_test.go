@@ -260,3 +260,99 @@ func TestGetUnselectableDays(t *testing.T) {
 		t.Errorf("at GetUnselectableDays result: %v no equal expected: %v", fmt.Sprint(result), fmt.Sprint(expect))
 	}
 }
+
+func TestIsDatesEqual(t *testing.T) {
+	t.Parallel()
+
+	locationUTC, errUTC := time.LoadLocation("UTC")
+	if errUTC != nil {
+		t.Errorf("load utc location fail: %v", errUTC)
+		return
+	}
+
+	locationMSK, errMSK := time.LoadLocation("Europe/Moscow")
+	if errMSK != nil {
+		t.Errorf("load msk location fail: %v", errMSK)
+		return
+	}
+
+	type args struct {
+		dateOne time.Time
+		dateTwo time.Time
+	}
+
+	tests := []struct {
+		name      string
+		args      args
+		wantEqual bool
+	}{
+		{
+			name: "same dates and times in UTC",
+			args: args{
+				dateOne: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
+				dateTwo: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
+			},
+			wantEqual: true,
+		},
+		{
+			name: "different dates",
+			args: args{
+				dateOne: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
+				dateTwo: time.Date(2020, 1, 2, 23, 0, 0, 0, locationUTC),
+			},
+			wantEqual: false,
+		},
+		{
+			name: "different dates and times",
+			args: args{
+				dateOne: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
+				dateTwo: time.Date(2020, 1, 2, 22, 0, 0, 0, locationUTC),
+			},
+			wantEqual: false,
+		},
+		{
+			name: "different times",
+			args: args{
+				dateOne: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
+				dateTwo: time.Date(2020, 1, 1, 22, 0, 0, 0, locationUTC),
+			},
+			wantEqual: true,
+		},
+		{
+			name: "corner case: timezones",
+			args: args{
+				dateOne: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
+				dateTwo: time.Date(2020, 1, 2, 2, 0, 0, 0, locationMSK),
+			},
+			wantEqual: true,
+		},
+		{
+			name: "corner case: new year + timezones",
+			args: args{
+				dateOne: time.Date(2019, 12, 31, 23, 0, 0, 0, locationUTC),
+				dateTwo: time.Date(2020, 1, 1, 2, 0, 0, 0, locationMSK),
+			},
+			wantEqual: true,
+		},
+		{
+			name: "different months across timezones",
+			args: args{
+				dateOne: time.Date(2020, 1, 31, 23, 0, 0, 0, locationUTC),
+				dateTwo: time.Date(2020, 2, 1, 2, 0, 0, 0, locationMSK),
+			},
+			wantEqual: true,
+		},
+	}
+
+	for _, tmpTT := range tests {
+		tt := tmpTT
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := isDatesEqual(tt.args.dateOne, tt.args.dateTwo)
+			if tt.wantEqual != result {
+				t.Errorf("not expected result for date %v and date %v", tt.args.dateOne, tt.args.dateTwo)
+			}
+		},
+		)
+	}
+}
