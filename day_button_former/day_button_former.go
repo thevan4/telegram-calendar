@@ -66,7 +66,8 @@ func newDefaultButtonsFormer() DayButtonFormer {
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
 func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string {
-	calendarDateTime := FormDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location())
+	calendarDateTime := time.Date(incomeYear, time.Month(incomeMonth), incomeDay, currentUserTime.Hour(), currentUserTime.Minute(),
+		currentUserTime.Second(), currentUserTime.Nanosecond(), currentUserTime.Location())
 	incomeDayS := strconv.Itoa(incomeDay)
 	resultButtonValue := new(strings.Builder)
 
