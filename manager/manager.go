@@ -11,7 +11,7 @@ import (
 
 // KeyboardManager ...
 type KeyboardManager interface {
-	GenerateCalendarKeyboard(callbackPayload string, currentUserTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
+	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
 	ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator)
 }
 
@@ -31,7 +31,7 @@ func NewManager(kg generator.KeyboardGenerator) *Manager {
 // GenerateCalendarKeyboard ...
 func (m *Manager) GenerateCalendarKeyboard(
 	callbackPayload string,
-	currentUserTime time.Time,
+	currentTime time.Time,
 ) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time) {
 	m.RLock()
 	// copy obj and map for normal concurrent work.
@@ -41,7 +41,7 @@ func (m *Manager) GenerateCalendarKeyboard(
 		),
 	)
 	m.RUnlock()
-	return kf.GenerateCalendarKeyboard(callbackPayload, currentUserTime)
+	return kf.GenerateCalendarKeyboard(callbackPayload, currentTime)
 }
 
 // ApplyNewOptions ...

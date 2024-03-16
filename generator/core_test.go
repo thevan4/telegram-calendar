@@ -16,7 +16,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 
 	type args struct {
 		callbackPayload string
-		currentUserTime time.Time
+		currentTime     time.Time
 	}
 
 	type wants struct {
@@ -44,7 +44,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 07 2023 to 06 2023",
 			args: args{
 				callbackPayload: `calendar/prm_00.07.2023`,
-				currentUserTime: ct72023,
+				currentTime:     ct72023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -270,7 +270,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 01 2023 to 12 2022",
 			args: args{
 				callbackPayload: `calendar/prm_00.01.2023`,
-				currentUserTime: ct12023,
+				currentTime:     ct12023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -499,7 +499,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 05 2023 to 06 2023",
 			args: args{
 				callbackPayload: `calendar/nem_00.05.2023`,
-				currentUserTime: ct52023,
+				currentTime:     ct52023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -726,7 +726,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 12 2022 to 01 2023",
 			args: args{
 				callbackPayload: `calendar/nem_00.12.2022`,
-				currentUserTime: ct122022,
+				currentTime:     ct122022,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -984,7 +984,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 01 2023 to 01 2022",
 			args: args{
 				callbackPayload: `calendar/pry_00.01.2023`,
-				currentUserTime: ct12023,
+				currentTime:     ct12023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -1241,7 +1241,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 01 2022 to 01 2023",
 			args: args{
 				callbackPayload: `calendar/ney_00.01.2022`,
-				currentUserTime: ct12022,
+				currentTime:     ct12022,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -1499,7 +1499,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 01 2023",
 			args: args{
 				callbackPayload: `calendar/sem_00.01.2023`,
-				currentUserTime: ct12023,
+				currentTime:     ct12023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -1581,7 +1581,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test 01 2023",
 			args: args{
 				callbackPayload: `calendar/sey_00.01.2023`,
-				currentUserTime: ct12023,
+				currentTime:     ct12023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -1647,7 +1647,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test go to 06 2023",
 			args: args{
 				callbackPayload: `calendar/shs_00.06.2023`,
-				currentUserTime: ct52023,
+				currentTime:     ct52023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -1874,7 +1874,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test go stay at 06 2023",
 			args: args{
 				callbackPayload: `calendar/sdn_00.06.2023`,
-				currentUserTime: ct62023,
+				currentTime:     ct62023,
 			},
 			want: wants{
 				// nothing.
@@ -1886,7 +1886,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "show pseudo-current month 06 2023",
 			args: args{
 				//callbackPayload: `calendar/shs_00.06.2023`,
-				currentUserTime: ct62023,
+				currentTime: ct62023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{
@@ -2113,7 +2113,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "test go stay at 06 2023",
 			args: args{
 				callbackPayload: `calendar/sed_01.01.2023`,
-				currentUserTime: ct12023,
+				currentTime:     ct12023,
 			},
 			want: wants{
 				inlineKeyboardMarkup: models.InlineKeyboardMarkup{},
@@ -2126,7 +2126,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 		tt := tmpTT
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			result, selectedDay := k.GenerateCalendarKeyboard(tt.args.callbackPayload, tt.args.currentUserTime)
+			result, selectedDay := k.GenerateCalendarKeyboard(tt.args.callbackPayload, tt.args.currentTime)
 
 			if !isSlicesOfSlicesEqual(tt.want.inlineKeyboardMarkup.InlineKeyboard, result.InlineKeyboard) {
 				t.Errorf("expected: %+v not equal result: %+v", tt.want, result)

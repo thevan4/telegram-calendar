@@ -8,7 +8,7 @@ import (
 
 // DaysButtonsText work with visual text only.
 type DaysButtonsText interface {
-	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string
+	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) string
 	ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText
 	GetUnselectableDays() map[time.Time]struct{}
 }
@@ -65,15 +65,15 @@ func newDefaultButtonsFormer() DayButtonFormer {
 }
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
-func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentUserTime time.Time) string {
-	calendarDateTime := time.Date(incomeYear, time.Month(incomeMonth), incomeDay, currentUserTime.Hour(), currentUserTime.Minute(),
-		currentUserTime.Second(), currentUserTime.Nanosecond(), currentUserTime.Location())
+func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) string {
+	calendarDateTime := time.Date(incomeYear, time.Month(incomeMonth), incomeDay, currentTime.Hour(), currentTime.Minute(),
+		currentTime.Second(), currentTime.Nanosecond(), currentTime.Location())
 	incomeDayS := strconv.Itoa(incomeDay)
 	resultButtonValue := new(strings.Builder)
 
 	resultButtonValue.Grow(len(incomeDayS))
 
-	isUnselectableDay := bf.isTimeUnselectable(FormDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location()))
+	isUnselectableDay := bf.isTimeUnselectable(FormDateTime(incomeDay, incomeMonth, incomeYear, currentTime.Location()))
 	if isUnselectableDay {
 		resultButtonValue.Grow(bf.buttons.prefixForNonSelectedDay.growLen)
 		resultButtonValue.Grow(bf.buttons.postfixForNonSelectedDay.growLen)
@@ -82,7 +82,7 @@ func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYea
 		resultButtonValue.Grow(bf.buttons.postfixForPickDay.growLen)
 	}
 
-	isCurrentDay := isDatesEqual(calendarDateTime, currentUserTime)
+	isCurrentDay := isDatesEqual(calendarDateTime, currentTime)
 	if isCurrentDay {
 		resultButtonValue.Grow(bf.buttons.prefixForCurrentDay.growLen)
 		resultButtonValue.Grow(bf.buttons.postfixForCurrentDay.growLen)

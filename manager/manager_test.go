@@ -35,7 +35,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 
 	type args struct {
 		callbackPayload string
-		currentUserTime time.Time
+		currentTime     time.Time
 	}
 
 	tests := []struct {
@@ -48,7 +48,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			name: "show pseudo-current month 06 2023",
 			args: args{
 				//callbackPayload: `calendar/shs_00.06.2023`,
-				currentUserTime: ct62023,
+				currentTime: ct62023,
 			},
 			wantInlineKeyboardMarkup: `{[[{« calendar/pry_00.06.2023} {< calendar/prm_00.06.2023} {Jun calendar/sem_00.06.2023} {🏩 calendar/sdn_00.06.2023} {2023 calendar/sey_00.06.2023} {> calendar/nem_00.06.2023} {» calendar/ney_00.06.2023}] [{Mo calendar/sdn_00.06.2023} {Tu calendar/sdn_00.06.2023} {We calendar/sdn_00.06.2023} {Th calendar/sdn_00.06.2023} {Fr calendar/sdn_00.06.2023} {Sa calendar/sdn_00.06.2023} {Su calendar/sdn_00.06.2023}] [{  calendar/sdn_00.06.2023} {  calendar/sdn_00.06.2023} {  calendar/sdn_00.06.2023} {1 calendar/sed_01.06.2023} {2 calendar/sed_02.06.2023} {3 calendar/sed_03.06.2023} {4 calendar/sed_04.06.2023}] [{5 calendar/sed_05.06.2023} {6 calendar/sed_06.06.2023} {7 calendar/sed_07.06.2023} {8 calendar/sed_08.06.2023} {9 calendar/sed_9.06.2023} {10 calendar/sed_10.06.2023} {11 calendar/sed_11.06.2023}] [{12 calendar/sed_12.06.2023} {13 calendar/sed_13.06.2023} {14 calendar/sed_14.06.2023} {15 calendar/sed_15.06.2023} {16 calendar/sed_16.06.2023} {17 calendar/sed_17.06.2023} {18 calendar/sed_18.06.2023}] [{19 calendar/sed_19.06.2023} {20 calendar/sed_20.06.2023} {21 calendar/sed_21.06.2023} {22 calendar/sed_22.06.2023} {23 calendar/sed_23.06.2023} {24 calendar/sed_24.06.2023} {25 calendar/sed_25.06.2023}] [{26 calendar/sed_26.06.2023} {27 calendar/sed_27.06.2023} {28 calendar/sed_28.06.2023} {29 calendar/sed_29.06.2023} {30 calendar/sed_30.06.2023} {  calendar/sdn_00.06.2023} {  calendar/sdn_00.06.2023}]]}`, //nolint:lll //omg
 			wantSelectedDay:          `0001-01-01 00:00:00 +0000 UTC`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 //nolint:lll    // zerodate {0 0 <nil>}, but cant check with .IsZero()
@@ -59,7 +59,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 		tt := tmpTT
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			resultKeyboard, resultSelectedDay := m.GenerateCalendarKeyboard(tt.args.callbackPayload, tt.args.currentUserTime)
+			resultKeyboard, resultSelectedDay := m.GenerateCalendarKeyboard(tt.args.callbackPayload, tt.args.currentTime)
 			if fmt.Sprint(resultSelectedDay) != tt.wantSelectedDay {
 				t.Errorf("manager GenerateCalendarKeyboard unexpected selected day: got: %v, want: %v", fmt.Sprint(resultSelectedDay), tt.wantSelectedDay)
 			}
