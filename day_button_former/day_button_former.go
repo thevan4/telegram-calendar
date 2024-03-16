@@ -73,7 +73,7 @@ func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYea
 
 	resultButtonValue.Grow(len(incomeDayS))
 
-	isUnselectableDay := bf.isDayUnselectable(FormDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location()))
+	isUnselectableDay := bf.isTimeUnselectable(FormDateTime(incomeDay, incomeMonth, incomeYear, currentUserTime.Location()))
 	if isUnselectableDay {
 		resultButtonValue.Grow(bf.buttons.prefixForNonSelectedDay.growLen)
 		resultButtonValue.Grow(bf.buttons.postfixForNonSelectedDay.growLen)
@@ -136,10 +136,7 @@ func FormDateTime(day, month, year int, location *time.Location) time.Time {
 	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
 }
 
-// TODO somehow compare times?.. example: today ok, but not after 20:00
-// dont need that? if day equal can we check time (selectible or?..)
-// isDayUnselectable compare befor/after times
-func (bf DayButtonFormer) isDayUnselectable(calendarDateTime time.Time) bool {
+func (bf DayButtonFormer) isTimeUnselectable(calendarDateTime time.Time) bool {
 	if calendarDateTime.Before(bf.unselectableDaysBeforeTime) ||
 		calendarDateTime.After(bf.unselectableDaysAfterTime) {
 		return true

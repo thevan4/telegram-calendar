@@ -113,6 +113,11 @@ func TestIsDayUnselectable(t *testing.T) {
 			incomeDate:     time.Date(2001, 1, 2, 0, 0, 0, 0, time.UTC),
 			isUnselectable: false,
 		},
+		{
+			name:           "selectable date, but unselectable time",
+			incomeDate:     time.Date(2000, 1, 1, 11, 0, 0, 0, time.UTC),
+			isUnselectable: true,
+		},
 	}
 
 	for _, tmpTT := range tests {
@@ -125,7 +130,7 @@ func TestIsDayUnselectable(t *testing.T) {
 				return
 			}
 
-			isUnselectable := bfImpl.isDayUnselectable(tt.incomeDate)
+			isUnselectable := bfImpl.isTimeUnselectable(tt.incomeDate)
 			if tt.isUnselectable != isUnselectable {
 				t.Errorf("at %v unexpected result, got %v, want %v", tt.name, isUnselectable, tt.isUnselectable)
 			}
