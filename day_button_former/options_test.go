@@ -202,10 +202,10 @@ func isDayButtonDataFieldsExpected(
 		return false
 	}
 
-	if !bf.unselectableDaysBeforeDate.Equal(unselectableDaysBeforeDate) {
+	if !bf.unselectableDaysBeforeTime.Equal(unselectableDaysBeforeDate) {
 		return false
 	}
-	if !bf.unselectableDaysAfterDate.Equal(unselectableDaysAfterDate) {
+	if !bf.unselectableDaysAfterTime.Equal(unselectableDaysAfterDate) {
 		return false
 	}
 

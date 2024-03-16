@@ -99,7 +99,7 @@ func ChangePostfixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(DayButtonFormer); ok {
-			dbf.unselectableDaysBeforeDate = t
+			dbf.unselectableDaysBeforeTime = t
 			return dbf
 		}
 		return bf
@@ -110,7 +110,7 @@ func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysBut
 func ChangeUnselectableDaysAfterDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(DayButtonFormer); ok {
-			dbf.unselectableDaysAfterDate = t
+			dbf.unselectableDaysAfterTime = t
 			return dbf
 		}
 		return bf

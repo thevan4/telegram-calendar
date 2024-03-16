@@ -16,8 +16,8 @@ type DaysButtonsText interface {
 // DayButtonFormer ...
 type DayButtonFormer struct {
 	buttons                    buttonsData
-	unselectableDaysBeforeDate time.Time
-	unselectableDaysAfterDate  time.Time
+	unselectableDaysBeforeTime time.Time
+	unselectableDaysAfterTime  time.Time
 	unselectableDays           map[time.Time]struct{}
 }
 
@@ -58,8 +58,8 @@ func newDefaultButtonsFormer() DayButtonFormer {
 				growLen: 3, //nolint:gomnd // len of value
 			},
 		},
-		unselectableDaysBeforeDate: time.Date(1990, 1, 1, 0, 0, 0, 0, time.UTC),
-		unselectableDaysAfterDate:  time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDaysBeforeTime: time.Date(1990, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDaysAfterTime:  time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC),
 		unselectableDays:           make(map[time.Time]struct{}),
 	}
 }
@@ -117,6 +117,7 @@ func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYea
 	return resultButtonValue.String()
 }
 
+// simple check date, don't compare time here.
 func isDatesEqual(dateOne, dateTwo time.Time) bool {
 	// set both dates to UTC before comparing
 	dateOneUTC := dateOne.UTC()
@@ -134,9 +135,12 @@ func FormDateTime(day, month, year int, location *time.Location) time.Time {
 	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
 }
 
+// TODO somehow compare times?.. example: today ok, but not after 20:00
+// dont need that? if day equal can we check time (selectible or?..)
+// isDayUnselectable compare befor/after times
 func (bf DayButtonFormer) isDayUnselectable(calendarDateTime time.Time) bool {
-	if calendarDateTime.Before(bf.unselectableDaysBeforeDate) ||
-		calendarDateTime.After(bf.unselectableDaysAfterDate) {
+	if calendarDateTime.Before(bf.unselectableDaysBeforeTime) ||
+		calendarDateTime.After(bf.unselectableDaysAfterTime) {
 		return true
 	}
 

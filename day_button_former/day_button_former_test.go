@@ -60,15 +60,15 @@ func TestNewButtonsFormer(t *testing.T) {
 	}
 
 	wantDaysBeforeDate := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
-	if !bf.unselectableDaysBeforeDate.Equal(wantDaysBeforeDate) {
-		t.Errorf("unselectableDaysBeforeDate not equal expected: %v, have %v",
-			wantDaysBeforeDate, bf.unselectableDaysBeforeDate)
+	if !bf.unselectableDaysBeforeTime.Equal(wantDaysBeforeDate) {
+		t.Errorf("unselectableDaysBeforeTime not equal expected: %v, have %v",
+			wantDaysBeforeDate, bf.unselectableDaysBeforeTime)
 	}
 
 	wantDaysAfterDate := time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)
-	if !bf.unselectableDaysAfterDate.Equal(wantDaysAfterDate) {
-		t.Errorf("unselectableDaysAfterDate not equal expected: %v, have %v",
-			wantDaysAfterDate, bf.unselectableDaysAfterDate)
+	if !bf.unselectableDaysAfterTime.Equal(wantDaysAfterDate) {
+		t.Errorf("unselectableDaysAfterTime not equal expected: %v, have %v",
+			wantDaysAfterDate, bf.unselectableDaysAfterTime)
 	}
 
 	wantUnselectableDay := time.Date(2001, 1, 1, 0, 0, 0, 0, time.UTC)
