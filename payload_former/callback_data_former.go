@@ -86,7 +86,7 @@ func formDateResponse(day, month, year int) string {
 	case month <= 0:
 		sb.WriteString(twoZeros)
 		sb.WriteString(dot)
-	case month < 9: //nolint:gomnd //move to the next digit.
+	case month < 10: //nolint:gomnd //move to the next digit.
 		sb.WriteString(zeroS)
 		fallthrough
 	default:
@@ -101,9 +101,9 @@ func formDateResponse(day, month, year int) string {
 		skipAddYear = true
 	case year <= 9: //nolint:gomnd //move to the next digit.
 		sb.WriteString(threeZeros)
-	case year <= 99: //nolint:gomnd //move to the next digit.
+	case year < 100: //nolint:gomnd //move to the next digit.
 		sb.WriteString(twoZeros)
-	case year <= 999: //nolint:gomnd //move to the next digit.
+	case year < 1000: //nolint:gomnd //move to the next digit.
 		sb.WriteString(zeroS)
 	}
 	if !skipAddYear {
