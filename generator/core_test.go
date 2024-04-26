@@ -2157,3 +2157,137 @@ func TestGetUnselectableDays(t *testing.T) {
 		t.Errorf("at GetUnselectableDays result: %v no equal expected: %v", fmt.Sprint(result), fmt.Sprint(expect))
 	}
 }
+
+func TestGetCurrentConfig(t *testing.T) {
+	t.Parallel()
+
+	const (
+		prefixForCurrentDay      = "("
+		postfixForCurrentDay     = ")"
+		prefixForNonSelectedDay  = "⚠️"
+		postfixForNonSelectedDay = "⛔️"
+		pickDayPrefix            = "❤️"
+		pickDayPostfix           = "💓"
+		poop                     = "💩"
+		yearsBackForChoose       = 1
+		yeYearsForwardForChoose  = 2
+	)
+
+	newDaysNames := [7]string{"1d", "2d", "3d", "4d", "5d", "6d", "7d"}
+	newMonthNames := [12]string{"1m", "2m", "3m", "4m", "5m", "6m", "7m", "8m", "9m", "10m", "11m", "12m"}
+	newUnselectableDaysBeforeDate := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
+	newUnselectableDaysAfterDate := time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)
+	newUnselectableDays := map[time.Time]struct{}{time.Date(2001,
+		1, 1, 0, 0, 0, 0, time.UTC): {}}
+
+	kf := NewKeyboardFormer(
+		ChangeYearsBackForChoose(yearsBackForChoose),
+		ChangeYearsForwardForChoose(yeYearsForwardForChoose),
+		ChangeDaysNames(newDaysNames),
+		ChangeMonthNames(newMonthNames),
+		ChangeHomeButtonForBeauty(poop),
+		ChangePayloadEncoderDecoder(customPayloadEncoderDecoder{}),
+		NewButtonsTextWrapper(
+			day_button_former.ChangePrefixForCurrentDay(prefixForCurrentDay),
+			day_button_former.ChangePostfixForCurrentDay(postfixForCurrentDay),
+			day_button_former.ChangePrefixForNonSelectedDay(prefixForNonSelectedDay),
+			day_button_former.ChangePostfixForNonSelectedDay(postfixForNonSelectedDay),
+			day_button_former.ChangePrefixForPickDay(pickDayPrefix),
+			day_button_former.ChangePostfixForPickDay(pickDayPostfix),
+			day_button_former.ChangeUnselectableDaysBeforeDate(newUnselectableDaysBeforeDate),
+			day_button_former.ChangeUnselectableDaysAfterDate(newUnselectableDaysAfterDate),
+			day_button_former.ChangeUnselectableDays(newUnselectableDays),
+		),
+	)
+
+	currentConfig := kf.GetCurrentConfig()
+
+	if currentConfig.YearsBackForChoose != yearsBackForChoose {
+		t.Errorf("currentConfig.YearsBackForChoose %v no equal real YearsBackForChoose: %v",
+			currentConfig.YearsBackForChoose, yearsBackForChoose)
+	}
+
+	if currentConfig.YearsForwardForChoose != yeYearsForwardForChoose {
+		t.Errorf("currentConfig.YearsForwardForChoose %v no equal real YearsForwardForChoose: %v",
+			currentConfig.YearsForwardForChoose, yeYearsForwardForChoose)
+	}
+
+	if currentConfig.DaysNames != newDaysNames {
+		t.Errorf("DaysNames.PrefixForCurrentDay %v no equal real DaysNames: %v",
+			currentConfig.DaysNames, newDaysNames)
+	}
+
+	if currentConfig.MonthNames != newMonthNames {
+		t.Errorf("MonthNames.PrefixForCurrentDay %v no equal real MonthNames: %v",
+			currentConfig.MonthNames, newMonthNames)
+	}
+
+	if currentConfig.HomeButtonForBeauty != poop {
+		t.Errorf("currentConfig.HomeButtonForBeauty %v no equal real HomeButtonForBeauty: %v",
+			currentConfig.HomeButtonForBeauty, poop)
+	}
+
+	_, okPayloadEncoderDecoder := currentConfig.PayloadEncoderDecoder.(customPayloadEncoderDecoder)
+	if !okPayloadEncoderDecoder {
+		t.Error("somehow unknown customPayloadEncoderDecoder object")
+	}
+
+	if currentConfig.PrefixForCurrentDay != prefixForCurrentDay {
+		t.Errorf("currentConfig.PrefixForCurrentDay %v no equal real PrefixForCurrentDay: %v",
+			currentConfig.PrefixForCurrentDay, prefixForCurrentDay)
+	}
+
+	if currentConfig.PostfixForCurrentDay != postfixForCurrentDay {
+		t.Errorf("currentConfig.PostfixForCurrentDay %v no equal real PostfixForCurrentDay: %v",
+			currentConfig.PostfixForCurrentDay, postfixForCurrentDay)
+	}
+
+	if currentConfig.PrefixForNonSelectedDay != prefixForNonSelectedDay {
+		t.Errorf("currentConfig.PrefixForNonSelectedDay %v no equal real PrefixForNonSelectedDay: %v",
+			currentConfig.PrefixForNonSelectedDay, prefixForNonSelectedDay)
+	}
+
+	if currentConfig.PostfixForNonSelectedDay != postfixForNonSelectedDay {
+		t.Errorf("currentConfig.PostfixForNonSelectedDay %v no equal real PostfixForNonSelectedDay: %v",
+			currentConfig.PostfixForNonSelectedDay, postfixForNonSelectedDay)
+	}
+
+	if currentConfig.PrefixForPickDay != pickDayPrefix {
+		t.Errorf("currentConfig.PrefixForPickDay %v no equal real PrefixForPickDay: %v",
+			currentConfig.PrefixForPickDay, pickDayPrefix)
+	}
+
+	if currentConfig.PostfixForPickDay != pickDayPostfix {
+		t.Errorf("currentConfig.PostfixForPickDay %v no equal real PostfixForPickDay: %v",
+			currentConfig.PostfixForPickDay, pickDayPostfix)
+	}
+
+	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate {
+		t.Errorf("currentConfig.UnselectableDaysBeforeTime %v no equal real UnselectableDaysBeforeTime: %v",
+			currentConfig.UnselectableDaysBeforeTime, newUnselectableDaysBeforeDate)
+	}
+
+	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate {
+		t.Errorf("currentConfig.UnselectableDaysAfterTime %v no equal real UnselectableDaysAfterTime: %v",
+			currentConfig.UnselectableDaysAfterTime, newUnselectableDaysAfterDate)
+	}
+
+	if !isEqualUnselectableDaysMaps(currentConfig.UnselectableDays, newUnselectableDays) {
+		t.Errorf("get current config unselectable days %v not equal real unselectable days %v", currentConfig.UnselectableDays,
+			newUnselectableDays)
+	}
+}
+
+func isEqualUnselectableDaysMaps(one, two map[time.Time]struct{}) bool {
+	if len(one) != len(two) {
+		return false
+	}
+
+	for k := range one {
+		if _, inMap := two[k]; !inMap {
+			return false
+		}
+	}
+
+	return true
+}

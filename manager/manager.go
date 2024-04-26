@@ -13,6 +13,7 @@ import (
 type KeyboardManager interface {
 	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
 	ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator)
+	GetCurrentConfig() FlatConfig
 }
 
 // Manager ...
@@ -62,4 +63,30 @@ func copyMap(src map[time.Time]struct{}) map[time.Time]struct{} {
 		dst[k] = v
 	}
 	return dst
+}
+
+// GetCurrentConfig ...
+func (m *Manager) GetCurrentConfig() FlatConfig {
+	m.RLock()
+	defer m.RUnlock()
+	keyboardFormerConfig := m.keyboardFormer.GetCurrentConfig()
+	return FlatConfig{
+		YearsBackForChoose:         keyboardFormerConfig.YearsBackForChoose,
+		YearsForwardForChoose:      keyboardFormerConfig.YearsForwardForChoose,
+		SumYearsForChoose:          keyboardFormerConfig.SumYearsForChoose,
+		DaysNames:                  keyboardFormerConfig.DaysNames,
+		MonthNames:                 keyboardFormerConfig.MonthNames,
+		HomeButtonForBeauty:        keyboardFormerConfig.HomeButtonForBeauty,
+		PayloadEncoderDecoder:      keyboardFormerConfig.PayloadEncoderDecoder,
+		ButtonsTextWrapper:         keyboardFormerConfig.ButtonsTextWrapper,
+		PrefixForCurrentDay:        keyboardFormerConfig.PrefixForCurrentDay,
+		PostfixForCurrentDay:       keyboardFormerConfig.PostfixForCurrentDay,
+		PrefixForNonSelectedDay:    keyboardFormerConfig.PrefixForNonSelectedDay,
+		PostfixForNonSelectedDay:   keyboardFormerConfig.PostfixForNonSelectedDay,
+		PrefixForPickDay:           keyboardFormerConfig.PrefixForPickDay,
+		PostfixForPickDay:          keyboardFormerConfig.PostfixForPickDay,
+		UnselectableDaysBeforeTime: keyboardFormerConfig.UnselectableDaysBeforeTime,
+		UnselectableDaysAfterTime:  keyboardFormerConfig.UnselectableDaysAfterTime,
+		UnselectableDays:           keyboardFormerConfig.UnselectableDays,
+	}
 }

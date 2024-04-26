@@ -11,6 +11,7 @@ type DaysButtonsText interface {
 	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) string
 	ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText
 	GetUnselectableDays() map[time.Time]struct{}
+	GetCurrentConfig() FlatConfig
 }
 
 // DayButtonFormer ...
@@ -152,4 +153,20 @@ func (bf DayButtonFormer) isTimeUnselectable(calendarDateTime time.Time) bool {
 // GetUnselectableDays ...
 func (bf DayButtonFormer) GetUnselectableDays() map[time.Time]struct{} {
 	return bf.unselectableDays
+}
+
+// GetCurrentConfig ...
+func (bf DayButtonFormer) GetCurrentConfig() FlatConfig {
+	return FlatConfig{
+		ButtonsTextWrapper:         bf,
+		PrefixForCurrentDay:        bf.buttons.prefixForCurrentDay.value,
+		PostfixForCurrentDay:       bf.buttons.postfixForCurrentDay.value,
+		PrefixForNonSelectedDay:    bf.buttons.prefixForNonSelectedDay.value,
+		PostfixForNonSelectedDay:   bf.buttons.postfixForNonSelectedDay.value,
+		PrefixForPickDay:           bf.buttons.prefixForPickDay.value,
+		PostfixForPickDay:          bf.buttons.postfixForPickDay.value,
+		UnselectableDaysBeforeTime: bf.unselectableDaysBeforeTime,
+		UnselectableDaysAfterTime:  bf.unselectableDaysAfterTime,
+		UnselectableDays:           bf.unselectableDays,
+	}
 }
