@@ -32,6 +32,11 @@ func (fi fakeImplKF) GetUnselectableDays() map[time.Time]struct{} {
 	return nil
 }
 
+// GetCurrentConfig ...
+func (fi fakeImplKF) GetCurrentConfig() FlatConfig {
+	return FlatConfig{}
+}
+
 func newFakeImplKF(some string) KeyboardGenerator {
 	return fakeImplKF{someField: some}
 }

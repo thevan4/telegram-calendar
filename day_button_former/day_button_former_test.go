@@ -361,3 +361,95 @@ func TestIsDatesEqual(t *testing.T) {
 		)
 	}
 }
+
+func TestGetCurrentConfig(t *testing.T) {
+	t.Parallel()
+
+	const (
+		prefixForCurrentDay      = "("
+		postfixForCurrentDay     = ")"
+		prefixForNonSelectedDay  = "⚠️"
+		postfixForNonSelectedDay = "⛔️"
+		pickDayPrefix            = "❤️"
+		pickDayPostfix           = "💓"
+	)
+
+	newUnselectableDaysBeforeDate := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
+	newUnselectableDaysAfterDate := time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)
+	newUnselectableDays := map[time.Time]struct{}{time.Date(2001,
+		1, 1, 0, 0, 0, 0, time.UTC): {}}
+
+	newBF := NewButtonsFormer(
+		ChangePrefixForCurrentDay(prefixForCurrentDay),
+		ChangePostfixForCurrentDay(postfixForCurrentDay),
+		ChangePrefixForNonSelectedDay(prefixForNonSelectedDay),
+		ChangePostfixForNonSelectedDay(postfixForNonSelectedDay),
+		ChangePrefixForPickDay(pickDayPrefix),
+		ChangePostfixForPickDay(pickDayPostfix),
+		ChangeUnselectableDaysBeforeDate(newUnselectableDaysBeforeDate),
+		ChangeUnselectableDaysAfterDate(newUnselectableDaysAfterDate),
+		ChangeUnselectableDays(newUnselectableDays),
+	)
+
+	currentConfig := newBF.GetCurrentConfig()
+
+	if currentConfig.PrefixForCurrentDay != prefixForCurrentDay {
+		t.Errorf("currentConfig.PrefixForCurrentDay %v no equal real PrefixForCurrentDay: %v",
+			currentConfig.PrefixForCurrentDay, prefixForCurrentDay)
+	}
+
+	if currentConfig.PostfixForCurrentDay != postfixForCurrentDay {
+		t.Errorf("currentConfig.PostfixForCurrentDay %v no equal real PostfixForCurrentDay: %v",
+			currentConfig.PostfixForCurrentDay, postfixForCurrentDay)
+	}
+
+	if currentConfig.PrefixForNonSelectedDay != prefixForNonSelectedDay {
+		t.Errorf("currentConfig.PrefixForNonSelectedDay %v no equal real PrefixForNonSelectedDay: %v",
+			currentConfig.PrefixForNonSelectedDay, prefixForNonSelectedDay)
+	}
+
+	if currentConfig.PostfixForNonSelectedDay != postfixForNonSelectedDay {
+		t.Errorf("currentConfig.PostfixForNonSelectedDay %v no equal real PostfixForNonSelectedDay: %v",
+			currentConfig.PostfixForNonSelectedDay, postfixForNonSelectedDay)
+	}
+
+	if currentConfig.PrefixForPickDay != pickDayPrefix {
+		t.Errorf("currentConfig.PrefixForPickDay %v no equal real PrefixForPickDay: %v",
+			currentConfig.PrefixForPickDay, pickDayPrefix)
+	}
+
+	if currentConfig.PostfixForPickDay != pickDayPostfix {
+		t.Errorf("currentConfig.PostfixForPickDay %v no equal real PostfixForPickDay: %v",
+			currentConfig.PostfixForPickDay, pickDayPostfix)
+	}
+
+	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate {
+		t.Errorf("currentConfig.UnselectableDaysBeforeTime %v no equal real UnselectableDaysBeforeTime: %v",
+			currentConfig.UnselectableDaysBeforeTime, newUnselectableDaysBeforeDate)
+	}
+
+	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate {
+		t.Errorf("currentConfig.UnselectableDaysAfterTime %v no equal real UnselectableDaysAfterTime: %v",
+			currentConfig.UnselectableDaysAfterTime, newUnselectableDaysAfterDate)
+	}
+
+	if !isEqualUnselectableDaysMaps(currentConfig.UnselectableDays, newUnselectableDays) {
+		t.Errorf("get current config unselectable days %v not equal real unselectable days %v", currentConfig.UnselectableDays,
+			newUnselectableDays)
+	}
+
+}
+
+func isEqualUnselectableDaysMaps(one, two map[time.Time]struct{}) bool {
+	if len(one) != len(two) {
+		return false
+	}
+
+	for k := range one {
+		if _, inMap := two[k]; !inMap {
+			return false
+		}
+	}
+
+	return true
+}

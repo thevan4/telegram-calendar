@@ -33,6 +33,11 @@ func (fi fakeImplDBT) GetUnselectableDays() map[time.Time]struct{} {
 	return nil
 }
 
+// GetCurrentConfig ...
+func (fi fakeImplDBT) GetCurrentConfig() FlatConfig {
+	return FlatConfig{}
+}
+
 func TestApplyNewOptions(t *testing.T) {
 	t.Parallel()
 

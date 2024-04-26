@@ -13,6 +13,7 @@ type KeyboardGenerator interface {
 	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
 	ApplyNewOptions(options ...func(KeyboardGenerator) KeyboardGenerator) KeyboardGenerator
 	GetUnselectableDays() map[time.Time]struct{}
+	GetCurrentConfig() FlatConfig
 }
 
 // Generator ...
@@ -257,4 +258,28 @@ func (k KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []mod
 // GetUnselectableDays ...
 func (k KeyboardFormer) GetUnselectableDays() map[time.Time]struct{} {
 	return k.buttonsTextWrapper.GetUnselectableDays()
+}
+
+// GetCurrentConfig ...
+func (k KeyboardFormer) GetCurrentConfig() FlatConfig {
+	dayButtonFormerConfig := k.buttonsTextWrapper.GetCurrentConfig()
+	return FlatConfig{
+		YearsBackForChoose:         k.yearsBackForChoose,
+		YearsForwardForChoose:      k.yearsForwardForChoose,
+		SumYearsForChoose:          k.sumYearsForChoose,
+		DaysNames:                  k.daysNames,
+		MonthNames:                 k.monthNames,
+		HomeButtonForBeauty:        k.homeButtonForBeauty,
+		PayloadEncoderDecoder:      k.payloadEncoderDecoder,
+		ButtonsTextWrapper:         k.buttonsTextWrapper,
+		PrefixForCurrentDay:        dayButtonFormerConfig.PrefixForCurrentDay,
+		PostfixForCurrentDay:       dayButtonFormerConfig.PostfixForCurrentDay,
+		PrefixForNonSelectedDay:    dayButtonFormerConfig.PrefixForNonSelectedDay,
+		PostfixForNonSelectedDay:   dayButtonFormerConfig.PostfixForNonSelectedDay,
+		PrefixForPickDay:           dayButtonFormerConfig.PrefixForPickDay,
+		PostfixForPickDay:          dayButtonFormerConfig.PostfixForPickDay,
+		UnselectableDaysBeforeTime: dayButtonFormerConfig.UnselectableDaysBeforeTime,
+		UnselectableDaysAfterTime:  dayButtonFormerConfig.UnselectableDaysAfterTime,
+		UnselectableDays:           dayButtonFormerConfig.UnselectableDays,
+	}
 }
