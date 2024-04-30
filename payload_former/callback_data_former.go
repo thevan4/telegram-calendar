@@ -74,7 +74,7 @@ func formDateResponse(day, month, year int) string {
 	case day <= 0:
 		sb.WriteString(twoZeros)
 		sb.WriteString(dot)
-	case day < 9: //nolint:gomnd //move to the next digit.
+	case day < 10: //nolint:gomnd //move to the next digit.
 		sb.WriteString(zeroS)
 		fallthrough
 	default:
