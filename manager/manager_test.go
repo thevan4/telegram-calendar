@@ -25,12 +25,12 @@ func (cpedm customPayloadEncoderDecoderAtManager) Decoding(_ string) models.Payl
 
 func TestGenerateCalendarKeyboard(t *testing.T) {
 	t.Parallel()
-	m := NewManager(generator.NewKeyboardFormer(
+	m := NewManager(
 		generator.ChangeYearsBackForChoose(2),
 		generator.NewButtonsTextWrapper(
 			day_button_former.ChangePrefixForNonSelectedDay(""),
 		),
-	))
+	)
 
 	ct62023 := time.Date(2023, 6, 1, 0, 0, 0, 0, time.UTC)
 
@@ -76,7 +76,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 func TestApplyNewOptions(t *testing.T) {
 	t.Parallel()
 
-	m := NewManager(generator.NewKeyboardFormer())
+	m := NewManager()
 
 	m.ApplyNewOptions(
 		generator.ChangeYearsBackForChoose(0),
@@ -114,12 +114,12 @@ func TestApplyNewOptions(t *testing.T) {
 func TestGetUnselectableDays(t *testing.T) {
 	t.Parallel()
 
-	m := NewManager(generator.NewKeyboardFormer(
+	m := NewManager(
 		generator.NewButtonsTextWrapper(
 			day_button_former.ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
 				1, 1, 0, 0, 0, 0, time.UTC): {}}),
 		),
-	))
+	)
 
 	expect := map[time.Time]struct{}{time.Date(2001,
 		1, 1, 0, 0, 0, 0, time.UTC): {}}
@@ -178,7 +178,7 @@ func TestGetCurrentConfig(t *testing.T) {
 	newUnselectableDays := map[time.Time]struct{}{time.Date(2001,
 		1, 1, 0, 0, 0, 0, time.UTC): {}}
 
-	m := NewManager(generator.NewKeyboardFormer(
+	m := NewManager(
 		generator.ChangeYearsBackForChoose(yearsBackForChoose),
 		generator.ChangeYearsForwardForChoose(yeYearsForwardForChoose),
 		generator.ChangeDaysNames(newDaysNames),
@@ -195,7 +195,6 @@ func TestGetCurrentConfig(t *testing.T) {
 			day_button_former.ChangeUnselectableDaysAfterDate(newUnselectableDaysAfterDate),
 			day_button_former.ChangeUnselectableDays(newUnselectableDays),
 		),
-	),
 	)
 
 	currentConfig := m.GetCurrentConfig()

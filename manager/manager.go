@@ -23,9 +23,14 @@ type Manager struct {
 }
 
 // NewManager создает новый экземпляр Manager с настраиваемым KeyboardGenerator.
-func NewManager(kg generator.KeyboardGenerator) *Manager {
+func NewManager(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator) *Manager {
+	defaultManager := newDefaultManager()
+	defaultManager.ApplyNewOptions(options...)
+	return defaultManager
+}
+func newDefaultManager() *Manager {
 	return &Manager{
-		keyboardFormer: kg,
+		keyboardFormer: generator.NewKeyboardFormer(),
 	}
 }
 
