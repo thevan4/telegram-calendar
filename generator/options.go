@@ -6,12 +6,12 @@ import (
 )
 
 // ApplyNewOptions ...
-func (k KeyboardFormer) ApplyNewOptions(options ...func(KeyboardGenerator) KeyboardGenerator) KeyboardGenerator {
+func (k *KeyboardFormer) ApplyNewOptions(options ...func(KeyboardGenerator) KeyboardGenerator) KeyboardGenerator {
 	var kg KeyboardGenerator = k
 	for _, option := range options {
 		kg = option(kg)
 	}
-	return kg
+	return k
 }
 
 // ApplyNewOptionsForButtonsTextWrapper ...
@@ -19,7 +19,7 @@ func ApplyNewOptionsForButtonsTextWrapper(
 	options ...func(day_button_former.DaysButtonsText) day_button_former.DaysButtonsText,
 ) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.buttonsTextWrapper = k.buttonsTextWrapper.ApplyNewOptions(options...)
 			return k
 		}
@@ -30,7 +30,7 @@ func ApplyNewOptionsForButtonsTextWrapper(
 // ChangeYearsBackForChoose ...
 func ChangeYearsBackForChoose(yearsBackForChoose int) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.sumYearsForChoose = (k.sumYearsForChoose - k.yearsBackForChoose) + yearsBackForChoose
 			k.yearsBackForChoose = yearsBackForChoose
 			return k
@@ -42,7 +42,7 @@ func ChangeYearsBackForChoose(yearsBackForChoose int) func(KeyboardGenerator) Ke
 // ChangeYearsForwardForChoose ...
 func ChangeYearsForwardForChoose(yearsForwardForChoose int) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.sumYearsForChoose = (k.sumYearsForChoose - k.yearsForwardForChoose) + yearsForwardForChoose
 			k.yearsForwardForChoose = yearsForwardForChoose
 			return k
@@ -54,7 +54,7 @@ func ChangeYearsForwardForChoose(yearsForwardForChoose int) func(KeyboardGenerat
 // ChangeDaysNames ...
 func ChangeDaysNames(daysNames [7]string) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.daysNames = daysNames
 			return k
 		}
@@ -65,7 +65,7 @@ func ChangeDaysNames(daysNames [7]string) func(KeyboardGenerator) KeyboardGenera
 // ChangeMonthNames ...
 func ChangeMonthNames(monthNames [12]string) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.monthNames = monthNames
 			return k
 		}
@@ -76,7 +76,7 @@ func ChangeMonthNames(monthNames [12]string) func(KeyboardGenerator) KeyboardGen
 // ChangeHomeButtonForBeauty ...
 func ChangeHomeButtonForBeauty(homeButtonForBeauty string) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.homeButtonForBeauty = homeButtonForBeauty
 			return k
 		}
@@ -87,7 +87,7 @@ func ChangeHomeButtonForBeauty(homeButtonForBeauty string) func(KeyboardGenerato
 // ChangePayloadEncoderDecoder ...
 func ChangePayloadEncoderDecoder(payloadEncoderDecoder payload_former.PayloadEncoderDecoder) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.payloadEncoderDecoder = payloadEncoderDecoder
 			return k
 		}

@@ -23,7 +23,7 @@ func TestNewButtonsFormer(t *testing.T) {
 			1, 1, 0, 0, 0, 0, time.UTC): {}}),
 	)
 
-	bf, ok := newBF.(DayButtonFormer)
+	bf, ok := newBF.(*DayButtonFormer)
 	if !ok {
 		t.Error("somehow unknown NewButtonsFormer object")
 		return
@@ -124,7 +124,7 @@ func TestIsDayUnselectable(t *testing.T) {
 		tt := tmpTT
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			bfImpl, ok := bf.(DayButtonFormer)
+			bfImpl, ok := bf.(*DayButtonFormer)
 			if !ok {
 				t.Error("somehow unknown NewButtonsFormer object")
 				return

@@ -43,8 +43,8 @@ func NewButtonsFormer(
 	return newDefaultButtonsFormer().ApplyNewOptions(options...)
 }
 
-func newDefaultButtonsFormer() DayButtonFormer {
-	return DayButtonFormer{
+func newDefaultButtonsFormer() *DayButtonFormer {
+	return &DayButtonFormer{
 		buttons: buttonsData{
 			prefixForCurrentDay: extraButtonInfo{
 				value:   "",
@@ -66,7 +66,7 @@ func newDefaultButtonsFormer() DayButtonFormer {
 }
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
-func (bf DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) string {
+func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) string {
 	calendarDateTime := time.Date(incomeYear, time.Month(incomeMonth), incomeDay, currentTime.Hour(), currentTime.Minute(),
 		currentTime.Second(), currentTime.Nanosecond(), currentTime.Location())
 	incomeDayS := strconv.Itoa(incomeDay)
@@ -137,7 +137,7 @@ func FormDateTime(day, month, year int, location *time.Location) time.Time {
 	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
 }
 
-func (bf DayButtonFormer) isTimeUnselectable(calendarDateTime time.Time) bool {
+func (bf *DayButtonFormer) isTimeUnselectable(calendarDateTime time.Time) bool {
 	if calendarDateTime.Before(bf.unselectableDaysBeforeTime) ||
 		calendarDateTime.After(bf.unselectableDaysAfterTime) {
 		return true
@@ -151,14 +151,13 @@ func (bf DayButtonFormer) isTimeUnselectable(calendarDateTime time.Time) bool {
 }
 
 // GetUnselectableDays ...
-func (bf DayButtonFormer) GetUnselectableDays() map[time.Time]struct{} {
+func (bf *DayButtonFormer) GetUnselectableDays() map[time.Time]struct{} {
 	return bf.unselectableDays
 }
 
 // GetCurrentConfig ...
-func (bf DayButtonFormer) GetCurrentConfig() FlatConfig {
+func (bf *DayButtonFormer) GetCurrentConfig() FlatConfig {
 	return FlatConfig{
-		ButtonsTextWrapper:         bf,
 		PrefixForCurrentDay:        bf.buttons.prefixForCurrentDay.value,
 		PostfixForCurrentDay:       bf.buttons.postfixForCurrentDay.value,
 		PrefixForNonSelectedDay:    bf.buttons.prefixForNonSelectedDay.value,

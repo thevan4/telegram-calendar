@@ -669,7 +669,7 @@ func TestGenerateCurrentMonth(t *testing.T) {
 		),
 	)
 
-	k, okKeyboardFormer := kf.(KeyboardFormer)
+	k, okKeyboardFormer := kf.(*KeyboardFormer)
 	if !okKeyboardFormer {
 		t.Error("somehow unknown NewKeyboardFormer object")
 		return

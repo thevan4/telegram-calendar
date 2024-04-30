@@ -86,7 +86,7 @@ func TestApplyNewOptions(t *testing.T) {
 		),
 	)
 
-	k, okKeyboardFormer := kf.(KeyboardFormer)
+	k, okKeyboardFormer := kf.(*KeyboardFormer)
 	if okKeyboardFormer { //nolint:nestif //ok for tests.
 		if k.yearsBackForChoose != 0 {
 			t.Errorf("yearsBackForChoose have: %v, want: %v", k.yearsBackForChoose, 0)
@@ -109,9 +109,9 @@ func TestApplyNewOptions(t *testing.T) {
 			t.Error("somehow unknown customPayloadEncoderDecoder object")
 		}
 
-		btw, okDayButtonFormer := k.buttonsTextWrapper.(day_button_former.DayButtonFormer)
+		btw, okDayButtonFormer := k.buttonsTextWrapper.(*day_button_former.DayButtonFormer)
 		if okDayButtonFormer {
-			const expectedButtonsTextWrapper = `{{{0 1} {| 1} { 0} { 0} { 0} { 0}} {0 63713433600 <nil>} {0 64029052800 <nil>} map[{0 63776592000 <nil>}:{}]}` //nolint:lll //ok tests.
+			const expectedButtonsTextWrapper = `&{{{0 1} {| 1} { 0} { 0} { 0} { 0}} {0 63713433600 <nil>} {0 64029052800 <nil>} map[{0 63776592000 <nil>}:{}]}` //nolint:lll //ok tests.
 			if expectedButtonsTextWrapper != fmt.Sprint(btw) {
 				t.Errorf("got: %v, expectedButtonsTextWrapper: %v", fmt.Sprint(btw), expectedButtonsTextWrapper)
 			}

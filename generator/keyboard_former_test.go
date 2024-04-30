@@ -33,7 +33,7 @@ func TestNewCustomKeyboardFormer(t *testing.T) {
 		),
 	)
 
-	k, okKeyboardFormer := kf.(KeyboardFormer)
+	k, okKeyboardFormer := kf.(*KeyboardFormer)
 	if okKeyboardFormer { //nolint:nestif //ok for tests.
 		if k.yearsBackForChoose != 0 {
 			t.Errorf("yearsBackForChoose have: %v, want: %v", k.yearsBackForChoose, 0)
@@ -56,9 +56,9 @@ func TestNewCustomKeyboardFormer(t *testing.T) {
 			t.Error("somehow unknown customPayloadEncoderDecoder object")
 		}
 
-		btw, okDayButtonFormer := k.buttonsTextWrapper.(day_button_former.DayButtonFormer)
+		btw, okDayButtonFormer := k.buttonsTextWrapper.(*day_button_former.DayButtonFormer)
 		if okDayButtonFormer {
-			const expectedButtonsTextWrapper = `{{{! 1} {| 1} {- 1} {= 1} {+ 1} {* 1}} {0 63082324800 <nil>} {0 63145479600 <nil>} map[{0 63113904000 <nil>}:{}]}` //nolint:lll //ok tests.
+			const expectedButtonsTextWrapper = `&{{{! 1} {| 1} {- 1} {= 1} {+ 1} {* 1}} {0 63082324800 <nil>} {0 63145479600 <nil>} map[{0 63113904000 <nil>}:{}]}` //nolint:lll //ok tests.
 			if expectedButtonsTextWrapper != fmt.Sprint(btw) {
 				t.Errorf("got: %v, expectedButtonsTextWrapper: %v", fmt.Sprint(btw), expectedButtonsTextWrapper)
 			}
@@ -90,7 +90,7 @@ func TestKeyboardFormerDefaultEncoding(t *testing.T) {
 	expect := "calendar/sdn_01.01.2023"
 	kf := NewKeyboardFormer()
 
-	k, okKeyboardFormer := kf.(KeyboardFormer)
+	k, okKeyboardFormer := kf.(*KeyboardFormer)
 	if okKeyboardFormer {
 		result := k.payloadEncoderDecoder.Encoding(silentDoNothingAction, 1, 1, 2023)
 		if result != expect {
@@ -114,7 +114,7 @@ func TestKeyboardFormerDecoding(t *testing.T) {
 		CalendarYear:  2023,
 	}
 
-	k, okKeyboardFormer := kf.(KeyboardFormer)
+	k, okKeyboardFormer := kf.(*KeyboardFormer)
 	if !okKeyboardFormer {
 		t.Error("somehow unknown NewKeyboardFormer object")
 		return
