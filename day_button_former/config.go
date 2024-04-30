@@ -6,7 +6,6 @@ import (
 
 // FlatConfig ...
 type FlatConfig struct {
-	ButtonsTextWrapper         DaysButtonsText
 	PrefixForCurrentDay        string
 	PostfixForCurrentDay       string
 	PrefixForNonSelectedDay    string

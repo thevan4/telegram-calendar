@@ -146,7 +146,7 @@ func TestApplyNewOptions(t *testing.T) {
 				ChangeUnselectableDaysAfterDate(tt.incomeArgs.newUnselectableDaysAfterDate),
 				ChangeUnselectableDays(tt.incomeArgs.newUnselectableDays),
 			)
-			b, ok := bf.(DayButtonFormer)
+			b, ok := bf.(*DayButtonFormer)
 			if ok {
 				if !isDayButtonDataFieldsExpected(
 					b,
@@ -171,7 +171,7 @@ func TestApplyNewOptions(t *testing.T) {
 }
 
 func isDayButtonDataFieldsExpected(
-	bf DayButtonFormer,
+	bf *DayButtonFormer,
 	prefixForCurrentDay string,
 	postfixForCurrentDay string,
 	prefixForNonSelectedDay string,

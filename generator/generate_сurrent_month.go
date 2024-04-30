@@ -7,7 +7,7 @@ import (
 )
 
 // GenerateCurrentMonth ...
-func (k KeyboardFormer) GenerateCurrentMonth(month, year int, currentTime time.Time) [][]models.InlineKeyboardButton {
+func (k *KeyboardFormer) GenerateCurrentMonth(month, year int, currentTime time.Time) [][]models.InlineKeyboardButton {
 	monthStart := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	monthEnd := monthStart.AddDate(0, 1, -1)
 
@@ -54,7 +54,7 @@ func getWeekDay(monthStart time.Time) int {
 	return weekday
 }
 
-func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentTime time.Time) ([]models.InlineKeyboardButton, int) {
+func (k *KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentTime time.Time) ([]models.InlineKeyboardButton, int) {
 	// Number of the day on the button.
 	dayNumber := 1
 
@@ -78,7 +78,7 @@ func (k KeyboardFormer) generateFirstWeek(month, year int, weekday int, currentT
 	return rowFirstWeek, dayNumber
 }
 
-func (k KeyboardFormer) generateMiddleWeeks(
+func (k *KeyboardFormer) generateMiddleWeeks(
 	month, year int, dayNumber int, capacityOfTotalRowWeeks int, currentTime time.Time,
 ) ([][]models.InlineKeyboardButton, int) {
 	// Capacity from the total minus the beginning week and the end week, which we do not fill.
@@ -100,7 +100,7 @@ func (k KeyboardFormer) generateMiddleWeeks(
 	return middleWeeks, dayNumber
 }
 
-func (k KeyboardFormer) generateLastWeek(month, year int, dayNumber int,
+func (k *KeyboardFormer) generateLastWeek(month, year int, dayNumber int,
 	monthEnd time.Time, currentTime time.Time) []models.InlineKeyboardButton {
 	rowLastWeek := make([]models.InlineKeyboardButton, 0, standardButtonsAtRow)
 

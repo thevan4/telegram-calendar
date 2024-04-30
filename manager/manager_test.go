@@ -2,6 +2,7 @@ package manager
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 	"time"
 
@@ -99,15 +100,30 @@ func TestApplyNewOptions(t *testing.T) {
 		),
 	)
 
-	expectedKeyboardFormerWithButtonsTextWrapper := `{0 2 2 [Mo Tu We Th Fr Sa Su] [Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec] 🤡 {} {{{0 1} {| 1} { 0} { 0} { 0} { 0}} {0 63713433600 <nil>} {0 64029052800 <nil>} map[{0 63776592000 <nil>}:{}]}}` //nolint:lll //omg
+	gotConfig := m.GetCurrentConfig()
 
-	k, okKeyboardFormer := m.keyboardFormer.(generator.KeyboardFormer)
-	if okKeyboardFormer {
-		if fmt.Sprint(k) != expectedKeyboardFormerWithButtonsTextWrapper {
-			t.Errorf("manager have unexpected value of KeyboardFormer (with ButtonsTextWrapper also): got: %v, want: %v", fmt.Sprint(k), expectedKeyboardFormerWithButtonsTextWrapper) //nolint:lll
-		}
-	} else {
-		t.Error("somehow unknown KeyboardGenerator object")
+	expectedConfig := FlatConfig{
+		YearsBackForChoose:         0,
+		YearsForwardForChoose:      2,
+		SumYearsForChoose:          2,
+		DaysNames:                  [7]string{"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"},
+		MonthNames:                 [12]string{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"},
+		HomeButtonForBeauty:        "🤡",
+		PayloadEncoderDecoder:      customPayloadEncoderDecoderAtManager{},
+		PrefixForCurrentDay:        "0",
+		PostfixForCurrentDay:       "|",
+		PrefixForNonSelectedDay:    "",
+		PostfixForNonSelectedDay:   "",
+		PrefixForPickDay:           "",
+		PostfixForPickDay:          "",
+		UnselectableDaysBeforeTime: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),
+		UnselectableDaysAfterTime:  time.Date(2030, 1, 1, 0, 0, 0, 0, time.UTC),
+		UnselectableDays: map[time.Time]struct{}{time.Date(2022,
+			1, 1, 0, 0, 0, 0, time.UTC): {}},
+	}
+
+	if !reflect.DeepEqual(gotConfig, expectedConfig) {
+		t.Errorf("manager have unexpected config: gotConfig %+v, expectedConfig %+v", gotConfig, expectedConfig)
 	}
 }
 
@@ -124,7 +140,7 @@ func TestGetUnselectableDays(t *testing.T) {
 	expect := map[time.Time]struct{}{time.Date(2001,
 		1, 1, 0, 0, 0, 0, time.UTC): {}}
 
-	result := m.getUnselectableDays()
+	result := m.GetCurrentConfig().UnselectableDays
 
 	if fmt.Sprint(result) != fmt.Sprint(expect) {
 		t.Errorf("at GetUnselectableDays result: %v no equal expected: %v", fmt.Sprint(result), fmt.Sprint(expect))

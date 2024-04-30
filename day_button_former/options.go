@@ -3,7 +3,7 @@ package day_button_former
 import "time"
 
 // ApplyNewOptions ...
-func (bf DayButtonFormer) ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText {
+func (bf *DayButtonFormer) ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText {
 	var dbf DaysButtonsText = bf
 	for _, option := range options {
 		dbf = option(dbf)
@@ -14,7 +14,7 @@ func (bf DayButtonFormer) ApplyNewOptions(options ...func(DaysButtonsText) DaysB
 // ChangePrefixForCurrentDay ...
 func ChangePrefixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.buttons.prefixForCurrentDay = extraButtonInfo{
 				value:   v,
 				growLen: len(v),
@@ -28,7 +28,7 @@ func ChangePrefixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText {
 // ChangePostfixForCurrentDay ...
 func ChangePostfixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.buttons.postfixForCurrentDay = extraButtonInfo{
 				value:   v,
 				growLen: len(v),
@@ -42,7 +42,7 @@ func ChangePostfixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText 
 // ChangePrefixForNonSelectedDay ...
 func ChangePrefixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.buttons.prefixForNonSelectedDay = extraButtonInfo{
 				value:   v,
 				growLen: len(v),
@@ -56,7 +56,7 @@ func ChangePrefixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsTe
 // ChangePostfixForNonSelectedDay ...
 func ChangePostfixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.buttons.postfixForNonSelectedDay = extraButtonInfo{
 				value:   v,
 				growLen: len(v),
@@ -70,7 +70,7 @@ func ChangePostfixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsT
 // ChangePrefixForPickDay ...
 func ChangePrefixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.buttons.prefixForPickDay = extraButtonInfo{
 				value:   v,
 				growLen: len(v),
@@ -84,7 +84,7 @@ func ChangePrefixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 // ChangePostfixForPickDay ...
 func ChangePostfixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.buttons.postfixForPickDay = extraButtonInfo{
 				value:   v,
 				growLen: len(v),
@@ -98,7 +98,7 @@ func ChangePostfixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 // ChangeUnselectableDaysBeforeDate ...
 func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.unselectableDaysBeforeTime = t
 			return dbf
 		}
@@ -109,7 +109,7 @@ func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysBut
 // ChangeUnselectableDaysAfterDate ...
 func ChangeUnselectableDaysAfterDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			dbf.unselectableDaysAfterTime = t
 			return dbf
 		}
@@ -120,7 +120,7 @@ func ChangeUnselectableDaysAfterDate(t time.Time) func(DaysButtonsText) DaysButt
 // ChangeUnselectableDays ...
 func ChangeUnselectableDays(unselectableDays map[time.Time]struct{}) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
-		if dbf, ok := bf.(DayButtonFormer); ok {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
 			newUnselectableDays := make(map[time.Time]struct{}, len(unselectableDays))
 			for k := range unselectableDays {
 				newUnselectableDays[k] = struct{}{}

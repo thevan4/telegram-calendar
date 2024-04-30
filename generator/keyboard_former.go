@@ -24,8 +24,8 @@ func NewKeyboardFormer(
 	return newDefaultKeyboardFormer().ApplyNewOptions(options...)
 }
 
-func newDefaultKeyboardFormer() KeyboardFormer {
-	return KeyboardFormer{
+func newDefaultKeyboardFormer() *KeyboardFormer {
+	return &KeyboardFormer{
 		yearsBackForChoose:    0,
 		yearsForwardForChoose: yearsForwardForChooseDefault,
 		sumYearsForChoose:     sumYearsForChooseDefault,
@@ -42,7 +42,7 @@ func NewButtonsTextWrapper(
 	options ...func(day_button_former.DaysButtonsText) day_button_former.DaysButtonsText,
 ) func(KeyboardGenerator) KeyboardGenerator {
 	return func(kg KeyboardGenerator) KeyboardGenerator {
-		if k, ok := kg.(KeyboardFormer); ok {
+		if k, ok := kg.(*KeyboardFormer); ok {
 			k.buttonsTextWrapper = day_button_former.NewButtonsFormer(options...)
 			return k
 		}

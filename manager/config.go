@@ -3,7 +3,6 @@ package manager
 import (
 	"time"
 
-	"github.com/thevan4/telegram-calendar/day_button_former"
 	"github.com/thevan4/telegram-calendar/payload_former"
 )
 
@@ -16,7 +15,6 @@ type FlatConfig struct {
 	MonthNames                 [12]string
 	HomeButtonForBeauty        string
 	PayloadEncoderDecoder      payload_former.PayloadEncoderDecoder
-	ButtonsTextWrapper         day_button_former.DaysButtonsText
 	PrefixForCurrentDay        string
 	PostfixForCurrentDay       string
 	PrefixForNonSelectedDay    string
