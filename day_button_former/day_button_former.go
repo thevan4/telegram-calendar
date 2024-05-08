@@ -8,7 +8,7 @@ import (
 
 // DaysButtonsText work with visual text only.
 type DaysButtonsText interface {
-	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) string
+	DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) (string, bool)
 	ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText
 	GetUnselectableDays() map[time.Time]struct{}
 	GetCurrentConfig() FlatConfig
@@ -66,7 +66,7 @@ func newDefaultButtonsFormer() *DayButtonFormer {
 }
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
-func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) string {
+func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) (string, bool) {
 	calendarDateTime := time.Date(incomeYear, time.Month(incomeMonth), incomeDay, currentTime.Hour(), currentTime.Minute(),
 		currentTime.Second(), currentTime.Nanosecond(), currentTime.Location())
 	incomeDayS := strconv.Itoa(incomeDay)
@@ -116,7 +116,7 @@ func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYe
 		resultButtonValue.WriteString(bf.buttons.postfixForPickDay.value)
 	}
 
-	return resultButtonValue.String()
+	return resultButtonValue.String(), isUnselectableDay
 }
 
 // simple check date, don't compare time here.

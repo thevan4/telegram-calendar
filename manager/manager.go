@@ -10,7 +10,7 @@ import (
 
 // KeyboardManager ...
 type KeyboardManager interface {
-	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
+	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) models.GenerateCalendarKeyboardResponse
 	ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator)
 	GetCurrentConfig() FlatConfig
 }
@@ -37,7 +37,7 @@ func newDefaultManager() *Manager {
 func (m *Manager) GenerateCalendarKeyboard(
 	callbackPayload string,
 	currentTime time.Time,
-) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time) {
+) models.GenerateCalendarKeyboardResponse {
 	m.RLock()
 	defer m.RUnlock()
 

@@ -14,8 +14,8 @@ type fakeImplKF struct {
 }
 
 // GenerateCalendarKeyboard fake impl.
-func (fi fakeImplKF) GenerateCalendarKeyboard(_ string, _ time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time) {
-	return models.InlineKeyboardMarkup{}, time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)
+func (fi fakeImplKF) GenerateCalendarKeyboard(_ string, _ time.Time) models.GenerateCalendarKeyboardResponse {
+	return models.GenerateCalendarKeyboardResponse{}
 }
 
 // ApplyNewOptions fake impl.

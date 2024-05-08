@@ -61,13 +61,13 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 		tt := tmpTT
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			resultKeyboard, resultSelectedDay := m.GenerateCalendarKeyboard(tt.args.callbackPayload, tt.args.currentTime)
-			if fmt.Sprint(resultSelectedDay) != tt.wantSelectedDay {
-				t.Errorf("manager GenerateCalendarKeyboard unexpected selected day: got: %v, want: %v", fmt.Sprint(resultSelectedDay), tt.wantSelectedDay)
+			generateCalendarKeyboardResponse := m.GenerateCalendarKeyboard(tt.args.callbackPayload, tt.args.currentTime)
+			if fmt.Sprint(generateCalendarKeyboardResponse.SelectedDay) != tt.wantSelectedDay {
+				t.Errorf("manager GenerateCalendarKeyboard unexpected selected day: got: %v, want: %v", fmt.Sprint(generateCalendarKeyboardResponse.SelectedDay), tt.wantSelectedDay) //nolint:lll
 			}
 
-			if fmt.Sprint(resultKeyboard) != tt.wantInlineKeyboardMarkup {
-				t.Errorf("manager GenerateCalendarKeyboard unexpected result keyboard: got: %v, want: %v", fmt.Sprint(resultKeyboard), tt.wantInlineKeyboardMarkup) //nolint:lll
+			if fmt.Sprint(generateCalendarKeyboardResponse.InlineKeyboardMarkup) != tt.wantInlineKeyboardMarkup {
+				t.Errorf("manager GenerateCalendarKeyboard unexpected result keyboard: got: %v, want: %v", fmt.Sprint(generateCalendarKeyboardResponse.InlineKeyboardMarkup), tt.wantInlineKeyboardMarkup) //nolint:lll
 			}
 		},
 		)
