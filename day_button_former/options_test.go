@@ -15,8 +15,8 @@ func newFakeImplDBT(some string) DaysButtonsText {
 }
 
 // DayButtonTextWrapper fake impl.
-func (fi fakeImplDBT) DayButtonTextWrapper(_, _, _ int, _ time.Time) string {
-	return ""
+func (fi fakeImplDBT) DayButtonTextWrapper(_, _, _ int, _ time.Time) (string, bool) {
+	return "", true
 }
 
 // ApplyNewOptions fake impl.

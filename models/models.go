@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 // InlineKeyboardMarkup https://core.telegram.org/bots/features#inline-keyboards.
 type InlineKeyboardMarkup struct {
 	InlineKeyboard [][]InlineKeyboardButton `json:"inline_keyboard"`
@@ -25,4 +27,14 @@ type PayloadData struct {
 	CalendarDay   int
 	CalendarMonth int
 	CalendarYear  int
+}
+
+// GenerateCalendarKeyboardResponse calendar generation response.
+type GenerateCalendarKeyboardResponse struct {
+	// keyboard
+	InlineKeyboardMarkup InlineKeyboardMarkup
+	// selected date
+	SelectedDay time.Time
+	// selectable date availability flag
+	IsUnselectableDay bool
 }

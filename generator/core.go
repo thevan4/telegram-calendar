@@ -10,7 +10,7 @@ import (
 
 // KeyboardGenerator ...
 type KeyboardGenerator interface {
-	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) (inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time)
+	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) models.GenerateCalendarKeyboardResponse
 	ApplyNewOptions(options ...func(KeyboardGenerator) KeyboardGenerator) KeyboardGenerator
 	GetUnselectableDays() map[time.Time]struct{}
 	GetCurrentConfig() FlatConfig
@@ -33,33 +33,64 @@ type Generator interface {
 func (k *KeyboardFormer) GenerateCalendarKeyboard(
 	callbackPayload string,
 	currentTime time.Time,
-) (
-	inlineKeyboardMarkup models.InlineKeyboardMarkup, selectedDay time.Time,
-) {
+) models.GenerateCalendarKeyboardResponse {
+	var selectedDay time.Time
 	incomePayload := k.payloadEncoderDecoder.Decoding(callbackPayload)
 
 	switch incomePayload.Action {
 	case prevMonthAction:
-		return k.GenerateGoToPrevMonth(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateGoToPrevMonth(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime),
+			SelectedDay:          selectedDay,
+		}
 	case nextMonthAction:
-		return k.GenerateGoToNextMonth(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateGoToNextMonth(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime),
+			SelectedDay:          selectedDay,
+		}
 	case prevYearAction:
-		return k.GenerateGoToPrevYear(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateGoToPrevYear(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime),
+			SelectedDay:          selectedDay,
+		}
 	case nextYearAction:
-		return k.GenerateGoToNextYear(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateGoToNextYear(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime),
+			SelectedDay:          selectedDay,
+		}
 	case selectMonthAction:
-		return k.GenerateSelectMonths(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateSelectMonths(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime),
+			SelectedDay:          selectedDay,
+		}
 	case selectYearAction:
-		return k.GenerateSelectYears(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateSelectYears(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime),
+			SelectedDay:          selectedDay,
+		}
 	case showSelectedAction:
-		return k.GenerateCalendar(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateCalendar(incomePayload.CalendarMonth, incomePayload.CalendarYear, currentTime),
+			SelectedDay:          selectedDay,
+		}
 	case silentDoNothingAction:
-		return models.InlineKeyboardMarkup{}, selectedDay
+		return models.GenerateCalendarKeyboardResponse{}
 	case selectDayAction:
-		return models.InlineKeyboardMarkup{}, day_button_former.FormDateTime(incomePayload.CalendarDay, incomePayload.CalendarMonth,
-			incomePayload.CalendarYear, currentTime.Location())
+		return models.GenerateCalendarKeyboardResponse{
+			SelectedDay: day_button_former.FormDateTime(incomePayload.CalendarDay, incomePayload.CalendarMonth,
+				incomePayload.CalendarYear, currentTime.Location()),
+		}
+	case unselectableDaySelected:
+		return models.GenerateCalendarKeyboardResponse{
+			SelectedDay: day_button_former.FormDateTime(incomePayload.CalendarDay, incomePayload.CalendarMonth,
+				incomePayload.CalendarYear, currentTime.Location()),
+			IsUnselectableDay: true,
+		}
 	default:
-		return k.GenerateDefaultCalendar(currentTime), selectedDay
+		return models.GenerateCalendarKeyboardResponse{
+			InlineKeyboardMarkup: k.GenerateDefaultCalendar(currentTime),
+			SelectedDay:          selectedDay,
+		}
 	}
 }
 

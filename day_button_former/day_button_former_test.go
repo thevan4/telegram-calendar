@@ -171,9 +171,10 @@ func TestButtonTextWrapper(t *testing.T) {
 	}
 
 	tests := []struct {
-		name     string
-		args     args
-		expected string
+		name                   string
+		args                   args
+		expected               string
+		expectedIsUnselectable bool
 	}{
 		{
 			name: "unselectable date by old date",
@@ -183,7 +184,8 @@ func TestButtonTextWrapper(t *testing.T) {
 				incomeYear:  1999,
 				currentTime: time.Date(2000, 6, 1, 0, 0, 0, 0, time.UTC),
 			},
-			expected: prefixForNonSelectedDay + "1" + postfixForNonSelectedDay,
+			expected:               prefixForNonSelectedDay + "1" + postfixForNonSelectedDay,
+			expectedIsUnselectable: true,
 		},
 		{
 			name: "unselectable date by future date",
@@ -193,7 +195,8 @@ func TestButtonTextWrapper(t *testing.T) {
 				incomeYear:  3000,
 				currentTime: time.Date(2000, 6, 1, 0, 0, 0, 0, time.UTC),
 			},
-			expected: prefixForNonSelectedDay + "1" + postfixForNonSelectedDay,
+			expected:               prefixForNonSelectedDay + "1" + postfixForNonSelectedDay,
+			expectedIsUnselectable: true,
 		},
 		{
 			name: "unselectable date by black list date",
@@ -203,7 +206,8 @@ func TestButtonTextWrapper(t *testing.T) {
 				incomeYear:  2001,
 				currentTime: time.Date(2000, 6, 1, 0, 0, 0, 0, time.UTC),
 			},
-			expected: prefixForNonSelectedDay + "1" + postfixForNonSelectedDay,
+			expected:               prefixForNonSelectedDay + "1" + postfixForNonSelectedDay,
+			expectedIsUnselectable: true,
 		},
 		{
 			name: "selectable date by black list date",
@@ -213,7 +217,8 @@ func TestButtonTextWrapper(t *testing.T) {
 				incomeYear:  2001,
 				currentTime: time.Date(2000, 6, 1, 0, 0, 0, 0, time.UTC),
 			},
-			expected: pickDayPrefix + "1" + pickDayPostfix,
+			expected:               pickDayPrefix + "1" + pickDayPostfix,
+			expectedIsUnselectable: false,
 		},
 		{
 			name: "selectable current date",
@@ -223,7 +228,8 @@ func TestButtonTextWrapper(t *testing.T) {
 				incomeYear:  2001,
 				currentTime: time.Date(2001, 4, 4, 0, 0, 0, 0, time.UTC),
 			},
-			expected: pickDayPrefix + prefixForCurrentDay + "4" + postfixForCurrentDay + pickDayPostfix,
+			expected:               pickDayPrefix + prefixForCurrentDay + "4" + postfixForCurrentDay + pickDayPostfix,
+			expectedIsUnselectable: false,
 		},
 		{
 			name: "unselectable current date",
@@ -233,7 +239,8 @@ func TestButtonTextWrapper(t *testing.T) {
 				incomeYear:  2001,
 				currentTime: time.Date(2001, 1, 1, 0, 0, 0, 0, time.UTC),
 			},
-			expected: prefixForNonSelectedDay + prefixForCurrentDay + "1" + postfixForCurrentDay + postfixForNonSelectedDay,
+			expected:               prefixForNonSelectedDay + prefixForCurrentDay + "1" + postfixForCurrentDay + postfixForNonSelectedDay,
+			expectedIsUnselectable: true,
 		},
 	}
 
@@ -241,9 +248,12 @@ func TestButtonTextWrapper(t *testing.T) {
 		tt := tmpTT
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			result := bf.DayButtonTextWrapper(tt.args.incomeDay, tt.args.incomeMonth, tt.args.incomeYear, tt.args.currentTime)
+			result, isUnselectableDay := bf.DayButtonTextWrapper(tt.args.incomeDay, tt.args.incomeMonth, tt.args.incomeYear, tt.args.currentTime)
 			if tt.expected != result {
 				t.Errorf("expected button text %v != what we got %v", tt.expected, result)
+			}
+			if tt.expectedIsUnselectable != isUnselectableDay {
+				t.Errorf("expected is unselectable %v != what we got %v", tt.expectedIsUnselectable, isUnselectableDay)
 			}
 		},
 		)

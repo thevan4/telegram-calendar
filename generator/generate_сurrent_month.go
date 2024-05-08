@@ -69,8 +69,8 @@ func (k *KeyboardFormer) generateFirstWeek(month, year int, weekday int, current
 
 	// Buttons with the numbers of the first week.
 	for wd := weekday; wd <= daysInWeek; wd++ {
-		btnText := k.buttonsTextWrapper.DayButtonTextWrapper(dayNumber, month, year, currentTime)
-		btn := models.NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, dayNumber, month, year))
+		btnText, isUnselectableDay := k.buttonsTextWrapper.DayButtonTextWrapper(dayNumber, month, year, currentTime)
+		btn := models.NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(chooseAction(isUnselectableDay), dayNumber, month, year))
 		rowFirstWeek = append(rowFirstWeek, btn)
 		dayNumber++
 	}
@@ -89,8 +89,8 @@ func (k *KeyboardFormer) generateMiddleWeeks(
 
 		// Filling in the dates.
 		for cw := 1; cw <= daysInWeek; cw++ {
-			btnText := k.buttonsTextWrapper.DayButtonTextWrapper(dayNumber, month, year, currentTime)
-			btn := models.NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, dayNumber, month, year))
+			btnText, isUnselectableDay := k.buttonsTextWrapper.DayButtonTextWrapper(dayNumber, month, year, currentTime)
+			btn := models.NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(chooseAction(isUnselectableDay), dayNumber, month, year))
 			rowCurrentWeek = append(rowCurrentWeek, btn)
 			dayNumber++
 		}
@@ -110,8 +110,8 @@ func (k *KeyboardFormer) generateLastWeek(month, year int, dayNumber int,
 	endMonthDay := monthEnd.Day()
 
 	for wd := dayNumber; wd <= endMonthDay; wd++ {
-		btnText := k.buttonsTextWrapper.DayButtonTextWrapper(wd, month, year, currentTime)
-		btn := models.NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(selectDayAction, wd, month, year))
+		btnText, isUnselectableDay := k.buttonsTextWrapper.DayButtonTextWrapper(wd, month, year, currentTime)
+		btn := models.NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(chooseAction(isUnselectableDay), wd, month, year))
 		rowLastWeek = append(rowLastWeek, btn)
 	}
 
@@ -122,4 +122,11 @@ func (k *KeyboardFormer) generateLastWeek(month, year int, dayNumber int,
 	}
 
 	return rowLastWeek
+}
+
+func chooseAction(isUnselectableDay bool) string {
+	if isUnselectableDay {
+		return unselectableDaySelected
+	}
+	return selectDayAction
 }

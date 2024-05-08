@@ -19,9 +19,10 @@ const (
 
 	selectDayAction = "sed"
 	// Move to selected mount/year.
-	showSelectedAction    = "shs"
-	silentDoNothingAction = "sdn"
-	goToDefaultKeyboard   = ""
+	showSelectedAction      = "shs"
+	silentDoNothingAction   = "sdn"
+	goToDefaultKeyboard     = ""
+	unselectableDaySelected = "uds"
 
 	emptyText            = " "
 	daysInWeek           = 7
