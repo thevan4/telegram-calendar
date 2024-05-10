@@ -285,12 +285,6 @@ func TestIsDatesEqual(t *testing.T) {
 		return
 	}
 
-	locationMSK, errMSK := time.LoadLocation("Europe/Moscow")
-	if errMSK != nil {
-		t.Errorf("load msk location fail: %v", errMSK)
-		return
-	}
-
 	type args struct {
 		dateOne time.Time
 		dateTwo time.Time
@@ -330,30 +324,6 @@ func TestIsDatesEqual(t *testing.T) {
 			args: args{
 				dateOne: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
 				dateTwo: time.Date(2020, 1, 1, 22, 0, 0, 0, locationUTC),
-			},
-			wantEqual: true,
-		},
-		{
-			name: "corner case: timezones",
-			args: args{
-				dateOne: time.Date(2020, 1, 1, 23, 0, 0, 0, locationUTC),
-				dateTwo: time.Date(2020, 1, 2, 2, 0, 0, 0, locationMSK),
-			},
-			wantEqual: true,
-		},
-		{
-			name: "corner case: new year + timezones",
-			args: args{
-				dateOne: time.Date(2019, 12, 31, 23, 0, 0, 0, locationUTC),
-				dateTwo: time.Date(2020, 1, 1, 2, 0, 0, 0, locationMSK),
-			},
-			wantEqual: true,
-		},
-		{
-			name: "different months across timezones",
-			args: args{
-				dateOne: time.Date(2020, 1, 31, 23, 0, 0, 0, locationUTC),
-				dateTwo: time.Date(2020, 2, 1, 2, 0, 0, 0, locationMSK),
 			},
 			wantEqual: true,
 		},

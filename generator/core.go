@@ -34,6 +34,8 @@ func (k *KeyboardFormer) GenerateCalendarKeyboard(
 	callbackPayload string,
 	currentTime time.Time,
 ) models.GenerateCalendarKeyboardResponse {
+	// All internal date operations in UTC only.
+	currentTime = currentTime.UTC()
 	var selectedDay time.Time
 	incomePayload := k.payloadEncoderDecoder.Decoding(callbackPayload)
 
