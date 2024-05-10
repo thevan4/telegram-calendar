@@ -99,7 +99,8 @@ func ChangePostfixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
-			dbf.unselectableDaysBeforeTime = t
+			// All internal date operations in UTC only.
+			dbf.unselectableDaysBeforeTime = t.UTC()
 			return dbf
 		}
 		return bf
@@ -110,7 +111,8 @@ func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysBut
 func ChangeUnselectableDaysAfterDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
-			dbf.unselectableDaysAfterTime = t
+			// All internal date operations in UTC only.
+			dbf.unselectableDaysAfterTime = t.UTC()
 			return dbf
 		}
 		return bf
@@ -123,7 +125,8 @@ func ChangeUnselectableDays(unselectableDays map[time.Time]struct{}) func(DaysBu
 		if dbf, ok := bf.(*DayButtonFormer); ok {
 			newUnselectableDays := make(map[time.Time]struct{}, len(unselectableDays))
 			for k := range unselectableDays {
-				newUnselectableDays[k] = struct{}{}
+				// All internal date operations in UTC only.
+				newUnselectableDays[k.UTC()] = struct{}{}
 			}
 			dbf.unselectableDays = newUnselectableDays
 			return dbf
