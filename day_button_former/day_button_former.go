@@ -47,8 +47,8 @@ func newDefaultButtonsFormer() *DayButtonFormer {
 	return &DayButtonFormer{
 		buttons: buttonsData{
 			prefixForCurrentDay: extraButtonInfo{
-				value:   "",
-				growLen: 0,
+				value:   "🗓",
+				growLen: len("🗓"),
 			},
 			postfixForCurrentDay: extraButtonInfo{
 				value:   "",
@@ -56,11 +56,11 @@ func newDefaultButtonsFormer() *DayButtonFormer {
 			},
 			postfixForNonSelectedDay: extraButtonInfo{
 				value:   "❌",
-				growLen: 3, //nolint:gomnd // len of value
+				growLen: len("❌"),
 			},
 		},
-		unselectableDaysBeforeTime: time.Date(1990, 1, 1, 0, 0, 0, 0, time.UTC),
-		unselectableDaysAfterTime:  time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDaysBeforeTime: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDaysAfterTime:  time.Date(2030, 1, 1, 0, 0, 0, 0, time.UTC),
 		unselectableDays:           make(map[time.Time]struct{}),
 	}
 }
