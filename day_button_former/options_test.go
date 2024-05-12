@@ -160,6 +160,40 @@ func TestApplyNewOptions(t *testing.T) { //nolint:gocognit // ok
 				timezone: tzEuropeB,
 			},
 		},
+
+		{
+			name: "reset timezone",
+			incomeArgs: args{
+				newPrefixForCurrentDay:      "",
+				newPostfixForCurrentDay:     "|",
+				newPrefixForNonSelectedDay:  "",
+				newPostfixForNonSelectedDay: "",
+				newPrefixForPickDay:         "",
+				newPostfixForPickDay:        "",
+				newUnselectableDaysBeforeDate: time.Date(2021, 4, 4, 0, 0, 0, 0,
+					time.UTC),
+				newUnselectableDaysAfterDate: time.Date(2022, 2, 2, 0, 0, 0, 0,
+					time.UTC),
+				newUnselectableDays: map[time.Time]struct{}{time.Date(2022, 1, 1, 0, 0, 0, 0,
+					time.UTC): {}},
+				timezone: nil,
+			},
+			wantArgs: args{
+				newPrefixForCurrentDay:      "",
+				newPostfixForCurrentDay:     "|",
+				newPrefixForNonSelectedDay:  "",
+				newPostfixForNonSelectedDay: "",
+				newPrefixForPickDay:         "",
+				newPostfixForPickDay:        "",
+				newUnselectableDaysBeforeDate: time.Date(2021, 4, 4, 0, 0, 0, 0,
+					time.UTC).In(time.UTC),
+				newUnselectableDaysAfterDate: time.Date(2022, 2, 2, 0, 0, 0, 0,
+					time.UTC).In(time.UTC),
+				newUnselectableDays: map[time.Time]struct{}{time.Date(2022, 1, 1, 0, 0, 0, 0,
+					time.UTC).In(time.UTC): {}},
+				timezone: time.UTC,
+			},
+		},
 	}
 
 	for _, tt := range tests {
