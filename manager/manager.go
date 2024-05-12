@@ -82,5 +82,6 @@ func (m *Manager) GetCurrentConfig() FlatConfig {
 		UnselectableDaysBeforeTime: keyboardFormerConfig.UnselectableDaysBeforeTime,
 		UnselectableDaysAfterTime:  keyboardFormerConfig.UnselectableDaysAfterTime,
 		UnselectableDays:           keyboardFormerConfig.UnselectableDays,
+		Timezone:                   keyboardFormerConfig.Timezone,
 	}
 }

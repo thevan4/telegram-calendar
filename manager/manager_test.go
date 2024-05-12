@@ -187,6 +187,7 @@ func TestApplyNewOptions(t *testing.T) {
 		UnselectableDaysAfterTime:  time.Date(2030, 1, 1, 0, 0, 0, 0, time.UTC),
 		UnselectableDays: map[time.Time]struct{}{time.Date(2022,
 			1, 1, 0, 0, 0, 0, time.UTC): {}},
+		Timezone: *time.UTC,
 	}
 
 	if !reflect.DeepEqual(gotConfig, expectedConfig) {

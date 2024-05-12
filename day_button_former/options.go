@@ -136,6 +136,9 @@ func ChangeUnselectableDays(unselectableDays map[time.Time]struct{}) func(DaysBu
 func ChangeTimezone(t *time.Location) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
+			if t == nil {
+				t = time.UTC
+			}
 			dbf.timezone = t
 			dbf.unselectableDaysBeforeTime = dbf.unselectableDaysBeforeTime.In(t)
 			dbf.unselectableDaysAfterTime = dbf.unselectableDaysAfterTime.In(t)
