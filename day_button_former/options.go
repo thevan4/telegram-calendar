@@ -99,8 +99,7 @@ func ChangePostfixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
-			// All internal date operations in UTC only.
-			dbf.unselectableDaysBeforeTime = t.UTC()
+			dbf.unselectableDaysBeforeTime = t.In(dbf.timezone)
 			return dbf
 		}
 		return bf
@@ -111,8 +110,7 @@ func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysBut
 func ChangeUnselectableDaysAfterDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
-			// All internal date operations in UTC only.
-			dbf.unselectableDaysAfterTime = t.UTC()
+			dbf.unselectableDaysAfterTime = t.In(dbf.timezone)
 			return dbf
 		}
 		return bf
@@ -125,10 +123,29 @@ func ChangeUnselectableDays(unselectableDays map[time.Time]struct{}) func(DaysBu
 		if dbf, ok := bf.(*DayButtonFormer); ok {
 			newUnselectableDays := make(map[time.Time]struct{}, len(unselectableDays))
 			for k := range unselectableDays {
-				// All internal date operations in UTC only.
-				newUnselectableDays[k.UTC()] = struct{}{}
+				newUnselectableDays[k.In(dbf.timezone)] = struct{}{}
 			}
 			dbf.unselectableDays = newUnselectableDays
+			return dbf
+		}
+		return bf
+	}
+}
+
+// ChangeTimezone also changes timezones for all current settings.
+func ChangeTimezone(t *time.Location) func(DaysButtonsText) DaysButtonsText {
+	return func(bf DaysButtonsText) DaysButtonsText {
+		if dbf, ok := bf.(*DayButtonFormer); ok {
+			dbf.timezone = t
+			dbf.unselectableDaysBeforeTime = dbf.unselectableDaysBeforeTime.In(t)
+			dbf.unselectableDaysAfterTime = dbf.unselectableDaysAfterTime.In(t)
+
+			newUnselectableDays := make(map[time.Time]struct{}, len(dbf.unselectableDays))
+			for ud := range dbf.unselectableDays {
+				newUnselectableDays[ud.In(t)] = struct{}{}
+			}
+			dbf.unselectableDays = newUnselectableDays
+
 			return dbf
 		}
 		return bf

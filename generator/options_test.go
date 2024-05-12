@@ -37,11 +37,15 @@ func (fi fakeImplKF) GetCurrentConfig() FlatConfig {
 	return FlatConfig{}
 }
 
+func (fi fakeImplKF) GetTimezone() time.Location {
+	return *time.UTC
+}
+
 func newFakeImplKF(some string) KeyboardGenerator {
 	return fakeImplKF{someField: some}
 }
 
-func TestApplyNewOptions(t *testing.T) {
+func TestApplyNewOptions(t *testing.T) { //nolint:gocognit //ok
 	t.Parallel()
 
 	kf := NewKeyboardFormer(
@@ -73,15 +77,15 @@ func TestApplyNewOptions(t *testing.T) {
 		ChangeHomeButtonForBeauty("🤡"),
 		ChangePayloadEncoderDecoder(customPayloadEncoderDecoder{}),
 		ApplyNewOptionsForButtonsTextWrapper(
-			day_button_former.ChangePrefixForCurrentDay("0"),
+			day_button_former.ChangePrefixForCurrentDay("!"),
 			day_button_former.ChangePostfixForCurrentDay("|"),
-			day_button_former.ChangePrefixForNonSelectedDay(""),
-			day_button_former.ChangePostfixForNonSelectedDay(""),
-			day_button_former.ChangePrefixForPickDay(""),
-			day_button_former.ChangePostfixForPickDay(""),
-			day_button_former.ChangeUnselectableDaysBeforeDate(time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)),
-			day_button_former.ChangeUnselectableDaysAfterDate(time.Date(2030, 1, 1, 0, 0, 0, 0, time.UTC)),
-			day_button_former.ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2022,
+			day_button_former.ChangePrefixForNonSelectedDay("-"),
+			day_button_former.ChangePostfixForNonSelectedDay("="),
+			day_button_former.ChangePrefixForPickDay("+"),
+			day_button_former.ChangePostfixForPickDay("*"),
+			day_button_former.ChangeUnselectableDaysBeforeDate(time.Date(2000, 1, 1, 12, 0, 0, 0, time.UTC)),
+			day_button_former.ChangeUnselectableDaysAfterDate(time.Date(2002, 1, 1, 11, 0, 0, 0, time.UTC)),
+			day_button_former.ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2001,
 				1, 1, 0, 0, 0, 0, time.UTC): {}}),
 		),
 	)
@@ -111,9 +115,46 @@ func TestApplyNewOptions(t *testing.T) {
 
 		btw, okDayButtonFormer := k.buttonsTextWrapper.(*day_button_former.DayButtonFormer)
 		if okDayButtonFormer {
-			const expectedButtonsTextWrapper = `&{{{0 1} {| 1} { 0} { 0} { 0} { 0}} {0 63713433600 <nil>} {0 64029052800 <nil>} map[{0 63776592000 <nil>}:{}]}` //nolint:lll //ok tests.
-			if expectedButtonsTextWrapper != fmt.Sprint(btw) {
-				t.Errorf("got: %v, expectedButtonsTextWrapper: %v", fmt.Sprint(btw), expectedButtonsTextWrapper)
+			gotBTWConfig := btw.GetCurrentConfig()
+
+			if gotBTWConfig.PrefixForCurrentDay != "!" {
+				t.Errorf("prefixForCurrentDay have: %v, want: %v", gotBTWConfig.PrefixForCurrentDay, "!")
+			}
+			if gotBTWConfig.PostfixForCurrentDay != "|" {
+				t.Errorf("postfixForCurrentDay have: %v, want: %v", gotBTWConfig.PostfixForCurrentDay, "|")
+			}
+			if gotBTWConfig.PrefixForNonSelectedDay != "-" {
+				t.Errorf("prefixForNonSelectedDay have: %v, want: %v", gotBTWConfig.PrefixForNonSelectedDay, "-")
+			}
+			if gotBTWConfig.PostfixForNonSelectedDay != "=" {
+				t.Errorf("postfixForNonSelectedDay have: %v, want: %v", gotBTWConfig.PostfixForNonSelectedDay, "=")
+			}
+			if gotBTWConfig.PrefixForPickDay != "+" {
+				t.Errorf("prefixForPickDay have: %v, want: %v", gotBTWConfig.PrefixForPickDay, "+")
+			}
+			if gotBTWConfig.PostfixForPickDay != "*" {
+				t.Errorf("postfixForPickDay have: %v, want: %v", gotBTWConfig.PostfixForPickDay, "*")
+			}
+			if !gotBTWConfig.UnselectableDaysBeforeTime.Equal(time.Date(2000, 1, 1, 12, 0,
+				0, 0, time.UTC)) {
+				t.Errorf("unselectableDaysBeforeTime have: %v, want: %v", gotBTWConfig.UnselectableDaysBeforeTime,
+					time.Date(2000, 1, 1, 12, 0,
+						0, 0, time.UTC))
+			}
+			if !gotBTWConfig.UnselectableDaysAfterTime.Equal(time.Date(2002, 1, 1, 11, 0,
+				0, 0, time.UTC)) {
+				t.Errorf("unselectableDaysAfterTime have: %v, want: %v", gotBTWConfig.UnselectableDaysAfterTime,
+					time.Date(2002, 1, 1, 11, 0,
+						0, 0, time.UTC))
+			}
+
+			expectUD := map[time.Time]struct{}{time.Date(2001,
+				1, 1, 0, 0, 0, 0, time.UTC): {}}
+			for gotUD := range gotBTWConfig.UnselectableDays {
+				if _, inMap := expectUD[gotUD]; !inMap {
+					t.Errorf("in UnselectableDay %v not found in expected map %v",
+						gotUD, expectUD)
+				}
 			}
 		} else {
 			t.Error("somehow unknown NewButtonsTextWrapper object")

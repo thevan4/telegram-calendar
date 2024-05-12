@@ -15,4 +15,5 @@ type FlatConfig struct {
 	UnselectableDaysBeforeTime time.Time
 	UnselectableDaysAfterTime  time.Time
 	UnselectableDays           map[time.Time]struct{}
+	Timezone                   time.Location
 }

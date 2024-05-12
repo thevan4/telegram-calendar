@@ -14,6 +14,7 @@ type KeyboardGenerator interface {
 	ApplyNewOptions(options ...func(KeyboardGenerator) KeyboardGenerator) KeyboardGenerator
 	GetUnselectableDays() map[time.Time]struct{}
 	GetCurrentConfig() FlatConfig
+	GetTimezone() time.Location
 }
 
 // Generator ...
@@ -34,9 +35,8 @@ func (k *KeyboardFormer) GenerateCalendarKeyboard(
 	callbackPayload string,
 	currentTime time.Time,
 ) models.GenerateCalendarKeyboardResponse {
-	// All internal date operations in UTC only.
-	currentTime = currentTime.UTC()
 	var selectedDay time.Time
+	timeZone := k.GetTimezone()
 	incomePayload := k.payloadEncoderDecoder.Decoding(callbackPayload)
 
 	switch incomePayload.Action {
@@ -80,12 +80,12 @@ func (k *KeyboardFormer) GenerateCalendarKeyboard(
 	case selectDayAction:
 		return models.GenerateCalendarKeyboardResponse{
 			SelectedDay: day_button_former.FormDateTime(incomePayload.CalendarDay, incomePayload.CalendarMonth,
-				incomePayload.CalendarYear, currentTime.Location()),
+				incomePayload.CalendarYear, &timeZone),
 		}
 	case unselectableDaySelected:
 		return models.GenerateCalendarKeyboardResponse{
 			SelectedDay: day_button_former.FormDateTime(incomePayload.CalendarDay, incomePayload.CalendarMonth,
-				incomePayload.CalendarYear, currentTime.Location()),
+				incomePayload.CalendarYear, &timeZone),
 			IsUnselectableDay: true,
 		}
 	default:
@@ -313,5 +313,11 @@ func (k *KeyboardFormer) GetCurrentConfig() FlatConfig {
 		UnselectableDaysBeforeTime: dayButtonFormerConfig.UnselectableDaysBeforeTime,
 		UnselectableDaysAfterTime:  dayButtonFormerConfig.UnselectableDaysAfterTime,
 		UnselectableDays:           dayButtonFormerConfig.UnselectableDays,
+		Timezone:                   dayButtonFormerConfig.Timezone,
 	}
+}
+
+// GetTimezone ...
+func (k *KeyboardFormer) GetTimezone() time.Location {
+	return k.buttonsTextWrapper.GetTimezone()
 }
