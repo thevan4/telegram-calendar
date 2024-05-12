@@ -12,6 +12,7 @@ type DaysButtonsText interface {
 	ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText
 	GetUnselectableDays() map[time.Time]struct{}
 	GetCurrentConfig() FlatConfig
+	GetTimezone() time.Location
 }
 
 // DayButtonFormer ...
@@ -20,6 +21,7 @@ type DayButtonFormer struct {
 	unselectableDaysBeforeTime time.Time
 	unselectableDaysAfterTime  time.Time
 	unselectableDays           map[time.Time]struct{}
+	timezone                   *time.Location
 }
 
 type buttonsData struct {
@@ -51,30 +53,32 @@ func newDefaultButtonsFormer() *DayButtonFormer {
 				growLen: 0,
 			},
 			postfixForCurrentDay: extraButtonInfo{
-				value:   "",
-				growLen: 0,
+				value:   "🗓",
+				growLen: len("🗓"),
 			},
 			postfixForNonSelectedDay: extraButtonInfo{
 				value:   "❌",
-				growLen: 3, //nolint:gomnd // len of value
+				growLen: len("❌"),
 			},
 		},
-		unselectableDaysBeforeTime: time.Date(1990, 1, 1, 0, 0, 0, 0, time.UTC),
-		unselectableDaysAfterTime:  time.Date(3000, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDaysBeforeTime: time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC),
+		unselectableDaysAfterTime:  time.Date(2030, 1, 1, 0, 0, 0, 0, time.UTC),
 		unselectableDays:           make(map[time.Time]struct{}),
+		timezone:                   time.UTC,
 	}
 }
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
 func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) (string, bool) {
+	currentTime = currentTime.In(bf.timezone)
 	calendarDateTime := time.Date(incomeYear, time.Month(incomeMonth), incomeDay, currentTime.Hour(), currentTime.Minute(),
-		currentTime.Second(), currentTime.Nanosecond(), currentTime.Location())
+		currentTime.Second(), currentTime.Nanosecond(), bf.timezone)
 	incomeDayS := strconv.Itoa(incomeDay)
 	resultButtonValue := new(strings.Builder)
 
 	resultButtonValue.Grow(len(incomeDayS))
 
-	isUnselectableDay := bf.isTimeUnselectable(FormDateTime(incomeDay, incomeMonth, incomeYear, currentTime.Location()))
+	isUnselectableDay := bf.isTimeUnselectable(FormDateTime(incomeDay, incomeMonth, incomeYear, bf.timezone))
 	if isUnselectableDay {
 		resultButtonValue.Grow(bf.buttons.prefixForNonSelectedDay.growLen)
 		resultButtonValue.Grow(bf.buttons.postfixForNonSelectedDay.growLen)
@@ -83,7 +87,7 @@ func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYe
 		resultButtonValue.Grow(bf.buttons.postfixForPickDay.growLen)
 	}
 
-	isCurrentDay := isDatesEqual(calendarDateTime, currentTime)
+	isCurrentDay := isDatesEqual(calendarDateTime, currentTime.In(bf.timezone))
 	if isCurrentDay {
 		resultButtonValue.Grow(bf.buttons.prefixForCurrentDay.growLen)
 		resultButtonValue.Grow(bf.buttons.postfixForCurrentDay.growLen)
@@ -120,7 +124,7 @@ func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYe
 }
 
 // Simple check date, don't compare time here.
-// Expected that the time is already in utc.
+// The dates are expected to be in the same time zone.
 func isDatesEqual(dateOne, dateTwo time.Time) bool {
 	// zeroing out the time in the dates
 	dateOneStartOfDay := time.Date(dateOne.Year(), dateOne.Month(), dateOne.Day(), 0, 0, 0, 0, time.UTC)
@@ -164,5 +168,11 @@ func (bf *DayButtonFormer) GetCurrentConfig() FlatConfig {
 		UnselectableDaysBeforeTime: bf.unselectableDaysBeforeTime,
 		UnselectableDaysAfterTime:  bf.unselectableDaysAfterTime,
 		UnselectableDays:           bf.unselectableDays,
+		Timezone:                   *bf.timezone,
 	}
+}
+
+// GetTimezone ...
+func (bf *DayButtonFormer) GetTimezone() time.Location {
+	return *bf.timezone
 }

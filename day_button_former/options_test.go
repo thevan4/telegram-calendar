@@ -38,7 +38,11 @@ func (fi fakeImplDBT) GetCurrentConfig() FlatConfig {
 	return FlatConfig{}
 }
 
-func TestApplyNewOptions(t *testing.T) {
+func (fi fakeImplDBT) GetTimezone() time.Location {
+	return *time.UTC
+}
+
+func TestApplyNewOptions(t *testing.T) { //nolint:gocognit // ok
 	t.Parallel()
 
 	const (
@@ -49,6 +53,18 @@ func TestApplyNewOptions(t *testing.T) {
 		pickDayPrefix            = "❤️"
 		pickDayPostfix           = "💓"
 	)
+
+	tzAmericaNY, err := time.LoadLocation("America/New_York")
+	if err != nil {
+		t.Errorf("at time.LoadLocation for America/New_York error: %v", err)
+		return
+	}
+
+	tzEuropeB, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		t.Errorf("at time.LoadLocation for Europe/Berlin error: %v", err)
+		return
+	}
 
 	bf := NewButtonsFormer(
 		ChangePrefixForCurrentDay(prefixForCurrentDay),
@@ -73,6 +89,7 @@ func TestApplyNewOptions(t *testing.T) {
 		newUnselectableDaysBeforeDate time.Time
 		newUnselectableDaysAfterDate  time.Time
 		newUnselectableDays           map[time.Time]struct{}
+		timezone                      *time.Location
 	}
 
 	tests := []struct {
@@ -92,42 +109,55 @@ func TestApplyNewOptions(t *testing.T) {
 				newUnselectableDaysBeforeDate: time.Date(2001, 4, 4, 0, 0, 0, 0, time.UTC),
 				newUnselectableDaysAfterDate:  time.Date(2031, 2, 2, 0, 0, 0, 0, time.UTC),
 				newUnselectableDays:           map[time.Time]struct{}{time.Date(2015, 3, 3, 0, 0, 0, 0, time.UTC): {}},
+				timezone:                      tzAmericaNY,
 			},
 			wantArgs: args{
-				newPrefixForCurrentDay:        "pr1",
-				newPostfixForCurrentDay:       "po1",
-				newPrefixForNonSelectedDay:    "prns1",
-				newPostfixForNonSelectedDay:   "pons1",
-				newPrefixForPickDay:           "prfdp1",
-				newPostfixForPickDay:          "pofdp1",
-				newUnselectableDaysBeforeDate: time.Date(2001, 4, 4, 0, 0, 0, 0, time.UTC),
-				newUnselectableDaysAfterDate:  time.Date(2031, 2, 2, 0, 0, 0, 0, time.UTC),
-				newUnselectableDays:           map[time.Time]struct{}{time.Date(2015, 3, 3, 0, 0, 0, 0, time.UTC): {}},
+				newPrefixForCurrentDay:      "pr1",
+				newPostfixForCurrentDay:     "po1",
+				newPrefixForNonSelectedDay:  "prns1",
+				newPostfixForNonSelectedDay: "pons1",
+				newPrefixForPickDay:         "prfdp1",
+				newPostfixForPickDay:        "pofdp1",
+				newUnselectableDaysBeforeDate: time.Date(2001, 4, 4, 0, 0, 0, 0,
+					time.UTC).In(tzAmericaNY),
+				newUnselectableDaysAfterDate: time.Date(2031, 2, 2, 0, 0, 0, 0,
+					time.UTC).In(tzAmericaNY),
+				newUnselectableDays: map[time.Time]struct{}{time.Date(2015, 3, 3, 0, 0, 0, 0,
+					time.UTC).In(tzAmericaNY): {}},
+				timezone: tzAmericaNY,
 			},
 		},
 		{
 			name: "second change",
 			incomeArgs: args{
-				newPrefixForCurrentDay:        "",
-				newPostfixForCurrentDay:       "|",
-				newPrefixForNonSelectedDay:    "",
-				newPostfixForNonSelectedDay:   "",
-				newPrefixForPickDay:           "",
-				newPostfixForPickDay:          "",
-				newUnselectableDaysBeforeDate: time.Date(2021, 4, 4, 0, 0, 0, 0, time.UTC),
-				newUnselectableDaysAfterDate:  time.Date(2022, 2, 2, 0, 0, 0, 0, time.UTC),
-				newUnselectableDays:           map[time.Time]struct{}{time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC): {}},
+				newPrefixForCurrentDay:      "",
+				newPostfixForCurrentDay:     "|",
+				newPrefixForNonSelectedDay:  "",
+				newPostfixForNonSelectedDay: "",
+				newPrefixForPickDay:         "",
+				newPostfixForPickDay:        "",
+				newUnselectableDaysBeforeDate: time.Date(2021, 4, 4, 0, 0, 0, 0,
+					time.UTC),
+				newUnselectableDaysAfterDate: time.Date(2022, 2, 2, 0, 0, 0, 0,
+					time.UTC),
+				newUnselectableDays: map[time.Time]struct{}{time.Date(2022, 1, 1, 0, 0, 0, 0,
+					time.UTC): {}},
+				timezone: tzEuropeB,
 			},
 			wantArgs: args{
-				newPrefixForCurrentDay:        "",
-				newPostfixForCurrentDay:       "|",
-				newPrefixForNonSelectedDay:    "",
-				newPostfixForNonSelectedDay:   "",
-				newPrefixForPickDay:           "",
-				newPostfixForPickDay:          "",
-				newUnselectableDaysBeforeDate: time.Date(2021, 4, 4, 0, 0, 0, 0, time.UTC),
-				newUnselectableDaysAfterDate:  time.Date(2022, 2, 2, 0, 0, 0, 0, time.UTC),
-				newUnselectableDays:           map[time.Time]struct{}{time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC): {}},
+				newPrefixForCurrentDay:      "",
+				newPostfixForCurrentDay:     "|",
+				newPrefixForNonSelectedDay:  "",
+				newPostfixForNonSelectedDay: "",
+				newPrefixForPickDay:         "",
+				newPostfixForPickDay:        "",
+				newUnselectableDaysBeforeDate: time.Date(2021, 4, 4, 0, 0, 0, 0,
+					time.UTC).In(tzEuropeB),
+				newUnselectableDaysAfterDate: time.Date(2022, 2, 2, 0, 0, 0, 0,
+					time.UTC).In(tzEuropeB),
+				newUnselectableDays: map[time.Time]struct{}{time.Date(2022, 1, 1, 0, 0, 0, 0,
+					time.UTC).In(tzEuropeB): {}},
+				timezone: tzEuropeB,
 			},
 		},
 	}
@@ -135,7 +165,9 @@ func TestApplyNewOptions(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// no parallel tests here
+
 			bf = bf.ApplyNewOptions(
+				ChangeTimezone(tt.incomeArgs.timezone),
 				ChangePrefixForCurrentDay(tt.incomeArgs.newPrefixForCurrentDay),
 				ChangePostfixForCurrentDay(tt.incomeArgs.newPostfixForCurrentDay),
 				ChangePrefixForNonSelectedDay(tt.incomeArgs.newPrefixForNonSelectedDay),
@@ -159,6 +191,7 @@ func TestApplyNewOptions(t *testing.T) {
 					tt.wantArgs.newUnselectableDaysBeforeDate,
 					tt.wantArgs.newUnselectableDaysAfterDate,
 					tt.wantArgs.newUnselectableDays,
+					tt.wantArgs.timezone,
 				) {
 					t.Errorf("expected: %+v not equal result: %+v", tt.wantArgs, b)
 				}
@@ -181,6 +214,7 @@ func isDayButtonDataFieldsExpected(
 	unselectableDaysBeforeDate time.Time,
 	unselectableDaysAfterDate time.Time,
 	unselectableDays map[time.Time]struct{},
+	location *time.Location,
 ) bool {
 	if bf.buttons.prefixForCurrentDay.value != prefixForCurrentDay ||
 		bf.buttons.prefixForCurrentDay.growLen != len(prefixForCurrentDay) {
@@ -223,6 +257,10 @@ func isDayButtonDataFieldsExpected(
 		}
 	}
 
+	if bf.timezone.String() != location.String() { //gosimple //ok here
+		return false
+	}
+
 	return true
 }
 
@@ -240,6 +278,7 @@ func TestApplyNewOptionsForUnexpectedImpl(t *testing.T) {
 		ChangeUnselectableDaysBeforeDate(time.Date(2021, 4, 4, 0, 0, 0, 0, time.UTC)),
 		ChangeUnselectableDaysAfterDate(time.Date(2022, 2, 2, 0, 0, 0, 0, time.UTC)),
 		ChangeUnselectableDays(map[time.Time]struct{}{time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC): {}}),
+		ChangeTimezone(time.UTC),
 	)
 
 	if fmt.Sprint(fiDBT) != "{some val}" {

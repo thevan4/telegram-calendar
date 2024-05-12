@@ -43,7 +43,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 	tests := []struct {
 		name                     string
 		args                     args
-		wantInlineKeyboardMarkup string // string json models.InlineKeyboardMarkup
+		wantInlineKeyboardMarkup models.InlineKeyboardMarkup
 		wantSelectedDay          string // string selectedDay
 	}{
 		{
@@ -52,9 +52,76 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				//callbackPayload: `calendar/shs_00.06.2023`,
 				currentTime: ct62023,
 			},
-			wantInlineKeyboardMarkup: `{[[{« calendar/pry_00.06.2023} {< calendar/prm_00.06.2023} {Jun calendar/sem_00.06.2023} {🏩 calendar/sdn_00.06.2023} {2023 calendar/sey_00.06.2023} {> calendar/nem_00.06.2023} {» calendar/ney_00.06.2023}] [{Mo calendar/sdn_00.06.2023} {Tu calendar/sdn_00.06.2023} {We calendar/sdn_00.06.2023} {Th calendar/sdn_00.06.2023} {Fr calendar/sdn_00.06.2023} {Sa calendar/sdn_00.06.2023} {Su calendar/sdn_00.06.2023}] [{  calendar/sdn_00.06.2023} {  calendar/sdn_00.06.2023} {  calendar/sdn_00.06.2023} {1 calendar/sed_01.06.2023} {2 calendar/sed_02.06.2023} {3 calendar/sed_03.06.2023} {4 calendar/sed_04.06.2023}] [{5 calendar/sed_05.06.2023} {6 calendar/sed_06.06.2023} {7 calendar/sed_07.06.2023} {8 calendar/sed_08.06.2023} {9 calendar/sed_09.06.2023} {10 calendar/sed_10.06.2023} {11 calendar/sed_11.06.2023}] [{12 calendar/sed_12.06.2023} {13 calendar/sed_13.06.2023} {14 calendar/sed_14.06.2023} {15 calendar/sed_15.06.2023} {16 calendar/sed_16.06.2023} {17 calendar/sed_17.06.2023} {18 calendar/sed_18.06.2023}] [{19 calendar/sed_19.06.2023} {20 calendar/sed_20.06.2023} {21 calendar/sed_21.06.2023} {22 calendar/sed_22.06.2023} {23 calendar/sed_23.06.2023} {24 calendar/sed_24.06.2023} {25 calendar/sed_25.06.2023}] [{26 calendar/sed_26.06.2023} {27 calendar/sed_27.06.2023} {28 calendar/sed_28.06.2023} {29 calendar/sed_29.06.2023} {30 calendar/sed_30.06.2023} {  calendar/sdn_00.06.2023} {  calendar/sdn_00.06.2023}]]}`, //nolint:lll //omg
-			wantSelectedDay:          `0001-01-01 00:00:00 +0000 UTC`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  //nolint:lll    // zerodate {0 0 <nil>}, but cant check with .IsZero()
+			wantInlineKeyboardMarkup: models.InlineKeyboardMarkup{
+				InlineKeyboard: [][]models.InlineKeyboardButton{
+					{
+						{Text: "«", CallbackData: "calendar/pry_00.06.2023"},
+						{Text: "<", CallbackData: "calendar/prm_00.06.2023"},
+						{Text: "Jun", CallbackData: "calendar/sem_00.06.2023"},
+						{Text: "🏩", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "2023", CallbackData: "calendar/sey_00.06.2023"},
+						{Text: ">", CallbackData: "calendar/nem_00.06.2023"},
+						{Text: "»", CallbackData: "calendar/ney_00.06.2023"},
+					},
+					{
+						{Text: "Mo", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "Tu", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "We", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "Th", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "Fr", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "Sa", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "Su", CallbackData: "calendar/sdn_00.06.2023"},
+					},
+					{
+						{Text: " ", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: " ", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: " ", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: "1🗓", CallbackData: "calendar/sed_01.06.2023"},
+						{Text: "2", CallbackData: "calendar/sed_02.06.2023"},
+						{Text: "3", CallbackData: "calendar/sed_03.06.2023"},
+						{Text: "4", CallbackData: "calendar/sed_04.06.2023"},
+					},
+					{
+						{Text: "5", CallbackData: "calendar/sed_05.06.2023"},
+						{Text: "6", CallbackData: "calendar/sed_06.06.2023"},
+						{Text: "7", CallbackData: "calendar/sed_07.06.2023"},
+						{Text: "8", CallbackData: "calendar/sed_08.06.2023"},
+						{Text: "9", CallbackData: "calendar/sed_09.06.2023"},
+						{Text: "10", CallbackData: "calendar/sed_10.06.2023"},
+						{Text: "11", CallbackData: "calendar/sed_11.06.2023"},
+					},
+					{
+						{Text: "12", CallbackData: "calendar/sed_12.06.2023"},
+						{Text: "13", CallbackData: "calendar/sed_13.06.2023"},
+						{Text: "14", CallbackData: "calendar/sed_14.06.2023"},
+						{Text: "15", CallbackData: "calendar/sed_15.06.2023"},
+						{Text: "16", CallbackData: "calendar/sed_16.06.2023"},
+						{Text: "17", CallbackData: "calendar/sed_17.06.2023"},
+						{Text: "18", CallbackData: "calendar/sed_18.06.2023"},
+					},
+					{
+						{Text: "19", CallbackData: "calendar/sed_19.06.2023"},
+						{Text: "20", CallbackData: "calendar/sed_20.06.2023"},
+						{Text: "21", CallbackData: "calendar/sed_21.06.2023"},
+						{Text: "22", CallbackData: "calendar/sed_22.06.2023"},
+						{Text: "23", CallbackData: "calendar/sed_23.06.2023"},
+						{Text: "24", CallbackData: "calendar/sed_24.06.2023"},
+						{Text: "25", CallbackData: "calendar/sed_25.06.2023"},
+					},
+					{
+						{Text: "26", CallbackData: "calendar/sed_26.06.2023"},
+						{Text: "27", CallbackData: "calendar/sed_27.06.2023"},
+						{Text: "28", CallbackData: "calendar/sed_28.06.2023"},
+						{Text: "29", CallbackData: "calendar/sed_29.06.2023"},
+						{Text: "30", CallbackData: "calendar/sed_30.06.2023"},
+						{Text: " ", CallbackData: "calendar/sdn_00.06.2023"},
+						{Text: " ", CallbackData: "calendar/sdn_00.06.2023"},
+					},
+				},
+			},
+			wantSelectedDay: `0001-01-01 00:00:00 +0000 UTC`,
 		},
+		// show time zone collision
 	}
 
 	for _, tmpTT := range tests {
@@ -66,7 +133,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 				t.Errorf("manager GenerateCalendarKeyboard unexpected selected day: got: %v, want: %v", fmt.Sprint(generateCalendarKeyboardResponse.SelectedDay), tt.wantSelectedDay) //nolint:lll
 			}
 
-			if fmt.Sprint(generateCalendarKeyboardResponse.InlineKeyboardMarkup) != tt.wantInlineKeyboardMarkup {
+			if !reflect.DeepEqual(generateCalendarKeyboardResponse.InlineKeyboardMarkup, tt.wantInlineKeyboardMarkup) {
 				t.Errorf("manager GenerateCalendarKeyboard unexpected result keyboard: got: %v, want: %v", fmt.Sprint(generateCalendarKeyboardResponse.InlineKeyboardMarkup), tt.wantInlineKeyboardMarkup) //nolint:lll
 			}
 		},
@@ -193,6 +260,11 @@ func TestGetCurrentConfig(t *testing.T) {
 	newUnselectableDaysAfterDate := time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)
 	newUnselectableDays := map[time.Time]struct{}{time.Date(2001,
 		1, 1, 0, 0, 0, 0, time.UTC): {}}
+	tzEuropeB, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		t.Errorf("at time.LoadLocation for Europe/Berlin error: %v", err)
+		return
+	}
 
 	m := NewManager(
 		generator.ChangeYearsBackForChoose(yearsBackForChoose),
@@ -210,6 +282,7 @@ func TestGetCurrentConfig(t *testing.T) {
 			day_button_former.ChangeUnselectableDaysBeforeDate(newUnselectableDaysBeforeDate),
 			day_button_former.ChangeUnselectableDaysAfterDate(newUnselectableDaysAfterDate),
 			day_button_former.ChangeUnselectableDays(newUnselectableDays),
+			day_button_former.ChangeTimezone(tzEuropeB),
 		),
 	)
 
@@ -275,32 +348,20 @@ func TestGetCurrentConfig(t *testing.T) {
 			currentConfig.PostfixForPickDay, pickDayPostfix)
 	}
 
-	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate {
+	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate.In(tzEuropeB) {
 		t.Errorf("currentConfig.UnselectableDaysBeforeTime %v no equal real UnselectableDaysBeforeTime: %v",
 			currentConfig.UnselectableDaysBeforeTime, newUnselectableDaysBeforeDate)
 	}
 
-	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate {
+	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate.In(tzEuropeB) {
 		t.Errorf("currentConfig.UnselectableDaysAfterTime %v no equal real UnselectableDaysAfterTime: %v",
 			currentConfig.UnselectableDaysAfterTime, newUnselectableDaysAfterDate)
 	}
 
-	if !isEqualUnselectableDaysMaps(currentConfig.UnselectableDays, newUnselectableDays) {
-		t.Errorf("get current config unselectable days %v not equal real unselectable days %v", currentConfig.UnselectableDays,
-			newUnselectableDays)
-	}
-}
-
-func isEqualUnselectableDaysMaps(one, two map[time.Time]struct{}) bool {
-	if len(one) != len(two) {
-		return false
-	}
-
-	for k := range one {
-		if _, inMap := two[k]; !inMap {
-			return false
+	for expectUnselectableDay := range newUnselectableDays {
+		if _, inMap := currentConfig.UnselectableDays[expectUnselectableDay.In(tzEuropeB)]; !inMap {
+			t.Errorf("expected unselectable day %v not found in current config map %v", expectUnselectableDay,
+				currentConfig.UnselectableDays)
 		}
 	}
-
-	return true
 }

@@ -1857,7 +1857,7 @@ func TestGenerateCalendarKeyboard(t *testing.T) {
 			if !isSlicesOfSlicesEqual(want.InlineKeyboardMarkup.InlineKeyboard, resultGenerateCalendarKeyboard.InlineKeyboardMarkup.InlineKeyboard) {
 				t.Errorf("expected: %+v not equal result: %+v", want.InlineKeyboardMarkup.InlineKeyboard, resultGenerateCalendarKeyboard.InlineKeyboardMarkup.InlineKeyboard) //nolint:lll
 			}
-			if want.SelectedDay != resultGenerateCalendarKeyboard.SelectedDay {
+			if !want.SelectedDay.Equal(resultGenerateCalendarKeyboard.SelectedDay) {
 				t.Errorf("expected selected day: %+v not equal result selected day: %+v", want.SelectedDay, resultGenerateCalendarKeyboard.SelectedDay)
 			}
 		},
@@ -1941,7 +1941,7 @@ func TestGenerateCalendarKeyboardForUnselectableDays(t *testing.T) {
 			if !isSlicesOfSlicesEqual(want.InlineKeyboardMarkup.InlineKeyboard, resultGenerateCalendarKeyboard.InlineKeyboardMarkup.InlineKeyboard) {
 				t.Errorf("expected: %+v not equal result: %+v", want.InlineKeyboardMarkup.InlineKeyboard, resultGenerateCalendarKeyboard.InlineKeyboardMarkup.InlineKeyboard) //nolint:lll
 			}
-			if want.SelectedDay != resultGenerateCalendarKeyboard.SelectedDay {
+			if !want.SelectedDay.Equal(resultGenerateCalendarKeyboard.SelectedDay) {
 				t.Errorf("expected selected day: %+v not equal result selected day: %+v", want.SelectedDay, resultGenerateCalendarKeyboard.SelectedDay)
 			}
 		},
@@ -1989,6 +1989,11 @@ func TestGetCurrentConfig(t *testing.T) {
 	newUnselectableDaysAfterDate := time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)
 	newUnselectableDays := map[time.Time]struct{}{time.Date(2001,
 		1, 1, 0, 0, 0, 0, time.UTC): {}}
+	tzEuropeB, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		t.Errorf("at time.LoadLocation for Europe/Berlin error: %v", err)
+		return
+	}
 
 	kf := NewKeyboardFormer(
 		ChangeYearsBackForChoose(yearsBackForChoose),
@@ -2007,6 +2012,7 @@ func TestGetCurrentConfig(t *testing.T) {
 			day_button_former.ChangeUnselectableDaysBeforeDate(newUnselectableDaysBeforeDate),
 			day_button_former.ChangeUnselectableDaysAfterDate(newUnselectableDaysAfterDate),
 			day_button_former.ChangeUnselectableDays(newUnselectableDays),
+			day_button_former.ChangeTimezone(tzEuropeB),
 		),
 	)
 
@@ -2072,32 +2078,20 @@ func TestGetCurrentConfig(t *testing.T) {
 			currentConfig.PostfixForPickDay, pickDayPostfix)
 	}
 
-	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate {
+	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate.In(tzEuropeB) {
 		t.Errorf("currentConfig.UnselectableDaysBeforeTime %v no equal real UnselectableDaysBeforeTime: %v",
 			currentConfig.UnselectableDaysBeforeTime, newUnselectableDaysBeforeDate)
 	}
 
-	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate {
+	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate.In(tzEuropeB) {
 		t.Errorf("currentConfig.UnselectableDaysAfterTime %v no equal real UnselectableDaysAfterTime: %v",
 			currentConfig.UnselectableDaysAfterTime, newUnselectableDaysAfterDate)
 	}
 
-	if !isEqualUnselectableDaysMaps(currentConfig.UnselectableDays, newUnselectableDays) {
-		t.Errorf("get current config unselectable days %v not equal real unselectable days %v", currentConfig.UnselectableDays,
-			newUnselectableDays)
-	}
-}
-
-func isEqualUnselectableDaysMaps(one, two map[time.Time]struct{}) bool {
-	if len(one) != len(two) {
-		return false
-	}
-
-	for k := range one {
-		if _, inMap := two[k]; !inMap {
-			return false
+	for expectUnselectableDay := range newUnselectableDays {
+		if _, inMap := currentConfig.UnselectableDays[expectUnselectableDay.In(tzEuropeB)]; !inMap {
+			t.Errorf("expected unselectable day %v not found in current config map %v", expectUnselectableDay,
+				currentConfig.UnselectableDays)
 		}
 	}
-
-	return true
 }

@@ -354,6 +354,12 @@ func TestGetCurrentConfig(t *testing.T) {
 		pickDayPostfix           = "💓"
 	)
 
+	tzEuropeB, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		t.Errorf("at time.LoadLocation for Europe/Berlin error: %v", err)
+		return
+	}
+
 	newUnselectableDaysBeforeDate := time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
 	newUnselectableDaysAfterDate := time.Date(2002, 1, 1, 0, 0, 0, 0, time.UTC)
 	newUnselectableDays := map[time.Time]struct{}{time.Date(2001,
@@ -369,6 +375,7 @@ func TestGetCurrentConfig(t *testing.T) {
 		ChangeUnselectableDaysBeforeDate(newUnselectableDaysBeforeDate),
 		ChangeUnselectableDaysAfterDate(newUnselectableDaysAfterDate),
 		ChangeUnselectableDays(newUnselectableDays),
+		ChangeTimezone(tzEuropeB),
 	)
 
 	currentConfig := newBF.GetCurrentConfig()
@@ -403,33 +410,40 @@ func TestGetCurrentConfig(t *testing.T) {
 			currentConfig.PostfixForPickDay, pickDayPostfix)
 	}
 
-	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate {
+	if currentConfig.UnselectableDaysBeforeTime != newUnselectableDaysBeforeDate.In(tzEuropeB) {
 		t.Errorf("currentConfig.UnselectableDaysBeforeTime %v no equal real UnselectableDaysBeforeTime: %v",
 			currentConfig.UnselectableDaysBeforeTime, newUnselectableDaysBeforeDate)
 	}
 
-	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate {
+	if currentConfig.UnselectableDaysAfterTime != newUnselectableDaysAfterDate.In(tzEuropeB) {
 		t.Errorf("currentConfig.UnselectableDaysAfterTime %v no equal real UnselectableDaysAfterTime: %v",
 			currentConfig.UnselectableDaysAfterTime, newUnselectableDaysAfterDate)
 	}
 
-	if !isEqualUnselectableDaysMaps(currentConfig.UnselectableDays, newUnselectableDays) {
-		t.Errorf("get current config unselectable days %v not equal real unselectable days %v", currentConfig.UnselectableDays,
-			newUnselectableDays)
-	}
-
-}
-
-func isEqualUnselectableDaysMaps(one, two map[time.Time]struct{}) bool {
-	if len(one) != len(two) {
-		return false
-	}
-
-	for k := range one {
-		if _, inMap := two[k]; !inMap {
-			return false
+	for expectUnselectableDay := range newUnselectableDays {
+		if _, inMap := currentConfig.UnselectableDays[expectUnselectableDay.In(tzEuropeB)]; !inMap {
+			t.Errorf("expected unselectable day %v not found in current config map %v", expectUnselectableDay,
+				currentConfig.UnselectableDays)
 		}
 	}
+}
 
-	return true
+func TestGetTimezone(t *testing.T) {
+	t.Parallel()
+
+	tzEuropeB, err := time.LoadLocation("Europe/Berlin")
+	if err != nil {
+		t.Errorf("at time.LoadLocation for Europe/Berlin error: %v", err)
+		return
+	}
+
+	newBF := NewButtonsFormer(
+		ChangeTimezone(tzEuropeB),
+	)
+
+	tzGot := newBF.GetTimezone()
+
+	if tzGot.String() != tzEuropeB.String() {
+		t.Errorf("tzGot %v, tz want %v", tzGot, tzEuropeB)
+	}
 }
