@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// FlatConfig ...
+// FlatConfig holds a snapshot of all day button formatting configuration values.
 type FlatConfig struct {
 	PrefixForCurrentDay        string
 	PostfixForCurrentDay       string

@@ -8,7 +8,7 @@ import (
 	"github.com/thevan4/telegram-calendar/models"
 )
 
-// KeyboardGenerator ...
+// KeyboardGenerator defines the interface for generating and configuring calendar keyboards.
 type KeyboardGenerator interface {
 	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) models.GenerateCalendarKeyboardResponse
 	ApplyNewOptions(options ...func(KeyboardGenerator) KeyboardGenerator) KeyboardGenerator
@@ -17,7 +17,7 @@ type KeyboardGenerator interface {
 	GetTimezone() time.Location
 }
 
-// Generator ...
+// Generator defines the interface for generating individual calendar keyboard views such as month navigation, year selection, and day grids.
 type Generator interface {
 	GenerateGoToPrevMonth(month, year int, currentTime time.Time) models.InlineKeyboardMarkup
 	GenerateGoToNextMonth(month, year int, currentTime time.Time) models.InlineKeyboardMarkup
@@ -30,7 +30,7 @@ type Generator interface {
 	GenerateCurrentMonth(month, year int, currentTime time.Time) [][]models.InlineKeyboardButton
 }
 
-// GenerateCalendarKeyboard ...
+// GenerateCalendarKeyboard processes a callback payload and returns the appropriate calendar keyboard or selected day based on the decoded action.
 func (k *KeyboardFormer) GenerateCalendarKeyboard(
 	callbackPayload string,
 	currentTime time.Time,
@@ -96,7 +96,7 @@ func (k *KeyboardFormer) GenerateCalendarKeyboard(
 	}
 }
 
-// GenerateGoToPrevMonth ...
+// GenerateGoToPrevMonth generates the calendar keyboard for the previous month relative to the given month and year.
 func (k *KeyboardFormer) GenerateGoToPrevMonth(month, year int, currentTime time.Time) models.InlineKeyboardMarkup {
 	if month != int(time.January) {
 		month--
@@ -107,7 +107,7 @@ func (k *KeyboardFormer) GenerateGoToPrevMonth(month, year int, currentTime time
 	return k.GenerateCalendar(month, year, currentTime)
 }
 
-// GenerateGoToNextMonth ...
+// GenerateGoToNextMonth generates the calendar keyboard for the next month relative to the given month and year.
 func (k *KeyboardFormer) GenerateGoToNextMonth(month, year int, currentTime time.Time) models.InlineKeyboardMarkup {
 	if month != int(time.December) {
 		month++
@@ -118,19 +118,19 @@ func (k *KeyboardFormer) GenerateGoToNextMonth(month, year int, currentTime time
 	return k.GenerateCalendar(month, year, currentTime)
 }
 
-// GenerateGoToPrevYear ...
+// GenerateGoToPrevYear generates the calendar keyboard for the same month in the previous year.
 func (k *KeyboardFormer) GenerateGoToPrevYear(month, year int, currentTime time.Time) models.InlineKeyboardMarkup {
 	year--
 	return k.GenerateCalendar(month, year, currentTime)
 }
 
-// GenerateGoToNextYear ...
+// GenerateGoToNextYear generates the calendar keyboard for the same month in the next year.
 func (k *KeyboardFormer) GenerateGoToNextYear(month, year int, currentTime time.Time) models.InlineKeyboardMarkup {
 	year++
 	return k.GenerateCalendar(month, year, currentTime)
 }
 
-// GenerateSelectMonths ...
+// GenerateSelectMonths generates a keyboard view that displays all twelve months for the user to pick from.
 func (k *KeyboardFormer) GenerateSelectMonths(month, year int, currentTime time.Time) (keyboard models.InlineKeyboardMarkup) {
 	keyboard.InlineKeyboard = make([][]models.InlineKeyboardButton, 0, twoRowsForMonth)
 
@@ -143,7 +143,7 @@ func (k *KeyboardFormer) GenerateSelectMonths(month, year int, currentTime time.
 	return keyboard
 }
 
-// GenerateSelectYears ...
+// GenerateSelectYears generates a keyboard view that displays available years for the user to pick from.
 func (k *KeyboardFormer) GenerateSelectYears(month, year int, currentTime time.Time) models.InlineKeyboardMarkup {
 	var keyboard models.InlineKeyboardMarkup
 	monthYearRow := k.generateMonthYearRow(month, year, currentTime, false, true)
@@ -155,7 +155,7 @@ func (k *KeyboardFormer) GenerateSelectYears(month, year int, currentTime time.T
 	return keyboard
 }
 
-// GenerateCalendar ...
+// GenerateCalendar generates the full calendar keyboard for a given month and year, including navigation row, day names, and day buttons.
 func (k *KeyboardFormer) GenerateCalendar(month, year int, currentTime time.Time) models.InlineKeyboardMarkup {
 	var keyboard models.InlineKeyboardMarkup // unknown len, may 6-8.
 	monthYearRow := k.generateMonthYearRow(month, year, currentTime, false, false)
@@ -169,7 +169,7 @@ func (k *KeyboardFormer) GenerateCalendar(month, year int, currentTime time.Time
 	return keyboard
 }
 
-// GenerateDefaultCalendar ...
+// GenerateDefaultCalendar generates the calendar keyboard for the current month and year derived from currentTime.
 func (k *KeyboardFormer) GenerateDefaultCalendar(currentTime time.Time) models.InlineKeyboardMarkup {
 	year := currentTime.Year()
 	month := int(currentTime.Month())
@@ -288,12 +288,12 @@ func (k *KeyboardFormer) addYearsNamesRow(month, currentYear int) (rowYears []mo
 	return rowYears
 }
 
-// GetUnselectableDays ...
+// GetUnselectableDays returns the map of days that cannot be selected, delegating to the underlying buttons text wrapper.
 func (k *KeyboardFormer) GetUnselectableDays() map[time.Time]struct{} {
 	return k.buttonsTextWrapper.GetUnselectableDays()
 }
 
-// GetCurrentConfig ...
+// GetCurrentConfig returns a FlatConfig snapshot containing all current generator and day button configuration values.
 func (k *KeyboardFormer) GetCurrentConfig() FlatConfig {
 	dayButtonFormerConfig := k.buttonsTextWrapper.GetCurrentConfig()
 	return FlatConfig{
@@ -317,7 +317,7 @@ func (k *KeyboardFormer) GetCurrentConfig() FlatConfig {
 	}
 }
 
-// GetTimezone ...
+// GetTimezone returns the current timezone setting used by the underlying buttons text wrapper.
 func (k *KeyboardFormer) GetTimezone() time.Location {
 	return k.buttonsTextWrapper.GetTimezone()
 }

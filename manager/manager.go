@@ -8,20 +8,20 @@ import (
 	"github.com/thevan4/telegram-calendar/models"
 )
 
-// KeyboardManager ...
+// KeyboardManager defines the thread-safe interface for generating calendar keyboards and managing their configuration.
 type KeyboardManager interface {
 	GenerateCalendarKeyboard(callbackPayload string, currentTime time.Time) models.GenerateCalendarKeyboardResponse
 	ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator)
-	GetCurrentConfig() FlatConfig
+	GetCurrentConfig() generator.FlatConfig
 }
 
-// Manager ...
+// Manager provides thread-safe access to a KeyboardGenerator for concurrent calendar keyboard generation and configuration.
 type Manager struct {
 	sync.RWMutex
 	keyboardFormer generator.KeyboardGenerator
 }
 
-// NewManager создает новый экземпляр Manager с настраиваемым KeyboardGenerator.
+// NewManager creates a new Manager instance with a configurable KeyboardGenerator.
 func NewManager(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator) *Manager {
 	defaultManager := newDefaultManager()
 	defaultManager.ApplyNewOptions(options...)
@@ -33,7 +33,7 @@ func newDefaultManager() *Manager {
 	}
 }
 
-// GenerateCalendarKeyboard ...
+// GenerateCalendarKeyboard processes the callback payload under a read lock and returns the generated calendar keyboard response.
 func (m *Manager) GenerateCalendarKeyboard(
 	callbackPayload string,
 	currentTime time.Time,
@@ -44,7 +44,7 @@ func (m *Manager) GenerateCalendarKeyboard(
 	return m.keyboardFormer.GenerateCalendarKeyboard(callbackPayload, currentTime)
 }
 
-// ApplyNewOptions ...
+// ApplyNewOptions applies the given functional options to the underlying keyboard generator under a write lock.
 func (m *Manager) ApplyNewOptions(options ...func(generator.KeyboardGenerator) generator.KeyboardGenerator) {
 	m.Lock()
 	defer m.Unlock()
@@ -60,28 +60,11 @@ func copyMap(src map[time.Time]struct{}) map[time.Time]struct{} {
 	return dst
 }
 
-// GetCurrentConfig ...
-func (m *Manager) GetCurrentConfig() FlatConfig {
+// GetCurrentConfig returns a FlatConfig snapshot of the current configuration under a read lock, with a defensive copy of the unselectable days map.
+func (m *Manager) GetCurrentConfig() generator.FlatConfig {
 	m.RLock()
 	defer m.RUnlock()
 	keyboardFormerConfig := m.keyboardFormer.GetCurrentConfig()
-	return FlatConfig{
-		YearsBackForChoose:         keyboardFormerConfig.YearsBackForChoose,
-		YearsForwardForChoose:      keyboardFormerConfig.YearsForwardForChoose,
-		SumYearsForChoose:          keyboardFormerConfig.SumYearsForChoose,
-		DaysNames:                  keyboardFormerConfig.DaysNames,
-		MonthNames:                 keyboardFormerConfig.MonthNames,
-		HomeButtonForBeauty:        keyboardFormerConfig.HomeButtonForBeauty,
-		PayloadEncoderDecoder:      keyboardFormerConfig.PayloadEncoderDecoder,
-		PrefixForCurrentDay:        keyboardFormerConfig.PrefixForCurrentDay,
-		PostfixForCurrentDay:       keyboardFormerConfig.PostfixForCurrentDay,
-		PrefixForNonSelectedDay:    keyboardFormerConfig.PrefixForNonSelectedDay,
-		PostfixForNonSelectedDay:   keyboardFormerConfig.PostfixForNonSelectedDay,
-		PrefixForPickDay:           keyboardFormerConfig.PrefixForPickDay,
-		PostfixForPickDay:          keyboardFormerConfig.PostfixForPickDay,
-		UnselectableDaysBeforeTime: keyboardFormerConfig.UnselectableDaysBeforeTime,
-		UnselectableDaysAfterTime:  keyboardFormerConfig.UnselectableDaysAfterTime,
-		UnselectableDays:           keyboardFormerConfig.UnselectableDays,
-		Timezone:                   keyboardFormerConfig.Timezone,
-	}
+	keyboardFormerConfig.UnselectableDays = copyMap(keyboardFormerConfig.UnselectableDays)
+	return keyboardFormerConfig
 }

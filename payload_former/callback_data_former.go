@@ -12,23 +12,26 @@ var (
 	incomePayloadRegexp = regexp.MustCompile(`calendar/([^_]+)_(\d{2})\.(\d{2})\.(\d{4})`)
 )
 
-// PayloadEncoderDecoder ...
+// PayloadEncoderDecoder defines the interface for encoding calendar actions into callback data strings and decoding them back into PayloadData.
 type PayloadEncoderDecoder interface {
 	Encoding(action string, day, month, year int) string
 	Decoding(input string) models.PayloadData
 }
 
-// EncoderDecoder ...
+// EncoderDecoder is the default implementation of PayloadEncoderDecoder using a "calendar/action_dd.mm.yyyy" format.
 type EncoderDecoder struct{}
 
-// NewEncoderDecoder ...
+// Compile-time interface compliance check.
+var _ PayloadEncoderDecoder = EncoderDecoder{}
+
+// NewEncoderDecoder creates a new default EncoderDecoder instance.
 func NewEncoderDecoder() EncoderDecoder {
 	return EncoderDecoder{}
 }
 
-// Encoding ...
+// Encoding serializes a calendar action with day, month, and year into a callback data string.
 func (ed EncoderDecoder) Encoding(action string, day, month, year int) string {
-	sb := new(strings.Builder)
+	var sb strings.Builder
 	sb.Grow(maxCallbackPayloadLen)
 
 	sb.WriteString(callbackCalendar)
@@ -41,7 +44,7 @@ func (ed EncoderDecoder) Encoding(action string, day, month, year int) string {
 	return sb.String()
 }
 
-// Decoding ...
+// Decoding parses a callback data string and extracts the action, day, month, and year into a PayloadData struct.
 func (ed EncoderDecoder) Decoding(input string) models.PayloadData {
 	match := incomePayloadRegexp.FindStringSubmatch(input)
 

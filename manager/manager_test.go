@@ -169,7 +169,7 @@ func TestApplyNewOptions(t *testing.T) {
 
 	gotConfig := m.GetCurrentConfig()
 
-	expectedConfig := FlatConfig{
+	expectedConfig := generator.FlatConfig{
 		YearsBackForChoose:         0,
 		YearsForwardForChoose:      2,
 		SumYearsForChoose:          2,

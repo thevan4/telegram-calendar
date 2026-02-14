@@ -6,7 +6,7 @@ import (
 	"github.com/thevan4/telegram-calendar/models"
 )
 
-// GenerateCurrentMonth ...
+// GenerateCurrentMonth generates the rows of day buttons for the specified month and year, organized by weeks.
 func (k *KeyboardFormer) GenerateCurrentMonth(month, year int, currentTime time.Time) [][]models.InlineKeyboardButton {
 	monthStart := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	monthEnd := monthStart.AddDate(0, 1, -1)
@@ -88,7 +88,7 @@ func (k *KeyboardFormer) generateMiddleWeeks(
 		rowCurrentWeek := make([]models.InlineKeyboardButton, 0, standardButtonsAtRow)
 
 		// Filling in the dates.
-		for cw := 1; cw <= daysInWeek; cw++ {
+		for daysInCurrentWeek := 1; daysInCurrentWeek <= daysInWeek; daysInCurrentWeek++ {
 			btnText, isUnselectableDay := k.buttonsTextWrapper.DayButtonTextWrapper(dayNumber, month, year, currentTime)
 			btn := models.NewInlineKeyboardButton(btnText, k.payloadEncoderDecoder.Encoding(chooseAction(isUnselectableDay), dayNumber, month, year))
 			rowCurrentWeek = append(rowCurrentWeek, btn)
@@ -116,7 +116,7 @@ func (k *KeyboardFormer) generateLastWeek(month, year int, dayNumber int,
 	}
 
 	// Fill the last week with blank buttons.
-	for wd := monthEndWeekday + 1; wd <= daysInWeek; wd++ {
+	for weekday := monthEndWeekday + 1; weekday <= daysInWeek; weekday++ {
 		btn := models.NewInlineKeyboardButton(emptyText, k.payloadEncoderDecoder.Encoding(silentDoNothingAction, 0, month, year))
 		rowLastWeek = append(rowLastWeek, btn)
 	}

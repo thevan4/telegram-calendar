@@ -2,7 +2,7 @@ package day_button_former
 
 import "time"
 
-// ApplyNewOptions ...
+// ApplyNewOptions applies the given functional options to the DayButtonFormer and returns the updated DaysButtonsText.
 func (bf *DayButtonFormer) ApplyNewOptions(options ...func(DaysButtonsText) DaysButtonsText) DaysButtonsText {
 	var dbf DaysButtonsText = bf
 	for _, option := range options {
@@ -11,7 +11,7 @@ func (bf *DayButtonFormer) ApplyNewOptions(options ...func(DaysButtonsText) Days
 	return dbf
 }
 
-// ChangePrefixForCurrentDay ...
+// ChangePrefixForCurrentDay returns an option that sets the text prefix displayed before the current day's number.
 func ChangePrefixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -25,7 +25,7 @@ func ChangePrefixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText {
 	}
 }
 
-// ChangePostfixForCurrentDay ...
+// ChangePostfixForCurrentDay returns an option that sets the text postfix displayed after the current day's number.
 func ChangePostfixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -39,7 +39,7 @@ func ChangePostfixForCurrentDay(v string) func(DaysButtonsText) DaysButtonsText 
 	}
 }
 
-// ChangePrefixForNonSelectedDay ...
+// ChangePrefixForNonSelectedDay returns an option that sets the text prefix displayed before an unselectable day's number.
 func ChangePrefixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -53,7 +53,7 @@ func ChangePrefixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsTe
 	}
 }
 
-// ChangePostfixForNonSelectedDay ...
+// ChangePostfixForNonSelectedDay returns an option that sets the text postfix displayed after an unselectable day's number.
 func ChangePostfixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -67,7 +67,7 @@ func ChangePostfixForNonSelectedDay(v string) func(DaysButtonsText) DaysButtonsT
 	}
 }
 
-// ChangePrefixForPickDay ...
+// ChangePrefixForPickDay returns an option that sets the text prefix displayed before a selectable day's number.
 func ChangePrefixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -81,7 +81,7 @@ func ChangePrefixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 	}
 }
 
-// ChangePostfixForPickDay ...
+// ChangePostfixForPickDay returns an option that sets the text postfix displayed after a selectable day's number.
 func ChangePostfixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -95,7 +95,7 @@ func ChangePostfixForPickDay(v string) func(DaysButtonsText) DaysButtonsText {
 	}
 }
 
-// ChangeUnselectableDaysBeforeDate ...
+// ChangeUnselectableDaysBeforeDate returns an option that marks all days before the given date as unselectable.
 func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -106,7 +106,7 @@ func ChangeUnselectableDaysBeforeDate(t time.Time) func(DaysButtonsText) DaysBut
 	}
 }
 
-// ChangeUnselectableDaysAfterDate ...
+// ChangeUnselectableDaysAfterDate returns an option that marks all days after the given date as unselectable.
 func ChangeUnselectableDaysAfterDate(t time.Time) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {
@@ -117,7 +117,7 @@ func ChangeUnselectableDaysAfterDate(t time.Time) func(DaysButtonsText) DaysButt
 	}
 }
 
-// ChangeUnselectableDays ...
+// ChangeUnselectableDays returns an option that sets specific individual days as unselectable, converting them to the current timezone.
 func ChangeUnselectableDays(unselectableDays map[time.Time]struct{}) func(DaysButtonsText) DaysButtonsText {
 	return func(bf DaysButtonsText) DaysButtonsText {
 		if dbf, ok := bf.(*DayButtonFormer); ok {

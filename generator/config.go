@@ -6,7 +6,7 @@ import (
 	"github.com/thevan4/telegram-calendar/payload_former"
 )
 
-// FlatConfig ...
+// FlatConfig holds a snapshot of all generator configuration values in a flat structure.
 type FlatConfig struct {
 	YearsBackForChoose         int
 	YearsForwardForChoose      int

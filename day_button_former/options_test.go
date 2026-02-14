@@ -28,12 +28,12 @@ func (fi fakeImplDBT) ApplyNewOptions(options ...func(DaysButtonsText) DaysButto
 	return dbf
 }
 
-// GetUnselectableDays ...
+// GetUnselectableDays returns nil for the fake implementation.
 func (fi fakeImplDBT) GetUnselectableDays() map[time.Time]struct{} {
 	return nil
 }
 
-// GetCurrentConfig ...
+// GetCurrentConfig returns an empty FlatConfig for the fake implementation.
 func (fi fakeImplDBT) GetCurrentConfig() FlatConfig {
 	return FlatConfig{}
 }

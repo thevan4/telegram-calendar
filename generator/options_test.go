@@ -27,12 +27,12 @@ func (fi fakeImplKF) ApplyNewOptions(options ...func(KeyboardGenerator) Keyboard
 	return kg
 }
 
-// GetUnselectableDays ...
+// GetUnselectableDays returns nil for the fake implementation.
 func (fi fakeImplKF) GetUnselectableDays() map[time.Time]struct{} {
 	return nil
 }
 
-// GetCurrentConfig ...
+// GetCurrentConfig returns an empty FlatConfig for the fake implementation.
 func (fi fakeImplKF) GetCurrentConfig() FlatConfig {
 	return FlatConfig{}
 }

@@ -15,7 +15,7 @@ type DaysButtonsText interface {
 	GetTimezone() time.Location
 }
 
-// DayButtonFormer ...
+// DayButtonFormer implements DaysButtonsText and handles formatting of individual day button text with prefix/postfix decorations and unselectable day logic.
 type DayButtonFormer struct {
 	buttons                    buttonsData
 	unselectableDaysBeforeTime time.Time
@@ -38,7 +38,7 @@ type extraButtonInfo struct {
 	growLen int
 }
 
-// NewButtonsFormer ...
+// NewButtonsFormer creates a new DaysButtonsText with default settings and applies the given functional options.
 func NewButtonsFormer(
 	options ...func(DaysButtonsText) DaysButtonsText,
 ) DaysButtonsText {
@@ -70,6 +70,9 @@ func newDefaultButtonsFormer() *DayButtonFormer {
 
 // DayButtonTextWrapper add some extra beauty/info for buttons.
 func (bf *DayButtonFormer) DayButtonTextWrapper(incomeDay, incomeMonth, incomeYear int, currentTime time.Time) (string, bool) {
+	if bf.timezone == nil {
+		bf.timezone = time.UTC
+	}
 	currentTime = currentTime.In(bf.timezone)
 	calendarDateTime := time.Date(incomeYear, time.Month(incomeMonth), incomeDay, currentTime.Hour(), currentTime.Minute(),
 		currentTime.Second(), currentTime.Nanosecond(), bf.timezone)
@@ -151,12 +154,16 @@ func (bf *DayButtonFormer) isTimeUnselectable(calendarDateTime time.Time) bool {
 	return false
 }
 
-// GetUnselectableDays ...
+// GetUnselectableDays returns a copy of the internal unselectable days map to prevent external mutation.
 func (bf *DayButtonFormer) GetUnselectableDays() map[time.Time]struct{} {
-	return bf.unselectableDays
+	result := make(map[time.Time]struct{}, len(bf.unselectableDays))
+	for k, v := range bf.unselectableDays {
+		result[k] = v
+	}
+	return result
 }
 
-// GetCurrentConfig ...
+// GetCurrentConfig returns a FlatConfig snapshot containing all current day button formatting configuration values.
 func (bf *DayButtonFormer) GetCurrentConfig() FlatConfig {
 	return FlatConfig{
 		PrefixForCurrentDay:        bf.buttons.prefixForCurrentDay.value,
@@ -172,7 +179,7 @@ func (bf *DayButtonFormer) GetCurrentConfig() FlatConfig {
 	}
 }
 
-// GetTimezone ...
+// GetTimezone returns the current timezone location used for day button formatting.
 func (bf *DayButtonFormer) GetTimezone() time.Location {
 	return *bf.timezone
 }

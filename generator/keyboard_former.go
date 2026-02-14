@@ -37,7 +37,7 @@ func newDefaultKeyboardFormer() *KeyboardFormer {
 	}
 }
 
-// NewButtonsTextWrapper ...
+// NewButtonsTextWrapper returns a KeyboardGenerator option that creates a new DaysButtonsText instance with the given options and sets it on the KeyboardFormer.
 func NewButtonsTextWrapper(
 	options ...func(day_button_former.DaysButtonsText) day_button_former.DaysButtonsText,
 ) func(KeyboardGenerator) KeyboardGenerator {
